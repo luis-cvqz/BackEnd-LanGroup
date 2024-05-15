@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class idioma extends Model {
     static associate(models) {
-      idioma.belongsToMany(models.colaborador, {  through: 'idiomacolaborador', foreignKey: 'ididioma' });
+      idioma.belongsToMany(models.colaborador, {  through: 'idiomacolaborador', foreignKey: 'idiomaid' });
     }
   }
 

@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('idiomacolaborador', {
+    await queryInterface.createTable('colaboradorgrupo', {
       usuarioid: {
         allowNull: false,
         primaryKey: true,
@@ -15,16 +15,20 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      idiomaid: {
+      grupoclave: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         references: {
-          model: 'idioma',
-          key: 'ididioma'
+          model: 'grupo',
+          key: 'clavegrupo'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      rol: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +42,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('idiomacolaborador');
+    await queryInterface.dropTable('colaboradorgrupo');
   }
 };
