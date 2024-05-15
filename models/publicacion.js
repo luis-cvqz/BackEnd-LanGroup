@@ -1,14 +1,12 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class publicacion extends Model {
     static associate(models) {
-      publicacion.hasMany(models.archivopublicacion, {
-        foreignKey: "publicacionid",
-      });
-      publicacion.hasMany(models.interaccion, { foreignKey: "publicacionid" });
-      publicacion.belongsTo(models.colaborador);
-      publicacion.belongsTo(models.grupo);
+      publicacion.hasMany(models.archivopublicacion, { foreignKey: 'publicacionid' })
+      publicacion.hasMany(models.interaccion, { foreignKey: 'publicacionid' })
+      publicacion.belongsTo(models.colaborador)
+      publicacion.belongsTo(models.grupo)
     }
   }
   publicacion.init(
@@ -33,14 +31,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      grupoid: {
+      grupoclave: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "publicacion",
+      freezeTableName: true,
+      modelName: 'publicacion',
     }
   );
   return publicacion;

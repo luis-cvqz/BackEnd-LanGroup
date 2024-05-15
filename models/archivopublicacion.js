@@ -34,10 +34,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     archivo: {
       type: DataTypes.BLOB("long"),
-      allowNull: false
+      allowNull: false,
     }
   }, {
     sequelize,
+    freezeTableName: true,
     modelName: 'archivopublicacion',
   });
   return archivopublicacion;
