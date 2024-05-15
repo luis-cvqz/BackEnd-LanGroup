@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       grupo.belongsTo(models.idioma);
       grupo.belongsToMany(models.colaborador, {  through: 'colaboradorgrupo', foreignKey: 'grupoclave' });
+      grupo.hasMany(models.publicacion, { foreignKey: 'grupoclave '});
     }
   }
   grupo.init({
