@@ -3,7 +3,8 @@ const {  Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class colaborador extends Model {
     static associate(models) {
-      colaborador.belongsToMany(models.idioma, { through: 'idiomacolaborador', foreignKey: 'idusuario'})
+      colaborador.belongsToMany(models.idioma, { through: 'idiomacolaborador', foreignKey: 'usuarioid'});
+      colaborador.belongsToMany(models.grupo, { through: 'colaboradorgrupo', foreignKey: 'usuarioid'});
     }
   }
 
@@ -50,6 +51,6 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     modelName: 'colaborador',
   });
-  
+
   return colaborador;
 };
