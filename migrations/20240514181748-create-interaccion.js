@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false
       },
       comentario: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false
       },
       fecha: {

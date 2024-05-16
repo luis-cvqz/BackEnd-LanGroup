@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false
       },
       descripcion: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1200),
       },
       icono: {
         type: Sequelize.STRING,
