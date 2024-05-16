@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       contraseña: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false
       },
       nombre: {
@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false
       },
       descripcion: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(300)
       },
       rol: {
         type: Sequelize.STRING,

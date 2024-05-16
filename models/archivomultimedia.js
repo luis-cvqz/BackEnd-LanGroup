@@ -1,12 +1,12 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class archivopublicacion extends Model {
+  class archivomultimedia extends Model {
     static associate(models) {
-      archivopublicacion.belongsTo(models.publicacion)
+      archivomultimedia.belongsTo(models.publicacion)
     }
   }
-  archivopublicacion.init({
+  archivomultimedia.init({
     idarchivo: {
       type: DataTypes.STRING,
       primaryKey: true
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     freezeTableName: true,
-    modelName: 'archivopublicacion',
+    modelName: 'archivomultimedia',
   });
-  return archivopublicacion;
+  return archivomultimedia;
 };

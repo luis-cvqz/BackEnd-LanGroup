@@ -2,37 +2,43 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('interaccions', {
-      idinteraccion: {
+    await queryInterface.createTable('solicitud', {
+      idsolicitud: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
       },
-      valoracion: {
-        type: Sequelize.TINYINT,
+      contenido: {
+        type: Sequelize.STRING(1200),
         allowNull: false
       },
-      comentario: {
-        type: Sequelize.STRING(1000),
+      motivo: {
+        type: Sequelize.STRING(1200),
         allowNull: false
       },
-      fecha: {
-        type: Sequelize.DATE,
+      estado: {
+        type: Sequelize.STRING(50),
+        allowNull: false
+      },
+      constancia: {
+        type: Sequelize.BLOB,
         allowNull: false
       },
       usuarioid: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-            model: 'colaborador',
-            key: 'idusuario'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+          model: 'colaborador',
+          key: 'idusuario'
+        }
       },
-      publicacionid: {
+      idiomaid: {
         type: Sequelize.UUID,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'idioma',
+          key: 'ididioma'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -45,6 +51,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('interaccions');
+    await queryInterface.dropTable('solicitud');
   }
 };
