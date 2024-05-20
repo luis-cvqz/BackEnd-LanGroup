@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('interaccions', {
+    await queryInterface.createTable('interaccion', {
       idinteraccion: {
         allowNull: false,
         primaryKey: true,
@@ -45,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('interaccions');
+    await queryInterface.dropTable('interaccion');
   }
 };
