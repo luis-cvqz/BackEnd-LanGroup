@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      grupoclave: {
+      grupoid: {
         type: DataTypes.STRING,
         allowNull: false,
       },

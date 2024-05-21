@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('grupo', {
-      clavegrupo: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -24,7 +24,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'idioma',
-          key: 'ididioma'
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

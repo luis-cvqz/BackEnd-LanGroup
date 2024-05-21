@@ -24,12 +24,12 @@ module.exports = {
         type: Sequelize.BLOB,
         allowNull: false
       },
-      usuarioid: {
+      colaboradorid: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'colaborador',
-          key: 'idusuario'
+          key: 'id'
         }
       },
       idiomaid: {
@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'idioma',
-          key: 'ididioma'
+          key: 'id'
         }
       },
       createdAt: {

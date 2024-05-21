@@ -20,22 +20,22 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
-      usuarioid: {
+      colaboradorid: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: 'colaborador',
-          key: 'idusuario'
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      grupoclave: {
+      grupoid: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
           model: 'grupo',
-          key: 'clavegrupo'
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

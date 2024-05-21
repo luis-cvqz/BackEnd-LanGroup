@@ -20,12 +20,12 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
-      usuarioid: {
+      colaboradorid: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
             model: 'colaborador',
-            key: 'idusuario'
+            key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
