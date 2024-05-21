@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   idioma.init({
-    ididioma: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false

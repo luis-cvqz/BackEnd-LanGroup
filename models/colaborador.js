@@ -3,15 +3,15 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class colaborador extends Model {
     static associate(models) {
-      colaborador.belongsToMany(models.idioma, { through: 'idiomacolaborador', foreignKey: 'usuarioid' });
-      colaborador.belongsToMany(models.grupo, { through: 'colaboradorgrupo', foreignKey: 'usuarioid' });
-      colaborador.hasMany(models.publicacion, { foreignKey: 'usuarioid' });
-      colaborador.hasMany(models.solicitud,  { foreignKey: 'usuarioid' });
+      colaborador.belongsToMany(models.idioma, { through: 'idiomacolaborador', foreignKey: 'colaboradorid' });
+      colaborador.belongsToMany(models.grupo, { through: 'colaboradorgrupo', foreignKey: 'colaboradorid' });
+      colaborador.hasMany(models.publicacion, { foreignKey: 'colaboradorid' });
+      colaborador.hasMany(models.solicitud,  { foreignKey: 'colaboradorid' });
     }
   }
 
   colaborador.init({
-    idusuario: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false
