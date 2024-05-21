@@ -17,7 +17,7 @@ module.exports = {
         unique: true,
         allowNull: false,
       },
-      contraseña: {
+      contrasenia: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -33,13 +33,19 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      rol: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       icono: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      rolid: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'rol',
+          key: 'idrol'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
