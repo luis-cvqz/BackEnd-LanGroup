@@ -6,7 +6,7 @@ let self = {}
 self.recuperar = async function (req, res) {
     try {
         let id = req.params.id;
-        let data = await colaborador.findByPk(id, { attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono']});
+        let data = await colaborador.findByPk(id, { attributes: [['id','colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono']});
         if (data)
             return res.status(200).json(data)
         else
@@ -30,7 +30,7 @@ self.recuperarTodos = async function (req, res) {
 
         let data = await colaborador.findAll({
             where: filtros,
-            attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono'],
+            attributes: [['id', 'colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono'],
             subQuery: false
         })
 
@@ -69,7 +69,7 @@ self.actualizar = async function (req, res) {
     try {
         let id = req.params.id;
         let body = req.body;
-        let data = await colaborador.update(body, { where: { id: idusuario} });
+        let data = await colaborador.update(body, { where: { id: id} });
 
         if (data[0] == 0)
             return res.status(404).send()
