@@ -6,7 +6,7 @@ const crypto = require('crypto')
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('colaborador', [
-      { idusuario:crypto.randomUUID(), usuario: 'langroupusuario', correo: 'zS21013868@estudiantes.uv.mx', contraseña: await bcrypt.hash('langroup', 10), nombre: 'Admin', apellido: 'Prueba', descripcion: 'admin de prueba', rol: 'Administrador', icono: 'icon1.png', createdAt: new Date(), updatedAt: new Date() },
+      { idusuario:crypto.randomUUID(), usuario: 'langroupusuario', correo: 'zS21013868@estudiantes.uv.mx', contrasenia: await bcrypt.hash('langroup', 10), nombre: 'Admin', apellido: 'Prueba', descripcion: 'admin de prueba', icono: 'icon_perfil_1.png', rolid: '1daf54ff-d0b4-426a-8019-e99956f28656', createdAt: new Date(), updatedAt: new Date() },
     ]);
   },
 

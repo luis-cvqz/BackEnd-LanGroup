@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    contraseña: {
+    contrasenia: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -40,11 +40,11 @@ module.exports = (sequelize, DataTypes) => {
     descripcion: {
       type: DataTypes.STRING,
     },
-    rol: {
+    icono: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    icono: {
+    rolid: {
       type: DataTypes.STRING,
       allowNull: false
     },
