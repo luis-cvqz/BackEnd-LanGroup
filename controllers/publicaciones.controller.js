@@ -1,22 +1,24 @@
-const { publicacion, colaborador, grupo, Sequelize, sequelize } = require('../models')
+const { publicacion, colaborador, grupo, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 
 let self = {}
 
-// GET api/publicaciones
+// GET api/publicaciones/grupo?={grupo}&idioma?={idioma}
 self.recuperarTodas = async function (req, res) {
   try {
-    const { idiomaquery, grupoquery } = req.query
+    const { idioma, grupo } = req.query
 
     const filtros = {}
-    if (grupoquery) {
+    if (grupo) {
       filtros.grupoid = {
-        [Op.like]: `%${grupo}%`
+        [Op.eq]: grupo
       }
     }
-    if (idiomaquery) {
-      filtros.idioma = idioma
+    if (idioma) {
+      filtros.idioma = {
+        [Op.like]: `%${idioma}%`
+      }
     }
 
     const publicaciones = await publicacion.findAll({
