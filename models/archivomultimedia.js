@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     indb: {
-      type: DataTypes.BOOEAN,
+      type: DataTypes.BOOLEAN,
       defaultValue: true,
       allowNull: false
     },

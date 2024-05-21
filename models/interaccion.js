@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class interaccion extends Model {
     static associate(models) {
       interaccion.belongsTo(models.colaborador)
-      interaccion.belongsTo(models.publicacionid)
+      interaccion.belongsTo(models.publicacion)
     }
   }
   interaccion.init({
