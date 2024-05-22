@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   
   rol.init({
-    idrol: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false

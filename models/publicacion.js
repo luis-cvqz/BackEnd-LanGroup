@@ -27,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      usuarioid: {
+      colaboradorid: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      grupoclave: {
+      grupoid: {
         type: DataTypes.STRING,
         allowNull: false,
       },
