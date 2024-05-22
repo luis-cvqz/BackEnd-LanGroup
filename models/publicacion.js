@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   publicacion.init(
     {
-      idpublicacion: {
+      id: {
         type: DataTypes.STRING,
         primaryKey: true,
       },
