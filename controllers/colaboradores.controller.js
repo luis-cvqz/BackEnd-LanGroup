@@ -6,7 +6,7 @@ let self = {}
 self.recuperar = async function (req, res) {
     try {
         let id = req.params.id;
-        let data = await colaborador.findByPk(id, { attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono']});
+        let data = await colaborador.findByPk(id, { attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'icono', 'rolid']});
         if (data)
             return res.status(200).json(data)
         else
@@ -30,7 +30,7 @@ self.recuperarTodos = async function (req, res) {
 
         let data = await colaborador.findAll({
             where: filtros,
-            attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono'],
+            attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'icono', 'rolid'],
             subQuery: false
         })
 
@@ -54,8 +54,8 @@ self.crear = async function (req, res) {
             correo: req.body.correo,
             contraseña: req.body.contraseña,
             descripcion: req.body.descripcion,
-            rol: req.body.rol,
-            icono: req.body.icono
+            icono: req.body.icono,
+            rolid: req.body.rolid,
         })
 
         return res.status(201).json(data)
