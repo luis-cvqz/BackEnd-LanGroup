@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('grupo', {
+    await queryInterface.createTable('rol', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -11,23 +11,6 @@ module.exports = {
       nombre: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      descripcion: {
-        type: Sequelize.STRING(1200),
-      },
-      icono: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      idiomaid: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        references: {
-          model: 'idioma',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +23,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('grupo');
+    await queryInterface.dropTable('rol');
   }
 };

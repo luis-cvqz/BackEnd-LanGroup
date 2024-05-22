@@ -6,12 +6,12 @@ module.exports = (sequelize, DataTypes) => {
   class grupo extends Model {
     static associate(models) {
       grupo.belongsTo(models.idioma);
-      grupo.belongsToMany(models.colaborador, {  through: 'colaboradorgrupo', foreignKey: 'grupoclave' });
-      grupo.hasMany(models.publicacion, { foreignKey: 'grupoclave '});
+      grupo.belongsToMany(models.colaborador, {  through: 'colaboradorgrupo', foreignKey: 'grupoid' });
+      grupo.hasMany(models.publicacion, { foreignKey: 'grupoid'});
     }
   }
   grupo.init({
-    clavegrupo: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false

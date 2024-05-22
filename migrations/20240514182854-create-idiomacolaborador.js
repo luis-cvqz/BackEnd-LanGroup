@@ -4,13 +4,13 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('idiomacolaborador', {
-      usuarioid: {
+      colaboradorid: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         references: {
           model: 'colaborador',
-          key: 'idusuario'
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: 'idioma',
-          key: 'ididioma'
+          key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'

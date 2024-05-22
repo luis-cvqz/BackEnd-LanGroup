@@ -3,14 +3,13 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class idioma extends Model {
+  class rol extends Model {
     static associate(models) {
-      idioma.belongsToMany(models.colaborador, {  through: 'idiomacolaborador', foreignKey: 'idiomaid' });
-      idioma.hasMany(models.solicitud, { foreignKey: 'idiomaid' });
+      rol.hasMany(models.colaborador, { foreignKey: 'rolid'})
     }
   }
-
-  idioma.init({
+  
+  rol.init({
     id: {
       type: DataTypes.STRING,
       primaryKey: true,
@@ -23,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     freezeTableName: true,
-    modelName: 'idioma',
+    modelName: 'rol',
   });
 
-  return idioma;
+  return rol;
 };

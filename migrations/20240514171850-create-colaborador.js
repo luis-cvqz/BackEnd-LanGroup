@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('colaborador', {
-      idusuario: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
@@ -17,8 +17,8 @@ module.exports = {
         unique: true,
         allowNull: false,
       },
-      contraseña: {
-        type: Sequelize.STRING(30),
+      contrasenia: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       nombre: {
@@ -30,15 +30,22 @@ module.exports = {
         allowNull: false
       },
       descripcion: {
-        type: Sequelize.STRING(300)
-      },
-      rol: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       icono: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      rolid: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'rol',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

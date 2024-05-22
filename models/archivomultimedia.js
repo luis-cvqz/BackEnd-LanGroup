@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   archivomultimedia.init({
-    idarchivo: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
