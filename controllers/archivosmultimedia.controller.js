@@ -1,6 +1,6 @@
-const { where } = require('sequelize')
 const { archivomultimedia, Sequelize } = require('../models')
 const Op = Sequelize.Op
+const crypto = require('crypto')
 const fs = require('fs')
 
 let self = {}
@@ -20,7 +20,7 @@ self.recuperarTodos = async function (req, res) {
     let archivo = await archivomultimedia.findAll({
       where: filtros,
       attributes: [
-        'idarchivo', 
+        ['id', 'archivoId'], 
         'publicacionid', 
         'nombre', 
         'mime', 
@@ -29,7 +29,11 @@ self.recuperarTodos = async function (req, res) {
       subQuery: false
     })
 
-    return res.status(200).json(archivo)
+    if (archivo)
+      return res.status(200).json(archivo)
+    else
+      return res.status(404).json('No se encontró el archivo')
+
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
@@ -38,11 +42,32 @@ self.recuperarTodos = async function (req, res) {
 // GET api/archivosmultimedia/:id
 self.recuperar = async function (req, res) {
   try {
-    let id = req.params.idarchivo
+    let id = req.params.id
+    
+    let archivoEncontrado = await archivomultimedia.findByPk(id)
+    if (!archivoEncontrado)
+      return res.status(404).send('No se encontró el archivo')
+
+    let imagen = null
+
+    if (archivoEncontrado.mime === 'image/jpeg' || archivoEncontrado.mime === 'image/jpg' || archivoEncontrado.mime === 'image/png')
+      imagen = archivoEncontrado.archivo
+
+    return res.status(200).contentType(archivoEncontrado.mime).send(imagen)
+    
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+// GET api/archivosmultimedia/:id/detalle
+self.recuperarDetalle = async function (req, res) {
+  try {
+    let id = req.params.id
 
     let archivo = await archivomultimedia.findByPk(id, {
       attributes: [
-        'idarchivo', 
+        ['id', 'archivoId'], 
         'publicacionid', 
         'nombre',
         'mime', 
@@ -51,16 +76,161 @@ self.recuperar = async function (req, res) {
       subQuery: false
     })
 
-    // if (esVideo) 
-    //     por grpc
-    // else
-    //     por http
-
-    if (data)
+    if (archivo)
       return res.status(200).json(archivo)
     else
-      return res.status(404).json({ message: 'Archivo no encontrado' })
+      return res.status(404).json('No se encontró el archivo')
+
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
 }
+
+// POST api/archivosmultimedia/videos
+self.crearVideo = async function (req, res) {
+  try {
+    if (!req.body.mime)
+      return res.status(400).json('El campo mime es requerido') 
+
+    let mimetype = req.body.mime
+   
+    let nuevoArchivo = await archivomultimedia.create({
+      id: crypto.randomUUID(),
+      pubicacionid: req.body.publicacionid,
+      nombre: req.body.nombre,
+      mime: mimetype,
+      tamanio: req.body.tamanio,
+      indb: false,
+      archivo: null
+    })
+
+    return res.status(201).send(nuevoArchivo)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+
+}
+
+// POST api/archivosmultimedia
+self.crear = async function (req, res) {
+  try {
+    if (!req.file == undefined)
+      return res.status(400).json('El archivo es obligatorio')
+
+    let archivoRecibido = fs.readFileSync("uploads/" + req.file.filename)
+    fs.existsSync("uploads/" + req.file.filename) && fs.unlinkSync("uploads/" + req.file.filename)
+
+    let nuevoArchivo = await archivomultimedia.create({
+      id: crypto.randomUUID(),
+      pubicacionid: req.body.publicacionid,
+      nombre: req.file.filename,
+      mime: req.file.mimetype,
+      tamanio: req.file.size,
+      indb: true,
+      archivo: archivoRecibido
+    })
+    
+    return res.status(201).json({
+      id: nuevoArchivo.id,
+      publicacionid: nuevoArchivo.pubicacionid,
+      nombre: nuevoArchivo.nombre,
+      mime: nuevoArchivo.mime,
+    })
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+// PUT api/archivosmultimedia/:id
+self.actualizar = async function (req, res) {
+  try {
+    let id = req.params.id
+    
+    if (req.file == undefined)
+      return res.status(400).json('El archivo es obligatorio')
+
+    let binario = fs.readFileSync("uploads/" + req.file.filename)
+    fs.existsSync("uploads/" + req.file.filename) && fs.unlinkSync("uploads/" + req.file.filename)
+
+    let data = await archivomultimedia.update({
+      publicacionid: req.body.publicacionid,
+      nombre: req.file.filename,
+      mime: req.file.filename,
+      tamanio: req.file.size,
+      indb: true,
+      archivo: binario
+    },
+    { where: { id: id} })
+
+    if (data[0] === 0) 
+      return res.status(404).json('No se encontró el archivo')
+
+    return res.status(204).send()
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+// PUT api/archivosmultimedia/videos/:id
+self.actualizarVideo = async function (req, res) {
+  try {
+    let id = req.params.id
+    
+    let data = await archivomultimedia.update({
+      publicacionid: req.body.pubicacionid,
+      nombre: req.body.nombre,
+      tamanio: req.body.tamanio,
+      indb: false,
+    },
+    { where: { id: id } }) 
+  
+    if (data[0] === 0)
+      return res.status(404).json('No se encontró el archivo')
+  
+    fs.existsSync("uploads/" + data.nombre) && fs.unlinkSync("uploads/" + data.nombre)
+  
+    return res.status(204).send()
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+// DELETE api/archivosmultimedia/:id
+self.eliminar = async function (req, res) {
+  try {
+    const id = req.params.id
+    let archivoEncontrado = await archivomultimedia.findByPk(id)
+
+    if (!archivoEncontrado)
+      return res.status(404).json('No se encontró el archivo')
+    
+    let data = await archivomultimedia.destroy({ where: { id: id } })
+    if (data === 1) {
+      return res.status(204).send()
+    }
+    return res.status(404).json('No se encontró el archivo')
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+// DELETE api/archivosmultimedia/videos/:id
+self.eliminarVideo = async function (req, res) {
+  try {
+    const id = req.params.id
+
+    let videoEncontrado = await archivomultimedia.findByPk(id)
+    if (!videoEncontrado)
+      return res.status(404).json('No se encontró el video')
+
+    let data = await videoEncontrado.destroy({ where: { id: id } })
+    if (data === 1) {
+      fs.existsSync("uploads/" + videoEncontrado.nombre) && fs.unlinkSync("uploads/" + videoEncontrado.nombre)
+    }
+    return res.status(404).json('No se encontró el video')
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+module.exports = self
