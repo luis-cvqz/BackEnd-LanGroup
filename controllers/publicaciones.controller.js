@@ -1,4 +1,4 @@
-const { publicacion, colaborador, grupo, Sequelize} = require('../models')
+const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 
@@ -7,40 +7,43 @@ let self = {}
 // GET api/publicaciones/grupo?={grupo}&idioma?={idioma}
 self.recuperarTodas = async function (req, res) {
   try {
-    const { idioma, grupo } = req.query
-
-    const filtros = {}
+    //const { grupoquery, idiomaquery } = req.query
+    
+    /*const filtros = {}
     if (grupo) {
       filtros.grupoid = {
-        [Op.eq]: grupo
+        [Op.eq]: grupoquery
       }
-    }
-    if (idioma) {
-      filtros.idioma = {
-        [Op.like]: `%${idioma}%`
+    }*/
+    /*if (idiomaquery) {
+      filtros['$grupo.idiomaid$'] = {
+        [Op.eq]: idiomaquery
       }
-    }
+    }*/
 
     const publicaciones = await publicacion.findAll({
-      where: filtros,
-      attributes: [
-        'idpublicacion',
-        'titulo',
-        'descripcion',
-        [Sequelize.col('idioma.nombre', 'idioma')],
-        'fecha',
-        [Sequelize.col('colaborador.nombre', 'instructor')],
-        [Sequelize.col('grupo.nombre', 'grupo')]],
+      // where: filtros,
+      attributes: [ 'id', 'titulo', 'descripcion', 'fecha' ],
       include: [
-        { model: idioma, attributes: [] },
-        { model: colaborador, attributes: [] },
-        { model: grupo, attributes: [] },
+        { 
+          model: colaborador, 
+          attributes: ['nombre'],
+        },
+        { 
+          model: grupo, 
+          attributes: ['nombre'],
+          include: [
+            {
+              model: idioma,
+              attributes: ['nombre'],
+            }
+          ]
+        },
         {
           model: archivomultimedia,
-          as: 'archivos',
-          attributes: ['idarchivo', 'nombre', 'mime', 'tamanio'],
+          attributes: [['id', 'archivoid'], 'nombre', 'mime', 'tamanio'],
           throgh: { attributes: [] }
-        },
+        }
       ]
     })
 
@@ -48,34 +51,40 @@ self.recuperarTodas = async function (req, res) {
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
-}
+}   
 
 // GET API/publicaciones/:id
 self.recuperar = async function (req, res) {
   try {
-    let id = req.params.idpublicacion
+    let id = req.params.id
 
     let data = await publicacion.findByPk(id, {
-      attributes: [
-        'idpublicacion',
-        'titulo',
-        'descripcion',
-        [Sequelize.col('idioma.nombre'), 'idioma'],
-        'fecha',
-        [Sequelize.col('colaborador.nombre'), 'instructor'],
-        [Sequelize.col('grupo.nombre'), 'grupo']],
+      attributes: [ 'id', 'titulo', 'descripcion', 'fecha' ],
       include: [
-        { model: idioma, attributes: [] },
-        { model: colaborador, attributes: [] },
-        { model: grupo, attributes: [] },
+        { 
+          model: colaborador, 
+          attributes: ['nombre'],
+        },
+        { 
+          model: grupo, 
+          attributes: ['nombre'],
+          include: [
+            {
+              model: idioma,
+              attributes: ['nombre'],
+            }
+          ]
+        },
         {
           model: archivomultimedia,
-          as: 'archivos',
-          attributes: ['idarchivo', 'nombre', 'mime', 'tamanio'],
+          attributes: [['id', 'archivoid'], 'nombre', 'mime', 'tamanio'],
           throgh: { attributes: [] }
-        },
+        }
       ]
     })
+
+    console.log(Sequelize.col('publicacion.grupoid'))
+
     if (data) 
       return res.status(200).json(data)
     else
@@ -89,12 +98,12 @@ self.recuperar = async function (req, res) {
 self.crear = async function (req, res) {
   try {
     let data = await publicacion.create({
-      idpublicacion: crypto.randomUUID(),
+      id: crypto.randomUUID(),
       titulo: req.body.titulo,
       descripcion: req.body.descripcion,
       fecha: new Date(),
-      usuarioid: req.body.usuarioid,
-      grupoclave: req.body.grupoid,
+      colaboradorid: req.body.colaboradorid,
+      grupoid: req.body.grupoid,
     })
     return res.status(201).json(data)
   } catch (error) {
@@ -103,17 +112,33 @@ self.crear = async function (req, res) {
 }
 
 // PUT api/publicaciones/:id
-// TODO: Implementar el método para actualizar una publicación
+self.actualizar = async function (req, res) {
+  try {
+    let id = req.params.id
+    let body = req.body
+    let data = await publicacion.update(body, { where: { id: id } })
 
+    if (data[0] === 0)
+      return res.status(404).send()
+    else
+      return res.status(204).json(data)
+
+
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+}
+
+// DELETE api/publicaciones/:id
 self.eliminar = async function (req, res) {
   try {
-    let id = req.params.idpublicacion
+    let id = req.params.id
     let data = await publicacion.findByPk(id)
 
     if (!data)
       return res.status(404).send()
 
-    data = await publicacion.destroy({ where: { idpublicacion: id } })
+    data = await publicacion.destroy({ where: { id: id } })
     
     if (data === 1)
       return res.status(204).send()
@@ -124,24 +149,5 @@ self.eliminar = async function (req, res) {
     return res.status(500).json({ error: error.message })
   }
 }
-
-// POST api/publicaciones/:idpublicacion/archivos
-self.asignaArchivo = async function (req, res) {
-  try {
-    let archivo = await archivomultimedia.findByPk(req.body.idarchivo)
-    if (!archivo) return res.status(404).send()
-    
-    let publicacion = await publicacion.findByPk(req.params.idpublicacion)
-    if (!publicacion) return res.status(404).send()
-
-    await data.addArchivos(archivo)
-    return res.status(204).send()
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-}
-
-// DELETE api/publicaciones/:idpublicacion/archivos/:idarchivo
-// TODO: Implementar el método para desasignar un archivo de una publicación
 
 module.exports = self
