@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     archivo: {
       type: DataTypes.BLOB("long"),
-      allowNull: false,
+      allowNull: true,
     }
   }, {
     sequelize,
