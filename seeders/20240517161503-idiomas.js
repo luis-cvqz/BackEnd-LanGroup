@@ -8,9 +8,9 @@ const idFrances = crypto.randomUUID()
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('idioma', [
-      { id:crypto.randomUUID(), nombre: 'Español', createdAt: new Date(), updatedAt: new Date() },
-      { id:crypto.randomUUID(), nombre: 'Inglés', createdAt: new Date(), updatedAt: new Date() },
-      { id:crypto.randomUUID(), nombre: 'Francés', createdAt: new Date(), updatedAt: new Date() },
+      { id: idEspanol, nombre: 'Español', createdAt: new Date(), updatedAt: new Date() },
+      { id: idIngles, nombre: 'Inglés', createdAt: new Date(), updatedAt: new Date() },
+      { id: idFrances, nombre: 'Francés', createdAt: new Date(), updatedAt: new Date() },
     ]);
   },
 
