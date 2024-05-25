@@ -54,8 +54,8 @@ self.crear = async function (req, res) {
             correo: req.body.correo,
             contraseña: req.body.contraseña,
             descripcion: req.body.descripcion,
-            rol: req.body.rol,
-            icono: req.body.icono
+            icono: req.body.icono,
+            rolid: req.body.rolid,
         })
 
         return res.status(201).json(data)
