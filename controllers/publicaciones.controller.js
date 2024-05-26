@@ -27,15 +27,15 @@ self.recuperarTodas = async function (req, res) {
       include: [
         { 
           model: colaborador, 
-          attributes: ['nombre'],
+          attributes: [['id', 'colaboradorId'], 'nombre'],
         },
         { 
           model: grupo, 
-          attributes: ['nombre'],
+          attributes: [['id', 'grupoId'], 'nombre'],
           include: [
             {
               model: idioma,
-              attributes: ['nombre'],
+              attributes: [['id', 'idiomaId'], 'nombre'],
             }
           ]
         },
@@ -63,15 +63,15 @@ self.recuperar = async function (req, res) {
       include: [
         { 
           model: colaborador, 
-          attributes: ['nombre'],
+          attributes: [['id', 'colaboradorId'], 'nombre'],
         },
         { 
           model: grupo, 
-          attributes: ['nombre'],
+          attributes: [['id', 'grupoId'], 'nombre'],
           include: [
             {
               model: idioma,
-              attributes: ['nombre'],
+              attributes: [['id', 'idiomaId'], 'nombre'],
             }
           ]
         },
