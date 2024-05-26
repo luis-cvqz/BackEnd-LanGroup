@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       colaborador.belongsToMany(models.grupo, { through: 'colaboradorgrupo', foreignKey: 'colaboradorid' });
       colaborador.hasMany(models.publicacion, { foreignKey: 'colaboradorid' });
       colaborador.hasMany(models.solicitud,  { foreignKey: 'colaboradorid' });
+      colaborador.belongsTo(models.rol);
     }
   }
 
