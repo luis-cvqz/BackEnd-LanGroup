@@ -1,50 +1,50 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('archivomultimedia', {
-      idarchivo: {
+    await queryInterface.createTable("archivomultimedia", {
+      id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
       },
       publicacionid: {
         type: Sequelize.UUID,
-        allowNull: false
+        allowNull: false,
       },
       nombre: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       mime: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       tamanio: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       indb: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true
+        defaultValue: true,
       },
       archivo: {
         type: Sequelize.BLOB,
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('archivomultimedia');
-  }
+    await queryInterface.dropTable("archivomultimedia");
+  },
 };

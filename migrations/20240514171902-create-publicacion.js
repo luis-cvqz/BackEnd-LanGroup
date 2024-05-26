@@ -1,56 +1,56 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('publicacion', {
+    await queryInterface.createTable("publicacion", {
       idpublicacion: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
       },
       titulo: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       descripcion: {
         type: Sequelize.STRING(1200),
-        allowNull: false
+        allowNull: false,
       },
       fecha: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
-      usuarioid: {
+      colaboradorid: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: 'colaborador',
-          key: 'idusuario'
+          model: "colaborador",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
-      grupoclave: {
+      grupoid: {
         allowNull: false,
         type: Sequelize.UUID,
         references: {
-          model: 'grupo',
-          key: 'clavegrupo'
+          model: "grupo",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('publicacion');
-  }
+    await queryInterface.dropTable("publicacion");
+  },
 };
