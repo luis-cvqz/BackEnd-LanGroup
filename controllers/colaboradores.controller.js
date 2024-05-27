@@ -43,12 +43,12 @@ self.recuperarTodos = async function (req, res) {
             subQuery: false
         })
 
-        if (data.length > 0)
+        if (data)
             return res.status(200).json(data)
         else
             return res.status(404).send()
     } catch (error) {
-        console.error(error)
+        console.log(error)
         return res.status(500).json(error)
     }
 }
@@ -56,27 +56,32 @@ self.recuperarTodos = async function (req, res) {
 // POST /api/colaboradores
 self.crear = async function (req, res) {
     try {
-        const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
-        console.log(rolusuario.id)
+        if (req.body != null) {
+            const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
+            console.log(rolusuario.id)
 
-        const data = await colaborador.create({
-            id: crypto.randomUUID(),
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
-            usuario: req.body.usuario,
-            correo: req.body.correo,
-            contrasenia: await bcrypt.hash(req.body.contrasenia, 10),
-            descripcion: req.body.descripcion,
-            icono: req.body.icono,
-            rolid: rolusuario.id,
-        })
-
-        return res.status(201).json({
-            id: data.id,
-            email: data.email,
-            nombre: data.nombre,
-            rolid: rolusuario.nombre
-        })
+            const correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
+    
+            if (correoExistente == null) {
+                const data = await colaborador.create({
+                    id: crypto.randomUUID(),
+                    nombre: req.body.nombre,
+                    apellido: req.body.apellido,
+                    usuario: req.body.usuario,
+                    correo: req.body.correo,
+                    contrasenia: await bcrypt.hash(req.body.contrasenia, 10),
+                    descripcion: req.body.descripcion,
+                    icono: req.body.icono,
+                    rolid: rolusuario.id,
+                })
+        
+                return res.status(201).send()
+            } else {
+                return res.status(400).json({ message: "Correo duplicado"})
+            }            
+        } else {
+            return res.status(400).json({ message: "Información requerida"})
+        }
     } catch (error) {
         console.log(error)
         return res.status(500).json(error)
@@ -88,12 +93,22 @@ self.actualizar = async function (req, res) {
     try {
         let id = req.params.id;
         let body = req.body;
-        let data = await colaborador.update(body, { where: { id: id} });
+        let correoExistente
+        
+        if (req.body.correo != null) {
+            correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
+        }
 
-        if (data[0] == 0)
-            return res.status(404).send()
-        else
-            return res.status(204).send()
+        if (correoExistente == null) {
+            let data = await colaborador.update(body, { where: { id: id} });
+    
+            if (data[0] == 0)
+                return res.status(404).send()
+            else
+                return res.status(204).send()
+        } else {
+            return res.status(400).json({ message: "Correo duplicado"})
+        }
     } catch (error) {
         return res.status(500).json(error)
     }
