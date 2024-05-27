@@ -17,12 +17,6 @@ router.post('/', upload.single("file"), archivosmultimedia.crear)
 // POST api/archivosmultimedia/videos
 router.post('/videos', archivosmultimedia.crearVideo)
 
-// PUT api/archivosmultimedia/:id
-router.put('/:id', upload.single("file"), archivosmultimedia.actualizar)
-
-// PUT api/archivosmultimedia/videos/:id
-router.put('/videos/:id', archivosmultimedia.actualizarVideo)
-
 // DELETE api/archivosmultimedia/:id
 router.delete('/:id', archivosmultimedia.eliminar)
 
