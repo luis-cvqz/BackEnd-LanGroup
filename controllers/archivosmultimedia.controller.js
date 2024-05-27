@@ -141,60 +141,6 @@ self.crear = async function (req, res) {
   }
 }
 
-// PUT api/archivosmultimedia/:id
-self.actualizar = async function (req, res) {
-  try {
-    let id = req.params.id
-    
-    if (req.file == undefined)
-      return res.status(400).json('El archivo es obligatorio')
-
-    let binario = fs.readFileSync("uploads/" + req.file.filename)
-    fs.existsSync("uploads/" + req.file.filename) && fs.unlinkSync("uploads/" + req.file.filename)
-
-    let data = await archivomultimedia.update({
-      publicacionid: req.body.publicacionid,
-      nombre: req.file.filename,
-      mime: req.file.filename,
-      tamanio: req.file.size,
-      indb: true,
-      archivo: binario
-    },
-    { where: { id: id } })
-
-    if (data[0] === 0) 
-      return res.status(404).json('No se encontró el archivo')
-
-    return res.status(204).send()
-  } catch (error) {
-    return res.status(500).send()
-  }
-}
-
-// PUT api/archivosmultimedia/videos/:id
-self.actualizarVideo = async function (req, res) {
-  try {
-    let id = req.params.id
-    
-    let data = await archivomultimedia.update({
-      publicacionid: req.body.pubicacionid,
-      nombre: req.body.nombre,
-      tamanio: req.body.tamanio,
-      indb: false,
-    },
-    { where: { id: id } }) 
-  
-    if (data[0] === 0)
-      return res.status(404).json('No se encontró el archivo')
-  
-    fs.existsSync("uploads/" + data.nombre) && fs.unlinkSync("uploads/" + data.nombre)
-  
-    return res.status(204).send()
-  } catch (error) {
-    return res.status(500).send()
-  }
-}
-
 // DELETE api/archivosmultimedia/:id
 self.eliminar = async function (req, res) {
   try {
@@ -227,7 +173,7 @@ self.eliminarVideo = async function (req, res) {
     if (data === 1) {
       fs.existsSync("uploads/" + videoEncontrado.nombre) && fs.unlinkSync("uploads/" + videoEncontrado.nombre)
     }
-    return res.status(404).json('No se encontró el video')
+    return res.status(204).send()
   } catch (error) {
     return res.status(500).send()
   }
