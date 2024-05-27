@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false
       },
       constancia: {
-        type: Sequelize.BLOB,
+        type: Sequelize.BLOB('long'),
         allowNull: false
       },
       colaboradorid: {
