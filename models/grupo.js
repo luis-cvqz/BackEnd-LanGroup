@@ -1,40 +1,47 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class grupo extends Model {
     static associate(models) {
       grupo.belongsTo(models.idioma);
-      grupo.belongsToMany(models.colaborador, {  through: 'colaboradorgrupo', foreignKey: 'grupoid' });
-      grupo.hasMany(models.publicacion, { foreignKey: 'grupoid'});
+      grupo.belongsToMany(models.colaborador, {
+        through: "colaboradorgrupo",
+        foreignKey: "grupoid",
+      });
+      grupo.hasMany(models.publicacion, { foreignKey: "grupoid" });
     }
   }
-  grupo.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: false
+
+  grupo.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4, // Generar un UUID automáticamente
+        primaryKey: true,
+      },
+      nombre: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      descripcion: {
+        type: DataTypes.STRING,
+      },
+      icono: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      idiomaid: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    nombre: {
-      type:DataTypes.STRING,
-      allowNull: false
-    },
-    descripcion: {
-      type: DataTypes.STRING,
-    },
-    icono: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    idiomaid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  }, {
-    sequelize,
-    freezeTableName: true,
-    modelName: 'grupo',
-  });
+    {
+      sequelize,
+      freezeTableName: true,
+      modelName: "grupo",
+    }
+  );
+
   return grupo;
 };
