@@ -96,7 +96,7 @@ self.crearVideo = async function (req, res) {
    
     let nuevoArchivo = await archivomultimedia.create({
       id: crypto.randomUUID(),
-      pubicacionid: req.body.publicacionid,
+      publicacionid: req.body.publicacionid,
       nombre: req.body.nombre,
       mime: mimetype,
       tamanio: req.body.tamanio,
@@ -122,7 +122,7 @@ self.crear = async function (req, res) {
 
     let nuevoArchivo = await archivomultimedia.create({
       id: crypto.randomUUID(),
-      pubicacionid: req.body.publicacionid,
+      publicacionid: req.body.publicacionid,
       nombre: req.file.filename,
       mime: req.file.mimetype,
       tamanio: req.file.size,
@@ -160,7 +160,7 @@ self.actualizar = async function (req, res) {
       indb: true,
       archivo: binario
     },
-    { where: { id: id} })
+    { where: { id: id } })
 
     if (data[0] === 0) 
       return res.status(404).json('No se encontró el archivo')
