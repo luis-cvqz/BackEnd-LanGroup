@@ -9,9 +9,9 @@ router.get('/:id', Authorize('Administrador,Aprendiz'), colaboradores.recuperar)
 router.get('/', Authorize('Administrador'), colaboradores.recuperarTodos);
 
 // POST: api/colaboradores
-router.post('/', Authorize('Administrador'), colaboradores.crear);
+router.post('/', Authorize('Administrador,Aprendiz'), colaboradores.crear);
 
 // PUT: api/colaboradores/{id}
-router.put('/:id', Authorize('Administrador'), colaboradores.actualizar);
+router.put('/:id', Authorize('Administrador,Aprendiz'), colaboradores.actualizar);
 
 module.exports = router

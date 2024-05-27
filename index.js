@@ -19,6 +19,7 @@ app.use(cors(corsOptions));
 // Rutas
 app.use("/api/colaboradores", require('./routes/colaboradores.routes'))
 app.use("/api/auth", require('./routes/auth.routes'))
+app.use("/api/interacciones", require('./routes/interacciones.routes'))
 app.get('*', (req, res) => { res.status(404).send() });
 
 app.listen(process.env.SERVER_PORT, () => {
