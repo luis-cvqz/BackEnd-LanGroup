@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('solicitud', {
-      idsolicitud: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -18,10 +18,15 @@ module.exports = {
       },
       estado: {
         type: Sequelize.STRING(50),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Pendiente'
       },
       constancia: {
         type: Sequelize.BLOB('long'),
+        allowNull: true
+      },
+      nombrearchivo: {
+        typeof: Sequelize.STRING,
         allowNull: false
       },
       colaboradorid: {
