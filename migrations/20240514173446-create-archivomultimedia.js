@@ -30,9 +30,8 @@ module.exports = {
         defaultValue: true
       },
       archivo: {
-        type: Sequelize.BLOB,
-        allowNull: false,
-        defaultValue: false
+        type: Sequelize.BLOB('long'),
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

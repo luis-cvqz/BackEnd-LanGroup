@@ -1,5 +1,5 @@
 const express = require('express')
-const cors = require("cors");
+const cors = require('cors')
 const dotenv = require('dotenv')
 const app = express()
 
@@ -17,6 +17,10 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // Rutas
+app.use("/api/publicaciones", require("./routes/publicaciones.routes"))
+app.use("/api/archivosmultimedia", require("./routes/archivmosmultimedia.routes"))
+app.use("/api/idiomas", require("./routes/idiomas.routes"))
+app.use("/api/solicitudes", require("./routes/solicitudes.routes"))
 app.use("/api/colaboradores", require('./routes/colaboradores.routes'))
 app.use("/api/auth", require('./routes/auth.routes'))
 app.use("/api/interacciones", require('./routes/interacciones.routes'))
