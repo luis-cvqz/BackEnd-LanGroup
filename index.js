@@ -18,6 +18,7 @@ app.use(cors(corsOptions))
 app.use("/api/publicaciones", require("./routes/publicaciones.routes"))
 app.use("/api/archivosmultimedia", require("./routes/archivmosmultimedia.routes"))
 app.use("/api/idiomas", require("./routes/idiomas.routes"))
+app.use("/api/solicitudes", require("./routes/solicitudes.routes"))
 app.get('*', (req,res) => { res.status(404).send() })
 
 app.listen(process.env.SERVER_PORT, () => {
