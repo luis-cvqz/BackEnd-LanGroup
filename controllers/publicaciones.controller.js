@@ -106,7 +106,7 @@ self.recuperar = async function (req, res) {
     else
       return res.status(404).json({ message: 'No se encontró la publicación' })
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).send()
   }
 }
 
@@ -123,7 +123,7 @@ self.crear = async function (req, res) {
     })
     return res.status(201).json(data)
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).send()
   }
 }
 
@@ -141,7 +141,7 @@ self.actualizar = async function (req, res) {
 
 
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).send()
   }
 }
 
@@ -162,7 +162,7 @@ self.eliminar = async function (req, res) {
       return res.status(404).send()
 
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).send()
   }
 }
 

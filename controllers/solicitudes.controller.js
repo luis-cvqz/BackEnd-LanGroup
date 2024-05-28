@@ -86,7 +86,7 @@ self.crear = async function (req, res) {
       estado: nuevaSolicitud.idiomaid
     })
   } catch (error) {
-    return res.status(500).json(error.message)
+    return res.status(500).send()
   }
 }
 
@@ -94,6 +94,7 @@ self.crear = async function (req, res) {
 self.actualizar = async function (req, res) {
   try {
     let id = req.params.id
+    let body= req.body
 
     let solicitudEncontrada = await solicitud.findByPk(id)
     if (!solicitudEncontrada)
@@ -110,7 +111,7 @@ self.actualizar = async function (req, res) {
 
     //fs.existsSync("uploads/" + data.nombrearchivo) && fs.unlinkSync("uploads/" + data.nombrearchivo)
 
-    return res.status(204).send
+    return res.status(204).send()
   } catch (error) {
     return res.status(500).send()
   }
@@ -131,7 +132,7 @@ self.eliminar = async function (req, res) {
       fs.existsSync("uploads/" + solicitud.nombrearchivo) && fs.unlinkSync("uploads/" + videoEncontrado.nombrearchivo)
     }
   
-    return res.status(204).send
+    return res.status(204).send()
   } catch (error) {
     return res.status(500).send()
   }

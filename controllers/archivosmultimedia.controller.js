@@ -35,7 +35,7 @@ self.recuperarTodos = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).send()
   }
 }
 
@@ -56,7 +56,7 @@ self.recuperar = async function (req, res) {
     return res.status(200).contentType(archivoEncontrado.mime).send(imagen)
     
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).send()
   }
 }
 
@@ -82,7 +82,7 @@ self.recuperarDetalle = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).send()
   }
 }
 
@@ -106,7 +106,7 @@ self.crearVideo = async function (req, res) {
 
     return res.status(201).send(nuevoArchivo)
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).send()
   }
 
 }

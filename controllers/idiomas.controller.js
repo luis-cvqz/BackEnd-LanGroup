@@ -17,7 +17,7 @@ self.recuperarTodos = async function (req, res) {
     else
       return res.status(404).send()
   } catch (error) {
-    return res.status(500).json(error)
+    return res.status(500).send()
   }
 }
 
@@ -67,7 +67,7 @@ self.actualizar = async function (req, res) {
     else
       return res.status(204).send()
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).send()
   }
 }
 
