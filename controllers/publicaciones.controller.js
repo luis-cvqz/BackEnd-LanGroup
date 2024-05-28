@@ -7,22 +7,38 @@ let self = {}
 // GET api/publicaciones/grupo?={grupo}&idioma?={idioma}
 self.recuperarTodas = async function (req, res) {
   try {
-    //const { grupoquery, idiomaquery } = req.query
-    
-    /*const filtros = {}
-    if (grupo) {
-      filtros.grupoid = {
-        [Op.eq]: grupoquery
-      }
-    }*/
-    /*if (idiomaquery) {
-      filtros['$grupo.idiomaid$'] = {
-        [Op.eq]: idiomaquery
+
+    let filtros = {}
+
+    if (req.query.grupo != null) {
+      let grupopublicacion = await grupo.findOne({
+        where: { nombre: { [Op.like]: `%${req.query.grupo}%` } },
+        attributes: ['id']
+      })
+
+      if (grupopublicacion)
+        filtros.grupoid = grupopublicacion.id
+      else
+        return res.status(404).json('No se encontró el grupo')
+    }
+
+    /*if (req.query.idioma != null) {
+      let idiomapublicacion = await idioma.findOne({
+        where: { id: req.query.idioma },
+        attributes: ['id']
+      })
+
+      if (idiomapublicacion) {
+        filtros.grupo.idiomaid = {
+          [Op.eq]: idiomapublicacion.id
+        }
+      } else {
+        return res.status(404).json('No se encontró el idioma')
       }
     }*/
 
     const publicaciones = await publicacion.findAll({
-      // where: filtros,
+      where: filtros,
       attributes: [ 'id', 'titulo', 'descripcion', 'fecha' ],
       include: [
         { 
