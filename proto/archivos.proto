@@ -13,7 +13,9 @@ message DescargarArchivoResponse {
   }
 }
 
-service DescargarArchivoService {
-  rpc descargarArchivos (DescargarArchivoRequest) returns (stream DescargarArchivoResponse);
-  rpc subirArchivos (stream DescargarArchivoResponse) returns (DescargarArchivoRequest);
+service ArchivosService {
+  rpc descargarVideo (DescargarArchivoRequest) returns (stream DescargarArchivoResponse);
+  rpc subirVideo (stream DescargarArchivoResponse) returns (DescargarArchivoRequest);
+  rpc descargarConstancia (DescargarArchivoRequest) returns (stream DescargarArchivoResponse);
+  rpc subirConstancia (stream DescargarArchivoResponse) returns (DescargarArchivoRequest);
 }
