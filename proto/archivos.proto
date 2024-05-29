@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+message DescargarArchivoRequest {
+  string archivoid = 1;
+  string nombre = 2;
+}
+
+message DescargarArchivoResponse {
+  oneof request {
+    string archivoid = 1;
+    string nombre = 2;
+    bytes archivo = 3;
+  }
+}
+
+service DescargarArchivoService {
+  rpc descargarArchivos (DescargarArchivoRequest) returns (stream DescargarArchivoResponse);
+  rpc subirArchivos (stream DescargarArchivoResponse) returns (DescargarArchivoRequest);
+}
