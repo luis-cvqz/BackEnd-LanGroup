@@ -26,7 +26,7 @@ module.exports = {
         allowNull: true
       },
       nombrearchivo: {
-        typeof: Sequelize.STRING,
+        type: Sequelize.STRING,
         allowNull: false
       },
       colaboradorid: {
