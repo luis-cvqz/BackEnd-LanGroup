@@ -59,7 +59,26 @@ function subirVideoImpl(call, callback) {
 }
 
 // Implementacion de descargarVideo
-function descargarVideoImpl(call) {}
+function descargarVideoImpl(call) {
+  let id = call.request.archivoid
+  let nombreVideo = call.request.nombre
+
+  let videoEncontrado = archivomultimedia.findByPk(id, {
+    attributes: ['archivo']
+  })
+
+  const stream = fs.createReadStream(videoEncontrado, { highWaterMark: 3072 })
+
+  console.log(`\n\nEnviando el archivo: ${nombreVideo}`)
+  stream.on('archivo', function(chunk) {
+    call.write({ archivo: chunk })
+    process.stdout.write('.');
+  }).on('end', function() {
+    call.end()
+    stream.close()
+    console.log('\nEnvio de datos terminado')
+  })
+}
 
 // Implementeacion de subirConstancia
 function subirConstanciaImpl(call, callback) {
@@ -92,7 +111,26 @@ function subirConstanciaImpl(call, callback) {
 }
 
 // Implementacion de descargarConstancia
-function descargarConstanciaImpl(call) {}
+function descargarConstanciaImpl(call) {
+  let id = call.request.archivoid
+  let nombreConstancia = call.request.nombre
+
+  let documentoEncontrado = solicitud.findByPk(id, {
+    attributes: ['constancia']
+  })
+
+  const stream = fs.createReadStream(documentoEncontrado, { highWaterMark: 3072 })
+
+  console.log(`\n\nEnviando el archivo: ${nombreConstancia}`)
+  stream.on('archivo', function(chunk) {
+    call.write({ archivo: chunk })
+    process.stdout.write('.');
+  }).on('end', function() {
+    call.end()
+    stream.close()
+    console.log('\nEnvio de datos terminado')
+  })
+}
 
 // Exporta las implementaciones de las funciones
 module.exports = {
