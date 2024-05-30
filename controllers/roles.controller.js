@@ -1,8 +1,5 @@
 const { where } = require('sequelize');
-const { rol, Sequelize } = require('../models')
-const bcrypt = require('bcrypt')
-const crypto = require('crypto')
-const Op = Sequelize.Op
+const { rol } = require('../models')
 let self = {}
 
 // GET /api/roles/{nombre}
@@ -17,8 +14,10 @@ self.recuperar = async function (req, res){
         if(data)
             return res.status(200).json(data)
         else
-        return res.status(404).json({ message: 'No se encontró el rol' })
+            return res.status(404).json({ message: 'No se encontró el rol' })
     } catch (error){
         return res.status(500).json(error)
     }
 }
+
+module.exports = self
