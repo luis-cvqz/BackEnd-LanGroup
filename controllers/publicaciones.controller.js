@@ -4,7 +4,7 @@ const crypto = require('crypto')
 
 let self = {}
 
-// GET api/publicaciones/grupo?={grupo}&idioma?={idioma}
+// GET api/publicaciones/grupo?={grupo}&idioma?={idioma}&colaborador?={colaborador}
 self.recuperarTodas = async function (req, res) {
   try {
 
@@ -36,6 +36,18 @@ self.recuperarTodas = async function (req, res) {
         return res.status(404).json('No se encontró el idioma')
       }
     }*/
+
+    if(req.query.colaborador != null){
+      let colaboradorpublicacion = await colaborador.findOne({
+        where: { usuario: { [Op.like]: `${req.query.colaborador}` } },
+        attributes: ['id']
+      })
+
+      if(colaboradorpublicacion)
+        filtros.colaboradorid = colaboradorpublicacion.id
+      else
+        return res.status(404).json('No se encontró el colaborador')
+    }
 
     const publicaciones = await publicacion.findAll({
       where: filtros,

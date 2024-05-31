@@ -2,6 +2,7 @@ const { solicitud, colaborador, idioma, Sequelize } = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const fs = require('fs')
+const { where } = require('sequelize')
 
 let self = {}
 
@@ -30,6 +31,47 @@ self.recuperarTodas = async function (req, res) {
         {
           model: colaborador,
           attributes: [['id','colaboradorId'],'usuario']
+        },
+        {
+          model: idioma,
+          attributes: [['id', 'idiomaId'], 'nombre']
+        }
+      ],
+      subQuery: false
+    })
+
+    return res.status(200).json(data)
+  } catch (error) {
+    return res.status(500).send()
+  }
+}
+
+//GET api/solicitudes?colaboradorid=id
+self.recuperar = async function(req, res) {
+  try{
+    const {colaboradorquery} = req.query
+
+    const filtros = {}
+
+    if(colaboradorquery){
+      filtros.colaboradorid = {
+        [Op.eq]: colaboradorquery
+      }
+    }
+
+    let data = await solicitud.findOne({
+      where: filtros,
+      attributes: [
+        ['id', 'solicitudId'],
+        'contenido',
+        'motivo',
+        'estado',
+        'nombrearchivo'
+      ],
+      include: [
+        {
+          model: colaborador,
+          attributes: [['id', 'colaboradorId'], 'usuario']
         },
         {
           model: idioma,
