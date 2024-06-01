@@ -2,8 +2,8 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("interaccion", {
-      idinteraccion: {
+    await queryInterface.createTable('interaccion', {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
@@ -24,8 +24,8 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "colaborador",
-          key: "id",
+            model: 'colaborador',
+            key: 'id'
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
