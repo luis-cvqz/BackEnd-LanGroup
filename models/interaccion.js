@@ -4,6 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class interaccion extends Model {
     static associate(models) {
+<<<<<<< HEAD
       interaccion.belongsTo(models.colaborador, {
         foreignKey: "usuarioid",
         targetKey: "idusuario",
@@ -46,6 +47,36 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       freezeTableName: true,
       modelName: "interaccion",
+=======
+      interaccion.belongsTo(models.colaborador)
+      interaccion.belongsTo(models.publicacion)
+    }
+  }
+  interaccion.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    valoracion: {
+      type: DataTypes.TINYINT,
+      allowNull: false
+    },
+    comentario: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    fecha: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    colaboradorid: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    publicacionid: {
+      type: DataTypes.STRING,
+      allowNull: false
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
     }
   );
 

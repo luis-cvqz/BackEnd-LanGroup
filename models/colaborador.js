@@ -4,6 +4,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class colaborador extends Model {
     static associate(models) {
+<<<<<<< HEAD
       colaborador.belongsToMany(models.idioma, {
         through: "idiomacolaborador",
         foreignKey: "usuarioid",
@@ -56,6 +57,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+=======
+      colaborador.belongsToMany(models.idioma, { through: 'idiomacolaborador', foreignKey: 'colaboradorid' });
+      colaborador.belongsToMany(models.grupo, { through: 'colaboradorgrupo', foreignKey: 'colaboradorid' });
+      colaborador.hasMany(models.publicacion, { foreignKey: 'colaboradorid' });
+      colaborador.hasMany(models.solicitud,  { foreignKey: 'colaboradorid' });
+      colaborador.belongsTo(models.rol);
+    }
+  }
+
+  colaborador.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
     },
     {
       sequelize,

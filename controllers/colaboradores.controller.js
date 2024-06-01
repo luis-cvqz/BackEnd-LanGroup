@@ -1,4 +1,7 @@
-const { colaborador, Sequelize } = require('../models')
+const { where } = require('sequelize');
+const { colaborador, rol, Sequelize } = require('../models')
+const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 const Op = Sequelize.Op
 let self = {}
 
@@ -6,7 +9,7 @@ let self = {}
 self.recuperar = async function (req, res) {
     try {
         let id = req.params.id;
-        let data = await colaborador.findByPk(id, { attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono']});
+        let data = await colaborador.findByPk(id, { attributes: [['id','colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'rolid', 'icono']});
         if (data)
             return res.status(200).json(data)
         else
@@ -19,18 +22,24 @@ self.recuperar = async function (req, res) {
 // GET /api/colaboradores?rol=r
 self.recuperarTodos = async function (req, res) {
     try {
-        const { rol } = req.query
+        let filtros = {}
 
-        const filtros = {}
-        if (rol) {
-            filtros.rol = {
-                [Op.like]: `%${rol}%`
+        if (req.query.rol != null){
+            let rolusuario = await rol.findOne({
+                where: { nombre: req.query.rol },
+                attributes: ['id']
+            })
+
+            if (rolusuario) {
+                filtros.rolid = rolusuario.id;
+            } else {
+                return res.status(404).json({ message: 'Rol no encontrado' });
             }
         }
 
         let data = await colaborador.findAll({
             where: filtros,
-            attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono'],
+            attributes: [['id', 'colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'rolid', 'icono'],
             subQuery: false
         })
 
@@ -39,6 +48,7 @@ self.recuperarTodos = async function (req, res) {
         else
             return res.status(404).send()
     } catch (error) {
+        console.log(error)
         return res.status(500).json(error)
     }
 }
@@ -46,20 +56,34 @@ self.recuperarTodos = async function (req, res) {
 // POST /api/colaboradores
 self.crear = async function (req, res) {
     try {
-        let data = await colaborador.create({
-            idusuario: req.body.idusuario,
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
-            usuario: req.body.usuario,
-            correo: req.body.correo,
-            contraseña: req.body.contraseña,
-            descripcion: req.body.descripcion,
-            rol: req.body.rol,
-            icono: req.body.icono
-        })
+        if (req.body != null) {
+            const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
+            console.log(rolusuario.id)
 
-        return res.status(201).json(data)
+            const correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
+    
+            if (correoExistente == null) {
+                const data = await colaborador.create({
+                    id: crypto.randomUUID(),
+                    nombre: req.body.nombre,
+                    apellido: req.body.apellido,
+                    usuario: req.body.usuario,
+                    correo: req.body.correo,
+                    contrasenia: await bcrypt.hash(req.body.contrasenia, 10),
+                    descripcion: req.body.descripcion,
+                    icono: req.body.icono,
+                    rolid: rolusuario.id,
+                })
+        
+                return res.status(201).send()
+            } else {
+                return res.status(400).json({ message: "Correo duplicado"})
+            }            
+        } else {
+            return res.status(400).json({ message: "Información requerida"})
+        }
     } catch (error) {
+        console.log(error)
         return res.status(500).json(error)
     }
 }
@@ -69,13 +93,25 @@ self.actualizar = async function (req, res) {
     try {
         let id = req.params.id;
         let body = req.body;
-        let data = await colaborador.update(body, { where: { id: idusuario} });
+        let correoExistente
+        
+        if (req.body.correo != null) {
+            correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
+        }
 
-        if (data[0] == 0)
-            return res.status(404).send()
-        else
-            return res.status(204).send()
+        if (correoExistente == null) {
+            let data = await colaborador.update(body, { where: { id: id} });
+    
+            if (data[0] == 0)
+                return res.status(404).send()
+            else
+                return res.status(204).send()
+        } else {
+            return res.status(400).json({ message: "Correo duplicado"})
+        }
     } catch (error) {
         return res.status(500).json(error)
     }
 }
+
+module.exports = self;

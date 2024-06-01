@@ -2,6 +2,8 @@
 .vscode/
 .idea/
 
+[Rr]est[Cc]lient/
+
 # Logs
 logs
 *.log
