@@ -22,11 +22,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     constancia: {
       type: DataTypes.BLOB("long"),
+      allowNull: true
+    },
+    nombrearchivo: {
+      type: DataTypes.STRING,
       allowNull: false
     },
     estado: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'pendiente'
     },
     colaboradorid: {
       type: DataTypes.STRING,

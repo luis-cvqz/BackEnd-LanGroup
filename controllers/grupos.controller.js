@@ -1,13 +1,24 @@
+<<<<<<< HEAD
 const { grupo, idioma, Sequelize } = require("../models");
+=======
+const { grupo, Sequelize } = require("../models");
+>>>>>>> main
 const crypto = require("crypto");
 const Op = Sequelize.Op;
 
 let self = {};
 
 // GET /api/grupos/{id}
+<<<<<<< HEAD
 self.recuperarPorId = async function (req, res) {
   try {
     let id = req.params.id;
+=======
+self.recuperar = async function (req, res) {
+  try {
+    const id = req.params.id;
+
+>>>>>>> main
     let data = await grupo.findByPk(id, {
       attributes: [
         ["id", "grupoId"],
@@ -16,20 +27,37 @@ self.recuperarPorId = async function (req, res) {
         "icono",
         "idiomaId",
       ],
+<<<<<<< HEAD
     });
     if (data) return res.status(200).json(data);
     else return res.status(405).send();
+=======
+      subQuery: false
+    });
+
+    if (data) return res.status(200).json(data);
+    else return res.status(404).send();
+>>>>>>> main
   } catch (error) {
     return res.status(500).json(error);
   }
 };
 
+<<<<<<< HEAD
 // GET /api/grupos/idioma/{idiomaId}
 self.recuperarPorIdioma = async function (req, res) {
   try {
     let id = req.params.idiomaId;
     let data = await grupo.findAll({
       where: { idiomaId: id },
+=======
+// GET /api/grupos/{idioma}
+self.recuperarPorIdIdioma = async function (req, res) {
+  try {
+    const id = req.params.idiomaId;
+
+    let data = await grupo.findByPk(id, {
+>>>>>>> main
       attributes: [
         ["id", "grupoId"],
         "nombre",
@@ -37,6 +65,7 @@ self.recuperarPorIdioma = async function (req, res) {
         "icono",
         "idiomaId",
       ],
+<<<<<<< HEAD
     });
     if (data) return res.status(200).json(data);
     else return res.status(405).send();
@@ -62,11 +91,33 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
     // Buscar los grupos que tengan el id del idioma encontrado
     let data = await grupo.findAll({
       where: { idiomaid: idiomaData.id },
+=======
+      subQuery: false
+    });
+
+    if (data) return res.status(200).json(data);
+    else return res.status(404).send();
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+
+// POST /api/grupos
+
+// PUT /api/grupos/{id}
+
+// DELETE /api/grupos/{id}
+
+// GET /api/grupos
+self.recuperarTodos = async function (req, res) {
+  try {
+    let data = await grupo.findAll({
+>>>>>>> main
       attributes: [
         ["id", "grupoId"],
         "nombre",
         "descripcion",
         "icono",
+<<<<<<< HEAD
         "idiomaid",
       ],
       include: [
@@ -147,6 +198,15 @@ self.eliminarGrupo = async function (req, res) {
     } else {
       return res.status(404).send({ message: "Grupo no encontrado" });
     }
+=======
+        "idiomaId",
+      ],
+      subQuery: false
+    });
+
+    if (data) return res.status(200).json(data);
+    else return res.status(404).send();
+>>>>>>> main
   } catch (error) {
     return res.status(500).json(error);
   }

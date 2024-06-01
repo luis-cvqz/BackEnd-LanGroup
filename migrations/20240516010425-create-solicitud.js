@@ -1,9 +1,16 @@
-'use strict';
+"use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+<<<<<<< HEAD
+    await queryInterface.createTable("colaboradorgrupo", {
+      colaboradorid: {
+        allowNull: false,
+        primaryKey: true,
+=======
     await queryInterface.createTable('solicitud', {
-      idsolicitud: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -18,39 +25,66 @@ module.exports = {
       },
       estado: {
         type: Sequelize.STRING(50),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Pendiente'
       },
       constancia: {
-        type: Sequelize.BLOB,
+        type: Sequelize.BLOB('long'),
+        allowNull: true
+      },
+      nombrearchivo: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       colaboradorid: {
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
         type: Sequelize.UUID,
-        allowNull: false,
         references: {
+<<<<<<< HEAD
+          model: "colaborador",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+=======
           model: 'colaborador',
           key: 'id'
         }
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
       },
-      idiomaid: {
-        type: Sequelize.UUID,
+      grupoid: {
         allowNull: false,
+        primaryKey: true,
+        type: Sequelize.UUID,
         references: {
+<<<<<<< HEAD
+          model: "grupo",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      rol: {
+        allowNull: false,
+        type: Sequelize.STRING,
+=======
           model: 'idioma',
           key: 'id'
         }
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('solicitud');
-  }
+    await queryInterface.dropTable("colaboradorgrupo");
+  },
 };
