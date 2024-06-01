@@ -1,29 +1,30 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class rol extends Model {
     static associate(models) {
-      rol.hasMany(models.colaborador, { foreignKey: 'rolid'})
+      rol.hasMany(models.colaborador, { foreignKey: "rolid" });
     }
   }
-  
-  rol.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: false
+
+  rol.init(
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+      },
+      nombre: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    nombre: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-  }, {
-    sequelize,
-    freezeTableName: true,
-    modelName: 'rol',
-  });
+    {
+      sequelize,
+      freezeTableName: true,
+      modelName: "rol",
+    }
+  );
 
   return rol;
 };

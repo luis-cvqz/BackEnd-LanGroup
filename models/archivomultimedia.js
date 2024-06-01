@@ -1,9 +1,10 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class archivomultimedia extends Model {
     static associate(models) {
-      archivomultimedia.belongsTo(models.publicacion)
+      archivomultimedia.belongsTo(models.publicacion);
     }
   }
   archivomultimedia.init({

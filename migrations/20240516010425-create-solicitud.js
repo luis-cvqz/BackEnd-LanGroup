@@ -1,9 +1,10 @@
-'use strict';
+"use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('solicitud', {
-      idsolicitud: {
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -26,14 +27,23 @@ module.exports = {
       },
       colaboradorid: {
         type: Sequelize.UUID,
-        allowNull: false,
         references: {
           model: 'colaborador',
           key: 'id'
         }
       },
-      idiomaid: {
+      grupoid: {
+        allowNull: false,
+        primaryKey: true,
         type: Sequelize.UUID,
+        references: {
+          model: "grupo",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      rol: {
         allowNull: false,
         references: {
           model: 'idioma',
@@ -42,15 +52,16 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('solicitud');
-  }
+    await queryInterface.dropTable("colaboradorgrupo");
+  },
 };

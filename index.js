@@ -8,14 +8,21 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// cors
+// Cors
 var corsOptions = {
   origin: ["http://localhost:3001", "http://localhost:8080"],
-  methods: "GET, PUT, POST, DELETE",
+  methods: "GET,PUT,POST,DELETE",
 };
+
 app.use(cors(corsOptions));
 
+// Rutas
+app.use("/api/colaboradores", require("./routes/colaboradores.routes"));
+app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/grupos", require("./routes/grupos.routes"));
+
+// Importa emailRoutes usando require directamente
+app.use("/api/email", require("./routes/email.routes"));
 
 app.get("*", (req, res) => {
   res.status(404).send();

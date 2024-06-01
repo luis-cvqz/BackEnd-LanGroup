@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "grupoid",
       });
       grupo.hasMany(models.publicacion, { foreignKey: "grupoid" });
+      grupo.belongsToMany(models.colaborador, {
+        through: "colaboradorgrupo",
+        foreignKey: "grupoid",
+      });
+      grupo.hasMany(models.publicacion, { foreignKey: "grupoid" });
     }
   }
 
@@ -45,3 +50,4 @@ module.exports = (sequelize, DataTypes) => {
 
   return grupo;
 };
+

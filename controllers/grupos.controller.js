@@ -1,6 +1,7 @@
 const { grupo, idioma, Sequelize } = require("../models");
 const crypto = require("crypto");
 const Op = Sequelize.Op;
+const logger = require("../logger/logger");
 
 let self = {};
 
@@ -17,9 +18,14 @@ self.recuperarPorId = async function (req, res) {
         "idiomaId",
       ],
     });
-    if (data) return res.status(200).json(data);
-    else return res.status(405).send();
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      logger.error(`Grupo con id ${id} no encontrado.`);
+      return res.status(405).send();
+    }
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).json(error);
   }
 };
@@ -38,19 +44,23 @@ self.recuperarPorIdioma = async function (req, res) {
         "idiomaId",
       ],
     });
-    if (data) return res.status(200).json(data);
-    else return res.status(405).send();
+    if (data) {
+      return res.status(200).json(data);
+    } else {
+      logger.error(`No se encontro el grupo con el ${id}`);
+      return res.status(405).send();
+    }
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).json(error);
   }
 };
 
-/// GET /api/grupos/idioma/{idiomaNombre}
+// GET /api/grupos/idioma/{idiomaNombre}
 self.recuperarPorIdiomaNombre = async function (req, res) {
   try {
     let idiomaNombre = req.params.idiomaNombre;
 
-    // Buscar el idioma por su nombre
     let idiomaData = await idioma.findOne({
       where: { nombre: idiomaNombre },
     });
@@ -59,7 +69,6 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
       return res.status(404).send({ message: "Idioma no encontrado" });
     }
 
-    // Buscar los grupos que tengan el id del idioma encontrado
     let data = await grupo.findAll({
       where: { idiomaid: idiomaData.id },
       attributes: [
@@ -80,12 +89,11 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
     if (data.length > 0) {
       return res.status(200).json(data);
     } else {
-      return res
-        .status(404)
-        .send({ message: "No se encontraron grupos para el idioma dado" });
+      logger.error(`Grupo con id ${id} no encontrado.`);
+      return res.status(404).send({ message: "No se encontraron grupos para el idioma dado" });
     }
   } catch (error) {
-    console.error(error); // Imprimir el error en la consola para debugging
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -100,38 +108,38 @@ self.agregarGrupo = async function (req, res) {
       idiomaid: req.body.idiomaid,
     };
 
-    // Crea un nuevo grupo en la base de datos
     const grupoCreado = await grupo.create(nuevoGrupo);
 
-    return res.status(201).json(grupoCreado);
+    if (grupoCreado) { 
+      return res.status(201).json(grupoCreado);
+    } else {
+      logger.error(`No se pudo crear el grupo.`);
+      return res.status(405).send();
+    }
   } catch (error) {
-    console.error(error);
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
+
 // PUT /api/grupos/{id}
 self.actualizarGrupo = async (req, res) => {
   try {
-    // Obtiene el ID del grupo de los parámetros de la solicitud
     const { id } = req.params;
 
-    // Busca el grupo en la base de datos por su ID
     let grupoExistente = await grupo.findByPk(id);
 
-    // Verifica si el grupo existe
     if (!grupoExistente) {
+      logger.error(`Grupo con id ${id} no encontrado.`);
       return res.status(404).json({ message: "Grupo no encontrado" });
     }
 
-    // Actualiza los datos del grupo con los nuevos valores proporcionados en la solicitud
     grupoExistente = await grupoExistente.update(req.body);
 
-    // Devuelve el grupo actualizado como respuesta
     return res.status(200).json(grupoExistente);
   } catch (error) {
-    // Maneja los errores
-    console.error("Error al actualizar el grupo:", error);
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -143,13 +151,16 @@ self.eliminarGrupo = async function (req, res) {
     let deletedRows = await grupo.destroy({ where: { id: id } });
 
     if (deletedRows > 0) {
-      return res.status(204).send(); // No Content
+      return res.status(204).send();
     } else {
+      logger.error(`Grupo con id ${id} no encontrado.`); 
       return res.status(404).send({ message: "Grupo no encontrado" });
     }
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).json(error);
   }
 };
+
 
 module.exports = self;
