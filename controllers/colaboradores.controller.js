@@ -1,6 +1,6 @@
-const { where } = require("sequelize");
-const { colaborador, rol, Sequelize } = require("../models");
-const bcrypt = require("bcrypt");
+const { where } = require('sequelize');
+const { colaborador, rol, Sequelize } = require('../models');
+const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
 let self = {};
 
@@ -10,15 +10,15 @@ self.recuperar = async function (req, res) {
     let id = req.params.id;
     let data = await colaborador.findByPk(id, {
       attributes: [
-        ["id", "colaboradorId"],
-        "usuario",
-        "nombre",
-        "apellido",
-        "correo",
-        "contrasenia",
-        "descripcion",
-        "rolid",
-        "icono",
+        ['id', 'colaboradorId'],
+        'usuario',
+        'nombre',
+        'apellido',
+        'correo',
+        'contrasenia',
+        'descripcion',
+        'rolid',
+        'icono',
       ],
     });
     if (data) {
@@ -41,29 +41,29 @@ self.recuperarTodos = async function (req, res) {
     if (req.query.rol != null) {
       let rolusuario = await rol.findOne({
         where: { nombre: req.query.rol },
-        attributes: ["id"],
+        attributes: ['id'],
       });
 
       if (rolusuario) {
         filtros.rolid = rolusuario.id;
       } else {
         logger.error(`Rol ${req.query.rol} no encontrado.`);
-        return res.status(404).json({ message: "Rol no encontrado" });
+        return res.status(404).json({ message: 'Rol no encontrado' });
       }
     }
 
     let data = await colaborador.findAll({
       where: filtros,
       attributes: [
-        ["id", "colaboradorId"],
-        "usuario",
-        "nombre",
-        "apellido",
-        "correo",
-        "contrasenia",
-        "descripcion",
-        "rolid",
-        "icono",
+        ['id', 'colaboradorId'],
+        'usuario',
+        'nombre',
+        'apellido',
+        'correo',
+        'contrasenia',
+        'descripcion',
+        'rolid',
+        'icono',
       ],
       subQuery: false,
     });
