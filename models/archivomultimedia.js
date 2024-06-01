@@ -76,6 +76,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
 >>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
     }
-  );
+  }, {
+    sequelize,
+    freezeTableName: true,
+    modelName: 'archivomultimedia',
+  });
   return archivomultimedia;
 };

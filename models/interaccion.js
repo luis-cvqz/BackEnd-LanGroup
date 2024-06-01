@@ -121,3 +121,4 @@ module.exports = (sequelize, DataTypes) => {
 >>>>>>> main
   return interaccion;
 };
+

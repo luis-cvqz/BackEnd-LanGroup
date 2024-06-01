@@ -7,14 +7,18 @@ const Authorize = (rol) => {
     return async (req, res, next) => {
         try {
             const authHeader = req.header('Authorization')
-            if (!authHeader.startsWith('Bearer '))
-                return res.status(401).json()
+            if (!authHeader.startsWith('Bearer ')) {
+                logger.error('Formato de token no válido.'); // Log para indicar un formato de token no válido
+                return res.status(401).json();
+            }
 
             const token = authHeader.split(' ')[1]
             const decodedToken = jwt.verify(token, jwtSecret)
 
-            if (rol.split(',').indexOf(decodedToken[ClaimTypes.Role]) == -1)
-                return res.status(401).json()
+            if (rol.split(',').indexOf(decodedToken[ClaimTypes.Role]) == -1) {
+                logger.error('Rol no autorizado.'); // Log para indicar un rol no autorizado
+                return res.status(401).json();
+            }
 
             req.decodedToken = decodedToken
 
@@ -27,8 +31,8 @@ const Authorize = (rol) => {
 
             next()
         } catch (error) {
-            console.log(error)
-            return res.status(401).json()
+            logger.error(`Error en la autorización: ${error.message}`); // Log con el mensaje de error específico
+            return res.status(401).json();
         }
     }
 }

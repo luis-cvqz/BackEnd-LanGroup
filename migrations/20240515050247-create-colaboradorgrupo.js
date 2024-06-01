@@ -22,8 +22,8 @@ module.exports = {
           key: 'id'
 >>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       grupoid: {
         allowNull: false,

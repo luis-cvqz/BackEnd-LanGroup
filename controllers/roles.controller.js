@@ -1,5 +1,7 @@
 const { where } = require('sequelize');
-const { rol } = require('../models')
+const { rol } = require('../models');
+const logger = require('../logger/logger'); 
+
 let self = {}
 
 // GET /api/roles/{id}
@@ -13,9 +15,12 @@ self.recuperar = async function (req, res){
 
         if(data)
             return res.status(200).json(data)
-        else
+        else {
+            logger.error(`No se encontró el rol con ID ${id}`); 
             return res.status(404).json({ message: 'No se encontró el rol' })
+        }
     } catch (error){
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
@@ -30,10 +35,13 @@ self.recuperarTodos = async function (req, res){
 
         if(data)
             return res.status(200).json(data)
-        else
-        return res.status(404).send()
+        else {
+            logger.error('No se encontraron roles'); 
+            return res.status(404).send()
+        }
 
     }catch(error){
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
