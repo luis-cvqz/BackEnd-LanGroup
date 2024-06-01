@@ -2,7 +2,11 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+<<<<<<< HEAD
+    await queryInterface.createTable("archivomultimedia", {
+=======
     await queryInterface.createTable('archivomultimedia', {
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
       id: {
         allowNull: false,
         primaryKey: true,
@@ -30,9 +34,14 @@ module.exports = {
         defaultValue: true,
       },
       archivo: {
+<<<<<<< HEAD
         type: Sequelize.BLOB,
         allowNull: false,
         defaultValue: false,
+=======
+        type: Sequelize.BLOB('long'),
+        allowNull: true,
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
       },
       createdAt: {
         allowNull: false,

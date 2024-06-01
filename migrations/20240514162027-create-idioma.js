@@ -2,8 +2,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+<<<<<<< HEAD
+    await queryInterface.createTable("idioma", {
+=======
     await queryInterface.createTable('idioma', {
-      ididioma: {
+>>>>>>> 9d08e43ca400d117782a0d59f0db01f955ef2bf9
+      id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,

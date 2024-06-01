@@ -1,5 +1,5 @@
-// routes/emailController.js
 const nodemailer = require("nodemailer");
+const logger = require("../logger/logger"); // Importar el logger
 
 exports.enviarCorreo = async (req, res) => {
   const { to, subject, text } = req.body;
