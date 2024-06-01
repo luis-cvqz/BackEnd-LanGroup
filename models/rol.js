@@ -6,16 +6,18 @@ module.exports = (sequelize, DataTypes) => {
       rol.hasMany(models.colaborador, { foreignKey: "rolid" });
     }
   }
-  
-  rol.init({
-    id: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: false
-    },
-    nombre: {
-      type: DataTypes.STRING,
-      allowNull: false
+
+  rol.init(
+    {
+      id: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+      },
+      nombre: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,

@@ -3,34 +3,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('solicitud', {
-      id: {
+    await queryInterface.createTable("colaboradorgrupo", {
+      colaboradorid: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
-      },
-      contenido: {
-        type: Sequelize.STRING(1200),
-        allowNull: false
-      },
-      motivo: {
-        type: Sequelize.STRING(1200),
-        allowNull: false
-      },
-      estado: {
-        type: Sequelize.STRING(50),
-        allowNull: false
-      },
-      constancia: {
-        type: Sequelize.BLOB,
-        allowNull: false
-      },
-      colaboradorid: {
         type: Sequelize.UUID,
         references: {
-          model: 'colaborador',
-          key: 'id'
-        }
+          model: "colaborador",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       grupoid: {
         allowNull: false,
@@ -45,10 +28,7 @@ module.exports = {
       },
       rol: {
         allowNull: false,
-        references: {
-          model: 'idioma',
-          key: 'id'
-        }
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

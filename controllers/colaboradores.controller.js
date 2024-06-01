@@ -1,7 +1,4 @@
-const { where } = require('sequelize');
-const { colaborador, rol, Sequelize } = require('../models')
-const bcrypt = require('bcrypt')
-const crypto = require('crypto')
+const { colaborador, Sequelize } = require('../models')
 const Op = Sequelize.Op
 let self = {}
 
@@ -9,7 +6,7 @@ let self = {}
 self.recuperar = async function (req, res) {
     try {
         let id = req.params.id;
-        let data = await colaborador.findByPk(id, { attributes: [['id','colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'rolid', 'icono']});
+        let data = await colaborador.findByPk(id, { attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono']});
         if (data)
             return res.status(200).json(data)
         else
@@ -22,33 +19,26 @@ self.recuperar = async function (req, res) {
 // GET /api/colaboradores?rol=r
 self.recuperarTodos = async function (req, res) {
     try {
-        let filtros = {}
+        const { rol } = req.query
 
-        if (req.query.rol != null){
-            let rolusuario = await rol.findOne({
-                where: { nombre: req.query.rol },
-                attributes: ['id']
-            })
-
-            if (rolusuario) {
-                filtros.rolid = rolusuario.id;
-            } else {
-                return res.status(404).json({ message: 'Rol no encontrado' });
+        const filtros = {}
+        if (rol) {
+            filtros.rol = {
+                [Op.like]: `%${rol}%`
             }
         }
 
         let data = await colaborador.findAll({
             where: filtros,
-            attributes: [['id', 'colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'rolid', 'icono'],
+            attributes: ['idusuario', 'usuario', 'nombre', 'apellido', 'correo', 'contraseña', 'descripcion', 'rol', 'icono'],
             subQuery: false
         })
 
-        if (data.length > 0)
+        if (data)
             return res.status(200).json(data)
         else
             return res.status(404).send()
     } catch (error) {
-        console.error(error)
         return res.status(500).json(error)
     }
 }
@@ -56,29 +46,20 @@ self.recuperarTodos = async function (req, res) {
 // POST /api/colaboradores
 self.crear = async function (req, res) {
     try {
-        const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
-        console.log(rolusuario.id)
-
-        const data = await colaborador.create({
-            id: crypto.randomUUID(),
+        let data = await colaborador.create({
+            idusuario: req.body.idusuario,
             nombre: req.body.nombre,
             apellido: req.body.apellido,
             usuario: req.body.usuario,
             correo: req.body.correo,
-            contrasenia: await bcrypt.hash(req.body.contrasenia, 10),
+            contraseña: req.body.contraseña,
             descripcion: req.body.descripcion,
-            icono: req.body.icono,
-            rolid: rolusuario.id,
+            rol: req.body.rol,
+            icono: req.body.icono
         })
 
-        return res.status(201).json({
-            id: data.id,
-            email: data.email,
-            nombre: data.nombre,
-            rolid: rolusuario.nombre
-        })
+        return res.status(201).json(data)
     } catch (error) {
-        console.log(error)
         return res.status(500).json(error)
     }
 }
@@ -88,7 +69,7 @@ self.actualizar = async function (req, res) {
     try {
         let id = req.params.id;
         let body = req.body;
-        let data = await colaborador.update(body, { where: { id: id} });
+        let data = await colaborador.update(body, { where: { id: idusuario} });
 
         if (data[0] == 0)
             return res.status(404).send()
@@ -98,5 +79,3 @@ self.actualizar = async function (req, res) {
         return res.status(500).json(error)
     }
 }
-
-module.exports = self;
