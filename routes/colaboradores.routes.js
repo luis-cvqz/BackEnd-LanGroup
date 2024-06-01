@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const colaboradores = require("../controllers/colaboradores.controller");
-// const Authorize = require('../middlewares/auth.middleware')
+const Authorize = require("../middlewares/auth.middleware");
 
 // GET: api/colaboradores/{id}
 router.get(

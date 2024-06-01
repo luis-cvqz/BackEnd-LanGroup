@@ -1,19 +1,32 @@
 const router = require("express").Router();
 const grupos = require("../controllers/grupos.controller");
+const Authorize = require("../middlewares/auth.middleware");
 
 // GET /api/grupos/{id}
-router.get("/:id", grupos.recuperar);
+router.get("/:id", grupos.recuperarPorId);
+
+// GET /api/grupos/idioma/{idiomaNombre}
+router.get(
+  "/idioma/:idiomaNombre",
+  Authorize("Administrador,Aprendiz,Instructor"),
+  grupos.recuperarPorIdiomaNombre
+);
 
 // POST /api/grupos
-// Aquí puedes definir la lógica para manejar la solicitud POST para crear un nuevo grupo
+router.post("/", Authorize("Administrador,Instructor"), grupos.agregarGrupo);
 
 // PUT /api/grupos/{id}
-// Aquí puedes definir la lógica para manejar la solicitud PUT para actualizar un grupo existente por su ID
+router.put(
+  "/:id",
+  Authorize("Administrador,Instructor"),
+  grupos.actualizarGrupo
+);
 
-// DELETE /api/grupos/{id}
-// Aquí puedes definir la lógica para manejar la solicitud DELETE para eliminar un grupo existente por su ID
-
-// GET /api/grupos
-router.get("", grupos.recuperarTodos);
+// DELETE /api/grupos/:id
+router.delete(
+  "/:id",
+  Authorize("Administrador,Instructor"),
+  grupos.eliminarGrupo
+);
 
 module.exports = router;
