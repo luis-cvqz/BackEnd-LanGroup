@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   solicitud.init({
-    idsolicitud: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    usuarioid: {
+    colaboradorid: {
       type: DataTypes.STRING,
       allowNull: false
     },

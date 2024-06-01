@@ -7,43 +7,40 @@ module.exports = (sequelize, DataTypes) => {
       archivomultimedia.belongsTo(models.publicacion);
     }
   }
-  archivomultimedia.init(
-    {
-      idarchivo: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-      },
-      publicacionid: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      nombre: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      mime: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      tamanio: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      indb: {
-        type: DataTypes.BOOLEAN, // Corrección aquí
-        defaultValue: true,
-        allowNull: false,
-      },
-      archivo: {
-        type: DataTypes.BLOB("long"),
-        allowNull: false,
-      },
+  archivomultimedia.init({
+    id: {
+      type: DataTypes.STRING,
+      primaryKey: true
     },
-    {
-      sequelize,
-      freezeTableName: true,
-      modelName: "archivomultimedia",
+    publicacionid: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    mime: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    tamanio: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    indb: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false
+    },
+    archivo: {
+      type: DataTypes.BLOB("long"),
+      allowNull: false,
     }
-  );
+  }, {
+    sequelize,
+    freezeTableName: true,
+    modelName: 'archivomultimedia',
+  });
   return archivomultimedia;
 };
