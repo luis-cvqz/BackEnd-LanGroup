@@ -10,12 +10,18 @@ let self = {};
 // GET api/solicitudes?idioma=i
 self.recuperarTodas = async function (req, res) {
   try {
-    const { idiomaquery } = req.query;
+    const { idiomaquery, colaboradorquery} = req.query
 
-    const filtros = {};
+    const filtros = {}
     if (idiomaquery) {
       filtros.idiomaid = {
         [Op.eq]: idiomaquery
+      }
+    }
+
+    if(colaboradorquery){
+      filtros.colaboradorid = {
+        [Op.eq]: colaboradorquery
       };
     }
 
@@ -39,59 +45,17 @@ self.recuperarTodas = async function (req, res) {
         }
       ],
       subQuery: false
-    });
+    })
 
-    return res.status(200).json(data);
+    return res.status(200).json(data)
   } catch (error) {
     logger.error(`Error al recuperar todas las solicitudes: ${error.message}`); 
     return res.status(500).send();
   }
-};
-
-//GET api/solicitudes?colaboradorid=id
-self.recuperarPorColaborador = async function(req, res) {
-  try{
-    const {colaboradorquery} = req.query;
-
-    const filtros = {};
-
-    if(colaboradorquery){
-      filtros.colaboradorid = {
-        [Op.eq]: colaboradorquery
-      };
-    }
-
-    let data = await solicitud.findOne({
-      where: filtros,
-      attributes: [
-        ['id', 'solicitudId'],
-        'contenido',
-        'motivo',
-        'estado',
-        'nombrearchivo'
-      ],
-      include: [
-        {
-          model: colaborador,
-          attributes: [['id', 'colaboradorId'], 'usuario']
-        },
-        {
-          model: idioma,
-          attributes: [['id', 'idiomaId'], 'nombre']
-        }
-      ],
-      subQuery: false
-    });
-
-    return res.status(200).json(data);
-  } catch (error) {
-    logger.error(`Error al recuperar la solicitud por colaborador: ${error.message}`); 
-    return res.status(500).send();
-  }
-};
+}
 
 // GET api/solicitudes/:id
-self.recuperarPorId = async function (req, res) {
+self.recuperar = async function (req, res) {
   try {
     let id = req.params.id;
     let solicitudEncontrada = await solicitud.findByPk(id, {
