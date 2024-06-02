@@ -2,12 +2,8 @@ const router = require("express").Router();
 const colaboradores = require("../controllers/colaboradores.controller");
 const Authorize = require("../middlewares/auth.middleware");
 
-// GET: api/colaboradores/{id}
-router.get(
-  "/:id",
-  Authorize("Administrador,Aprendiz"),
-  colaboradores.recuperar
-);
+// GET: api/colaboradores/{correo}
+router.get("/:correo", Authorize("Administrador,Aprendiz"), colaboradores.recuperar);
 
 // GET: api/colaboradores?rol=r
 router.get("/", Authorize("Administrador"), colaboradores.recuperarTodos);

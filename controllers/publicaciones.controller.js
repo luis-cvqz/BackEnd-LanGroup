@@ -27,12 +27,12 @@ self.recuperarTodas = async function (req, res) {
 
     if(req.query.colaborador != null){
       let colaboradorpublicacion = await colaborador.findOne({
-        where: { usuario: { [Op.like]: `%${req.query.colaborador}%` } },
+        where: { id: { [Op.like]: `%${req.query.colaborador}%` } },
         attributes: ['id']
       })
 
       if(colaboradorpublicacion)
-        filtros.colaboradorid = colaboradorpublicacion.id
+        filtros.colaboradorId = colaboradorpublicacion.id
       else {
         logger.error(`No se encontró el colaborador ${req.query.colaborador}`); 
         return res.status(404).json('No se encontró el colaborador')

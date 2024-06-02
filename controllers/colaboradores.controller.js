@@ -7,11 +7,11 @@ const crypto = require('crypto'); // Se añade la importación de crypto para ge
 
 let self = {};
 
-// GET /api/colaboradores/{id}
+// GET /api/colaboradores/{correo}
 self.recuperar = async function (req, res) {
   try {
-    let id = req.params.id;
-    let data = await colaborador.findByPk(id, {
+    let data = await colaborador.findOne({
+      where: { correo: req.params.correo },
       attributes: [
         ['id', 'colaboradorId'],
         'usuario',
@@ -27,7 +27,7 @@ self.recuperar = async function (req, res) {
     if (data) {
       return res.status(200).json(data);
     } else {
-      logger.error(`Colaborador con id ${id} no encontrado.`); 
+      logger.error(`Colaborador con correo ${req.params.correo} no encontrado.`); 
       return res.status(404).send();
     }
   } catch (error) {
