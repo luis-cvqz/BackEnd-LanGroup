@@ -33,7 +33,7 @@ const Authorize = (rol) => {
             next()
         } catch (error) {
             logger.error(`Error en la autorización: ${error.message}`); // Log con el mensaje de error específico
-            return res.status(401).json();
+            return res.status(500).json();
         }
     }
 }

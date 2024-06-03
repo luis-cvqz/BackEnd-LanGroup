@@ -18,7 +18,6 @@ self.recuperar = async function (req, res) {
         'nombre',
         'apellido',
         'correo',
-        'contrasenia',
         'descripcion',
         'rolid',
         'icono',
@@ -57,7 +56,7 @@ self.recuperarTodos = async function (req, res) {
 
     let data = await colaborador.findAll({
       where: filtros,
-      attributes: [['id', 'colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'contrasenia', 'descripcion', 'rolid', 'icono'],
+      attributes: [['id', 'colaboradorId'], 'usuario', 'nombre', 'apellido', 'correo', 'descripcion', 'rolid', 'icono'],
       subQuery: false
     })
 

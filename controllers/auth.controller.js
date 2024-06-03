@@ -28,7 +28,7 @@ self.login = async function (req, res) {
             return res.status(401).json({ mensaje: 'Correo o contraseña incorrectos.'});
         }
 
-        token = GeneraToken(data.correo, data.usuario, data.rol);
+        token = GeneraToken(data.id, data.usuario, data.rol);
 
         return res.status(200).json({
             correo: data.correo,

@@ -1,19 +1,20 @@
 const router = require('express').Router()
 const solicitudes = require('../controllers/solicitudes.controller')
+const Authorize = require("../middlewares/auth.middleware");
 
 // GET api/solicitudes
-router.get('/', solicitudes.recuperarTodas)
+router.get('/', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperarTodas)
 
 // GET api/solicitudes/:id
-router.get('/:id', solicitudes.recuperar)
+router.get('/:id', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperar)
 
 // POST api/solicitudes
-router.post('/', solicitudes.crear)
+router.post('/', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.crear)
 
 // PUT api/solicitudes/:id
-router.put('/:id', solicitudes.actualizar)
+router.put('/:id', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.actualizar)
 
 // DELETE api/solicitudes/:id
-router.delete('/:id', solicitudes.eliminar)
+router.delete('/:id', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.eliminar)
 
 module.exports = router
