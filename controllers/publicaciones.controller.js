@@ -1,10 +1,11 @@
 const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
+const logger = require('../logger/logger'); 
 
 let self = {}
 
-// GET api/publicaciones/grupo?={grupo}&idioma?={idioma}
+// GET api/publicaciones/grupo?={grupo}&idioma?={idioma}&colaborador?={colaborador}
 self.recuperarTodas = async function (req, res) {
   try {
 
@@ -18,24 +19,25 @@ self.recuperarTodas = async function (req, res) {
 
       if (grupopublicacion)
         filtros.grupoid = grupopublicacion.id
-      else
+      else {
+        logger.error(`No se encontró el grupo ${req.query.grupo}`); 
         return res.status(404).json('No se encontró el grupo')
+      }
     }
 
-    /*if (req.query.idioma != null) {
-      let idiomapublicacion = await idioma.findOne({
-        where: { id: req.query.idioma },
+    if(req.query.colaborador != null){
+      let colaboradorpublicacion = await colaborador.findOne({
+        where: { id: { [Op.like]: `%${req.query.colaborador}%` } },
         attributes: ['id']
       })
 
-      if (idiomapublicacion) {
-        filtros.grupo.idiomaid = {
-          [Op.eq]: idiomapublicacion.id
-        }
-      } else {
-        return res.status(404).json('No se encontró el idioma')
+      if(colaboradorpublicacion)
+        filtros.colaboradorId = colaboradorpublicacion.id
+      else {
+        logger.error(`No se encontró el colaborador ${req.query.colaborador}`); 
+        return res.status(404).json('No se encontró el colaborador')
       }
-    }*/
+    }
 
     const publicaciones = await publicacion.findAll({
       where: filtros,
@@ -65,6 +67,7 @@ self.recuperarTodas = async function (req, res) {
 
     return res.status(200).json(publicaciones)
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).json({ error: error.message })
   }
 }   
@@ -103,9 +106,12 @@ self.recuperar = async function (req, res) {
 
     if (data) 
       return res.status(200).json(data)
-    else
+    else {
+      logger.error(`No se encontró la publicación con ID ${id}`); 
       return res.status(404).json({ message: 'No se encontró la publicación' })
+    }
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).send()
   }
 }
@@ -123,6 +129,7 @@ self.crear = async function (req, res) {
     })
     return res.status(201).json(data)
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).send()
   }
 }
@@ -141,6 +148,7 @@ self.actualizar = async function (req, res) {
 
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`);
     return res.status(500).send()
   }
 }
@@ -162,8 +170,9 @@ self.eliminar = async function (req, res) {
       return res.status(404).send()
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`); 
     return res.status(500).send()
   }
 }
 
-module.exports = self
+module.exports = self;

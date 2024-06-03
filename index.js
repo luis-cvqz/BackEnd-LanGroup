@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // Cors
 var corsOptions = {
-    origin: ["http://localhost:3001", "http://localhost:8080"],
-    methods: "GET,PUT,POST,DELETE",
+  origin: ['http://localhost:3001', 'http://localhost:8080'],
+  methods: 'GET,PUT,POST,DELETE',
 };
 
 app.use(cors(corsOptions));
@@ -24,7 +24,10 @@ app.use("/api/solicitudes", require("./routes/solicitudes.routes"))
 app.use("/api/colaboradores", require('./routes/colaboradores.routes'))
 app.use("/api/auth", require('./routes/auth.routes'))
 app.use("/api/interacciones", require('./routes/interacciones.routes'))
-app.get('*', (req, res) => { res.status(404).send() });
+app.use("/api/roles", require("./routes/roles.routes"))
+app.use("/api/grupos", require("./routes/grupos.routes"))
+app.use("/api/email", require("./routes/email.routes"))
+app.get('*', (req, res) => { res.status(404).send() })
 
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Backend de LanGroup escuchando en el puerto: ${process.env.SERVER_PORT}`)

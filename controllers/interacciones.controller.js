@@ -1,6 +1,7 @@
 const { publicacion, interaccion, colaborador } = require('../models')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
+const logger = require('../logger/logger'); 
 let self = {}
 
 // GET /api/interacciones/{publicacion}
@@ -14,10 +15,11 @@ self.recuperarTodos = async function (req, res) {
         if (data) {
             return res.status(200).json(data)
         } else {
+            logger.error(`No se encontraron interacciones para la publicación ${req.params.publicacion}`); // Log para indicar que no se encontraron interacciones
             return res.status(404).send()
         }
     } catch (error) {
-        console.log(error)
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
@@ -40,13 +42,16 @@ self.crear = async function (req, res) {
     
             if (data)
                 return res.status(201).send()
-            else
+            else {
+                logger.error(`Error al crear la interacción`); 
                 return res.status(400).send()
+            }
         } else {
+            logger.error(`Colaborador o publicación no encontrados`); 
             return res.status(400).send()
         }
     } catch (error) {
-        console.log(error)
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
@@ -63,7 +68,7 @@ self.actualizar = async function (req, res) {
         else
             return res.status(204).send()
     } catch (error) {
-        console.log(error)
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
@@ -81,7 +86,7 @@ self.eliminar = async function (req, res) {
         else
             return res.status(404).send()
     } catch (error) {
-        console.log(error)
+        logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
     }
 }
