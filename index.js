@@ -30,5 +30,33 @@ app.use("/api/email", require("./routes/email.routes"))
 app.get('*', (req, res) => { res.status(404).send() })
 
 app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Backend de LanGroup escuchando en el puerto: ${process.env.SERVER_PORT}`)
+    console.log(`Backend de LanGroup escuchando en el puerto: ${process.env.SERVER_PORT}`)
+})
+
+// -- GRPC -- //
+
+const { 
+    subirVideoImpl, 
+    descargarVideoImpl, 
+    subirConstanciaImpl, 
+    descargarConstanciaImpl 
+} = require('./gRPC/implementacionesGRPC.js')
+const grpc = require('@grpc/grpc-js')
+const protoLoader = require('@grpc/proto-loader')
+const PROTO_PATH = './proto/archivos.proto'
+
+const packageDefinition = protoLoader.loadSync(PROTO_PATH)
+const archivosProto = grpc.loadPackageDefinition(packageDefinition)
+
+// Inicializa el servidor gRPC
+const grpcServer = new grpc.Server()
+grpcServer.addService(archivosProto.ArchivosService.service, {
+    subirVideo: subirVideoImpl,
+    descargarVideo: descargarVideoImpl,
+    subirConstancia: subirConstanciaImpl,
+    descargarConstancia: descargarConstanciaImpl
+})
+
+grpcServer.bindAsync(`localhost:${process.env.GRPC_PORT}`, grpc.ServerCredentials.createInsecure(), () => {
+    console.log(`Servidor gRPC en ejecucion en el puerto: ${process.env.GRPC_PORT}`)
 })
