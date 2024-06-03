@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = process.env.JWT_SECRET
 const ClaimTypes = require('../config/claimtypes')
 
-const GeneraToken = (correo, usuario, rol) => {
+const GeneraToken = (id, usuario, rol) => {
     const token = jwt.sign({
-        [ClaimTypes.Name]: correo,
+        [ClaimTypes.Name]: id,
         [ClaimTypes.GivenName]: usuario,
         [ClaimTypes.Role]: rol,
         "iss": "ServidorLanGroupJWT",

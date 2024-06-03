@@ -3,7 +3,7 @@ const grupos = require("../controllers/grupos.controller");
 const Authorize = require("../middlewares/auth.middleware");
 
 // GET /api/grupos/{id}
-router.get("/:id", grupos.recuperarPorId);
+router.get("/:id", Authorize("Administrador,Instructor,Aprendiz"), grupos.recuperarPorId);
 
 // GET /api/grupos/idioma/{idiomaNombre}
 router.get(
