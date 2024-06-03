@@ -1,15 +1,15 @@
 syntax = "proto3";
 
 message DescargarArchivoRequest {
-  string archivoid = 1;
-  string nombre = 2;
+
+  string nombre = 1;
 }
 
 message DescargarArchivoResponse {
   oneof request {
-    string archivoid = 1;
-    string nombre = 2;
-    bytes archivo = 3;
+    // string archivoid = 1;
+    string nombre = 1;
+    bytes archivo = 2;
   }
 }
 
