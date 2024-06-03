@@ -81,7 +81,7 @@ self.crear = async function (req, res) {
       id: crypto.randomUUID(),
       contenido: req.body.contenido,
       motivo: req.body.motivo,
-      constancia: null,
+      constancia: req.body.constancia,
       colaboradorid: req.body.colaboradorid,
       idiomaid: req.body.idiomaid,
       nombrearchivo: req.body.colaboradorid + '-' + req.body.nombrearchivo 
