@@ -35,7 +35,9 @@ module.exports = {
         references: {
           model: 'colaborador',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       idiomaid: {
         type: Sequelize.UUID,
@@ -43,7 +45,9 @@ module.exports = {
         references: {
           model: 'idioma',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
