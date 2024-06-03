@@ -3,6 +3,10 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const app = express()
 
+//swagger
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger-output.json')
+
 dotenv.config()
 
 app.use(express.json());
@@ -15,6 +19,8 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // Rutas
 app.use("/api/publicaciones", require("./routes/publicaciones.routes"))
