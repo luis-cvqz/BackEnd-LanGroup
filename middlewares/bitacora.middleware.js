@@ -3,6 +3,10 @@ const requestIp = require('request-ip')
 const ClaimTypes = require('../config/claimtypes')
 const { bitacora } = require('../models')
 
+const CREAR = ".crear"
+const EDITAR = ".editar"
+const ELIMINAR =".eliminar"
+
 const bitacoralogger = (req, res, next) => {
   const ip = requestIp.getClientIp(req)
   let idColaborador = 'invitado'
@@ -33,4 +37,4 @@ const bitacoralogger = (req, res, next) => {
   next()
 }
 
-module.exports = bitacoralogger
+module.exports = { bitacoralogger, CREAR, EDITAR, ELIMINAR }
