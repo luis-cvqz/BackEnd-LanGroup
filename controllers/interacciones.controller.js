@@ -2,6 +2,8 @@ const { publicacion, interaccion, colaborador } = require('../models')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const logger = require('../logger/logger'); 
+const acciones = require('../middlewares/bitacora.middleware')
+
 let self = {}
 
 // GET /api/interacciones/{publicacion}
@@ -40,8 +42,10 @@ self.crear = async function (req, res) {
                 publicacionid: req.body.publicacionid
             })
     
-            if (data)
+            if (data) {
+                req.bitacora(`interacciones${acciones.CREAR}`, data.id)
                 return res.status(201).send()
+            }
             else {
                 logger.error(`Error al crear la interacción`); 
                 return res.status(400).send()
@@ -63,10 +67,13 @@ self.actualizar = async function (req, res) {
         let body = req.body;
         let data = await interaccion.update(body, { where: { id: id} });
 
-        if (data[0] == 0)
+        if (data[0] == 0){
+            req.bitacora(`interacciones${acciones.EDITAR}`, id)
             return res.status(404).send()
-        else
+        }
+        else {
             return res.status(204).send()
+        }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
@@ -81,10 +88,13 @@ self.eliminar = async function (req, res) {
 
         data = await interaccion.destroy({ where: { id: id } })
 
-        if (data === 1)
+        if (data === 1) {
+            req.bitacora(`interacciones${acciones.ELIMINAR}`, id)
             return res.status(204).send()
-        else
+        }
+        else {
             return res.status(404).send()
+        }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error.message}`); 
         return res.status(500).json(error)
