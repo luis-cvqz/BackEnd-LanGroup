@@ -33,6 +33,7 @@ app.use("/api/interacciones", require('./routes/interacciones.routes'))
 app.use("/api/roles", require("./routes/roles.routes"))
 app.use("/api/grupos", require("./routes/grupos.routes"))
 app.use("/api/email", require("./routes/email.routes"))
+app.use("/api/bitacora", require("./routes/bitacora.routes"))
 app.get('*', (req, res) => { res.status(404).send() })
 
 app.listen(process.env.SERVER_PORT, () => {
