@@ -3,10 +3,6 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const app = express()
 
-//swagger
-const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger-output.json')
-
 dotenv.config()
 
 app.use(express.json());
@@ -17,10 +13,15 @@ var corsOptions = {
   origin: ['http://localhost:3001', 'http://localhost:8080'],
   methods: 'GET,PUT,POST,DELETE',
 };
-
 app.use(cors(corsOptions));
 
+// Swagger
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger-output.json')
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+// Bitacora
+app.use(require("./middlewares/bitacora.middleware"))
 
 // Rutas
 app.use("/api/publicaciones", require("./routes/publicaciones.routes"))
