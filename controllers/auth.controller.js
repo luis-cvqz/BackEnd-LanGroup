@@ -30,6 +30,7 @@ self.login = async function (req, res) {
 
         token = GeneraToken(data.id, data.usuario, data.rol);
 
+        req.bitacora("usuario.login", data.id)
         return res.status(200).json({
             correo: data.correo,
             usuario: data.usuario,

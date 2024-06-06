@@ -2,6 +2,7 @@ const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} =
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const logger = require('../logger/logger'); 
+const acciones = require('../middlewares/bitacora.middleware')
 
 let self = {}
 
@@ -127,6 +128,8 @@ self.crear = async function (req, res) {
       colaboradorid: req.body.colaboradorid,
       grupoid: req.body.grupoid,
     })
+
+    req.bitacora(`publicaciones${acciones.CREAR}`, data.id)
     return res.status(201).json(data)
   } catch (error) {
     logger.error(`Error interno del servidor: ${error.message}`); 
@@ -141,10 +144,13 @@ self.actualizar = async function (req, res) {
     let body = req.body
     let data = await publicacion.update(body, { where: { id: id } })
 
-    if (data[0] === 0)
+    if (data[0] === 0){
       return res.status(404).send()
-    else
+    }
+    else {
+      req.bitacora(`publicaciones${acciones.EDITAR}`, id)
       return res.status(204).json(data)
+    }
 
 
   } catch (error) {
@@ -164,10 +170,13 @@ self.eliminar = async function (req, res) {
 
     data = await publicacion.destroy({ where: { id: id } })
     
-    if (data === 1)
+    if (data === 1){
+      req.bitacora(`publicaciones${acciones.ELIMINAR}`, id)
       return res.status(204).send()
-    else
+    }
+    else {
       return res.status(404).send()
+    }
 
   } catch (error) {
     logger.error(`Error interno del servidor: ${error.message}`); 

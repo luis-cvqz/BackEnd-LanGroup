@@ -2,6 +2,7 @@ const { archivomultimedia, Sequelize } = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const fs = require('fs')
+const acciones = require('../middlewares/bitacora.middleware')
 
 let self = {}
 
@@ -104,6 +105,7 @@ self.crearVideo = async function (req, res) {
       archivo: null
     })
 
+    req.bitacora(`archivosmultimedia${acciones.CREAR}`, nuevoArchivo.id)
     return res.status(201).send(nuevoArchivo)
   } catch (error) {
     return res.status(500).send()
@@ -130,6 +132,7 @@ self.crear = async function (req, res) {
       archivo: archivoRecibido
     })
     
+    req.bitacora(`archivosmultimedia${acciones.CREAR}`,nuevoArchivo.id)
     return res.status(201).json({
       id: nuevoArchivo.id,
       publicacionid: nuevoArchivo.pubicacionid,
@@ -152,6 +155,7 @@ self.eliminar = async function (req, res) {
     
     let data = await archivomultimedia.destroy({ where: { id: id } })
     if (data === 1) {
+      req.bitacora(`archivosmultimedia${acciones.ELIMINAR}`, id)
       return res.status(204).send()
     }
     return res.status(404).json('No se encontró el archivo')
@@ -171,6 +175,7 @@ self.eliminarVideo = async function (req, res) {
 
     let data = await videoEncontrado.destroy({ where: { id: id } })
     if (data === 1) {
+      req.bitacora(`archivosmultimedia${acciones.ELIMINAR}`, id)
       fs.existsSync("uploads/" + videoEncontrado.nombre) && fs.unlinkSync("uploads/" + videoEncontrado.nombre)
     }
     return res.status(204).send()
