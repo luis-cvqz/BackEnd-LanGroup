@@ -1,5 +1,6 @@
 //const { archivomultimedia, solicitud, Sequelize } = require('../models')
 const fs = require('fs')
+const logger = require('../logger/logger')
 
 const UPLOADS_PATH = './uploads/'
 const CHUNK_SIZE = 10240
@@ -34,7 +35,7 @@ function subirVideoImpl(call, callback) {
       // }, { where: { id: archivoid } })
     })
   } catch (error) {
-    // log error
+    logger.error(`Error interno del servidor gRPC: ${error}`)
   }
 }
 
@@ -55,7 +56,7 @@ function descargarVideoImpl(call) {
       console.log('\nEnvio de datos terminado')
     })
   } catch (error) {
-    // log error
+    logger.error(`Error interno del servidor gRPC: ${error}`)
   }
 }
 
@@ -88,7 +89,7 @@ function subirConstanciaImpl(call, callback) {
       // }, { where: { id: constanciaid } })
     })
   } catch (error) {
-    // log error
+    logger.error(`Error interno del servidor gRPC: ${error}`)
   }
 }
 
@@ -109,7 +110,7 @@ function descargarConstanciaImpl(call) {
       console.log('\nEnvio de datos terminado')
     })
   } catch (error) {
-    // log error
+    logger.error(`Error interno del servidor gRPC: ${error}`)
   }
 }
 

@@ -36,6 +36,7 @@ self.recuperarTodos = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -57,6 +58,7 @@ self.recuperar = async function (req, res) {
     return res.status(200).contentType(archivoEncontrado.mime).send(imagen)
     
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -83,6 +85,7 @@ self.recuperarDetalle = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -108,6 +111,7 @@ self.crearVideo = async function (req, res) {
     req.bitacora(`archivosmultimedia${acciones.CREAR}`, nuevoArchivo.id)
     return res.status(201).send(nuevoArchivo)
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 
@@ -140,6 +144,7 @@ self.crear = async function (req, res) {
       mime: nuevoArchivo.mime,
     })
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -160,6 +165,7 @@ self.eliminar = async function (req, res) {
     }
     return res.status(404).json('No se encontró el archivo')
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -180,6 +186,7 @@ self.eliminarVideo = async function (req, res) {
     }
     return res.status(204).send()
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
