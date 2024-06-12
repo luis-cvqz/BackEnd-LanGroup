@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const publicaciones = require('../controllers/publicaciones.controller')
 const Authorize = require("../middlewares/auth.middleware");
-const AuthorizeActualizacion = require("../middlewares/authActualizar");
+const AuthorizeActualizacion = require("../middlewares/authActualizar.middleware");
 
 // GET api/publicaciones/grupo?={grupo}&idioma?={idioma}&colaborador?={colaborador}
 router.get('/', Authorize("Administrador,Instructor,Aprendiz"), publicaciones.recuperarTodas)
