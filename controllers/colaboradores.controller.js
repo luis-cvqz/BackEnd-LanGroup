@@ -84,6 +84,11 @@ self.crear = async function (req, res) {
       const correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
 
       if (!correoExistente) {
+        if (req.body.descripcion)
+          descripcion = req.body.descripcion;
+        else
+          descripcion = "";
+
         const data = await colaborador.create({
           id: crypto.randomUUID(),
           nombre: req.body.nombre,
@@ -91,7 +96,7 @@ self.crear = async function (req, res) {
           usuario: req.body.usuario,
           correo: req.body.correo,
           contrasenia: await bcrypt.hash(req.body.contrasenia, 10),
-          descripcion: req.body.descripcion,
+          descripcion: descripcion,
           icono: req.body.icono,
           rolid: rolusuario.id,
         })
@@ -106,7 +111,7 @@ self.crear = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 }
 
@@ -115,13 +120,37 @@ self.actualizar = async function (req, res) {
   try {
     let id = req.params.id;
     let body = req.body;
-    let data = await colaborador.update(body, { where: { id: id} });
 
-    if (data[0] == 0)
-      return res.status(404).send()
-    else
+    let colaboradorExistente = await colaborador.findOne({ where: { id: id } });
+    if (!colaboradorExistente) {
+      return res.status(404).send({ message: 'Colaborador no encontrado' });
+    }
+
+    if (body.correo) {
+      let correoExistente = await colaborador.findOne({ where: { correo: body.correo, id: { [Op.ne]: id } } });
+      if (correoExistente) {
+        return res.status(400).send({ message: 'El correo ya está en uso por otro colaborador' });
+      }
+    }
+
+    let colaboradorActualizado = {};
+    if (body.nombre) colaboradorActualizado.nombre = body.nombre;
+    if (body.apellido) colaboradorActualizado.apellido = body.apellido;
+    if (body.usuario) colaboradorActualizado.usuario = body.usuario;
+    if (body.correo) colaboradorActualizado.correo = body.correo;
+    if (body.contrasenia) colaboradorActualizado.contrasenia = await bcrypt.hash(body.contrasenia, 10);
+    if (body.descripcion) colaboradorActualizado.descripcion = body.descripcion;
+    if (body.icono) colaboradorActualizado.icono = body.icono;
+    if (body.rolid) colaboradorActualizado.rolid = body.rolid;
+
+    let data = await colaborador.update(colaboradorActualizado, { where: { id: id } });
+
+    if (data[0] == 0) {
+      return res.status(404).send({ message: 'Colaborador no encontrado para actualizar' });
+    } else {
       req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
-      return res.status(204).send()
+      return res.status(204).send();
+    }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);

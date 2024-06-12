@@ -1,5 +1,5 @@
 GET http://localhost:3000/api/colaboradores
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE3MzgzMzQ4LCJleHAiOjE3MTczODQ1NDh9.xyZkimjOa4QCZmabbyG1l23kY_RoRBWG1jbmv-DEMaA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZDRjMGYzMjMtN2E0OC00ZTZiLWEzZWMtMDBkNTU5YzdjNDIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoicHJ1ZWJhVXNlciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFwcmVuZGl6IiwiaXNzIjoiU2Vydmlkb3JMYW5Hcm91cEpXVCIsImF1ZCI6IkNsaWVudGVzTGFuR3JvdXBKV1QiLCJpYXQiOjE3MTgyMTU5MzIsImV4cCI6MTcxODIxNzEzMn0.kODapU3mHixKSCYoKLzzTPDQw69dpNYpWXJ8tjbpm1s
 ###
 
 GET http://localhost:3000/api/colaboradores/prueba@estudiantes.uv.mx
@@ -21,11 +21,11 @@ POST http://localhost:3000/api/colaboradores
 Content-Type: application/json
 
 {
-    "nombre": "Nombre Prueba3",
+    "nombre": "asd",
     "apellido": "Apellido Prueba3",
     "usuario": "pruebaUser",
-    "correo": "pruebaUser3@uv.mx",
-    "contrasenia": "p4ssw0rd",
+    "correo": "prueba11@uv.mx",
+    "contrasenia": "P4ssw0rd-",
     "icono": "icon_perfil_1.png",
     "rol": "Aprendiz"
 }
@@ -33,11 +33,12 @@ Content-Type: application/json
 ###
 PUT http://localhost:3000/api/colaboradores/3567481f-2ab9-403c-8c3e-e9fd73109760
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE3MzgzMzQ4LCJleHAiOjE3MTczODQ1NDh9.xyZkimjOa4QCZmabbyG1l23kY_RoRBWG1jbmv-DEMaA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE3OTAyOTk5LCJleHAiOjE3MTc5MDQxOTl9.eoiIqtFWO8_rui6vzOtjp5pouw-Ysf8JsI2ZqxmWCBo
 
 {
     "descripcion": "descripción actualizadaa",
-    "correo": "zS21013868@estudiantes.uv.mx"
+    "correo": "zS21013868@estudiantes.uv.mx",
+    "contrasenia": "Langroup123-"
 }
 
 ###

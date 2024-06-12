@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const interacciones = require('../controllers/interacciones.controller')
 const Authorize = require('../middlewares/auth.middleware')
-const AuthorizeActualizacion = require("../middlewares/authActualizar");
+const AuthorizeActualizacion = require("../middlewares/authActualizar.middleware");
 
 // GET /api/interacciones/{publicacionid}
 router.get("/:publicacion", Authorize('Administrador,Instructor,Aprendiz'), interacciones.recuperarTodos);

@@ -12,7 +12,7 @@ module.exports = {
     const idAdministrador = roles.idAdministrador
 
     await queryInterface.bulkInsert('colaborador', [
-      { id: idColaboradorAdmin, usuario: 'langroupusuario', correo: 'zS21013868@estudiantes.uv.mx', contrasenia: await bcrypt.hash('langroup', 10), nombre: 'Admin', apellido: 'Prueba', descripcion: 'admin de prueba', icono: 'icon_perfil_1.png', rolid: idAdministrador, createdAt: new Date(), updatedAt: new Date() },
+      { id: idColaboradorAdmin, usuario: 'langroupusuario', correo: 'zS21013868@estudiantes.uv.mx', contrasenia: await bcrypt.hash('Langroup123-', 10), nombre: 'Admin', apellido: 'Prueba', descripcion: 'admin de prueba', icono: 'icon_perfil_1.png', rolid: idAdministrador, createdAt: new Date(), updatedAt: new Date() },
     ]);
   },
 
