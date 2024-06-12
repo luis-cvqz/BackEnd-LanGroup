@@ -120,7 +120,7 @@ self.agregarGrupo = async function (req, res) {
       return res.status(405).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -143,7 +143,7 @@ self.actualizarGrupo = async (req, res) => {
     req.bitacora(`grupos${Acciones.EDITAR}`, id)
     return res.status(200).json(grupoExistente);
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -162,7 +162,7 @@ self.eliminarGrupo = async function (req, res) {
       return res.status(404).send({ message: "Grupo no encontrado" });
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 };

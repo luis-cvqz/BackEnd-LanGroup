@@ -49,7 +49,7 @@ self.recuperarTodas = async function (req, res) {
 
     return res.status(200).json(data)
   } catch (error) {
-    logger.error(`Error al recuperar todas las solicitudes: ${error.message}`); 
+    logger.error(`Error al recuperar todas las solicitudes: ${error}`); 
     return res.status(500).send();
   }
 }
@@ -69,7 +69,7 @@ self.recuperar = async function (req, res) {
     else 
       return res.status(404).send();
   } catch (error) {
-    logger.error(`Error al recuperar la solicitud por ID: ${error.message}`); 
+    logger.error(`Error al recuperar la solicitud por ID: ${error}`); 
     return res.status(500).send();
   }
 };
@@ -97,7 +97,7 @@ self.crear = async function (req, res) {
       estado: nuevaSolicitud.idiomaid
     });
   } catch (error) {
-    logger.error(`Error al crear la solicitud: ${error.message}`); 
+    logger.error(`Error al crear la solicitud: ${error}`); 
     return res.status(500).send();
   }
 };
@@ -124,7 +124,7 @@ self.actualizar = async function (req, res) {
 
     return res.status(204).send();
   } catch (error) {
-    logger.error(`Error al actualizar la solicitud: ${error.message}`); 
+    logger.error(`Error al actualizar la solicitud: ${error}`); 
     return res.status(500).send();
   }
 };
@@ -147,7 +147,7 @@ self.eliminar = async function (req, res) {
     }
     return res.status(404).send();
   } catch (error) {
-    logger.error(`Error al eliminar la solicitud: ${error.message}`); 
+    logger.error(`Error al eliminar la solicitud: ${error}`); 
     return res.status(500).send();
   }
 };

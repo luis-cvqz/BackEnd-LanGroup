@@ -31,7 +31,7 @@ self.recuperar = async function (req, res) {
       return res.status(404).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 };
@@ -66,7 +66,7 @@ self.recuperarTodos = async function (req, res) {
     else
       return res.status(404).send()
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 }
@@ -105,7 +105,7 @@ self.crear = async function (req, res) {
       return res.status(400).json({ message: "Información requerida"})
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 }
@@ -123,7 +123,7 @@ self.actualizar = async function (req, res) {
       req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
       return res.status(204).send()
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 }

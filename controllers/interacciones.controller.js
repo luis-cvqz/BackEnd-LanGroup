@@ -21,7 +21,7 @@ self.recuperarTodos = async function (req, res) {
             return res.status(404).send()
         }
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`); 
+        logger.error(`Error interno del servidor: ${error}`); 
         return res.status(500).json(error)
     }
 }
@@ -55,7 +55,7 @@ self.crear = async function (req, res) {
             return res.status(400).send()
         }
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`); 
+        logger.error(`Error interno del servidor: ${error}`); 
         return res.status(500).json(error)
     }
 }
@@ -75,7 +75,7 @@ self.actualizar = async function (req, res) {
             return res.status(204).send()
         }
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`); 
+        logger.error(`Error interno del servidor: ${error}`); 
         return res.status(500).json(error)
     }
 }
@@ -96,7 +96,7 @@ self.eliminar = async function (req, res) {
             return res.status(404).send()
         }
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`); 
+        logger.error(`Error interno del servidor: ${error}`); 
         return res.status(500).json(error)
     }
 }

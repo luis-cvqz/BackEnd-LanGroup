@@ -24,7 +24,7 @@ exports.enviarCorreo = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).send({ message: "Correo electrónico enviado!" });
   } catch (error) {
-    logger.error(`Error al enviar el correo electrónico: ${error.message}`); // Log con el mensaje de error específico
+    logger.error(`Error al enviar el correo electrónico: ${error}`); // Log con el mensaje de error específico
     res.status(500).send({
       message: "Error al enviar el correo electrónico",
       error: error.toString(),

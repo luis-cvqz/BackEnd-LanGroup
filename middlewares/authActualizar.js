@@ -23,7 +23,7 @@ const AuthorizeActualizacion = (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.status(500).json({ error: `Error en la autorización: ${error.message}` });
+        return res.status(500).json({ error: `Error en la autorización: ${error}` });
     }
 };
 
