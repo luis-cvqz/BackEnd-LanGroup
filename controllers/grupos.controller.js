@@ -2,7 +2,6 @@ const { grupo, idioma, Sequelize } = require("../models");
 const crypto = require("crypto");
 const Op = Sequelize.Op;
 const logger = require("../logger/logger");
-const acciones = require('../middlewares/bitacora.middleware')
 
 let self = {};
 
@@ -113,7 +112,7 @@ self.agregarGrupo = async function (req, res) {
     const grupoCreado = await grupo.create(nuevoGrupo);
 
     if (grupoCreado) { 
-      req.bitacora(`grupos${acciones.CREAR}`, nuevoGrupo.id)
+      req.bitacora(`grupos.crear`, nuevoGrupo.id)
       return res.status(201).json(grupoCreado);
     } else {
       logger.error(`No se pudo crear el grupo.`);
@@ -140,7 +139,7 @@ self.actualizarGrupo = async (req, res) => {
 
     grupoExistente = await grupoExistente.update(req.body);
 
-    req.bitacora(`grupos${acciones.EDITAR}`, id)
+    req.bitacora(`grupos.editar`, id)
     return res.status(200).json(grupoExistente);
   } catch (error) {
     logger.error(`Error interno del servidor: ${error.message}`); 
@@ -155,7 +154,7 @@ self.eliminarGrupo = async function (req, res) {
     let deletedRows = await grupo.destroy({ where: { id: id } });
 
     if (deletedRows > 0) {
-      req.bitacora(`grupos${acciones.ELIMINAR}`, id)
+      req.bitacora(`grupos.eliminar`, id)
       return res.status(204).send();
     } else {
       logger.error(`Grupo con id ${id} no encontrado.`); 

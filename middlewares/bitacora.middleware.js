@@ -19,10 +19,6 @@ const bitacoralogger = (req, res, next) => {
         const token = authHeader.split(' ')[1]
         const tokenDecodificado = jwt.decode(token)
         idColaborador = tokenDecodificado[ClaimTypes.Name] ?? id
-        console.log(token)
-        console.log(tokenDecodificado)
-        console.log(tokenDecodificado[ClaimTypes.Name])
-        console.log(idColaborador)
       }
     }
 
@@ -37,4 +33,4 @@ const bitacoralogger = (req, res, next) => {
   next()
 }
 
-module.exports = { bitacoralogger, CREAR, EDITAR, ELIMINAR }
+module.exports = bitacoralogger

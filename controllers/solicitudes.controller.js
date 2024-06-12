@@ -3,7 +3,6 @@ const Op = Sequelize.Op;
 const crypto = require('crypto');
 const fs = require('fs');
 const logger = require('../logger/logger'); 
-const acciones = require('../middlewares/bitacora.middleware')
 
 let self = {};
 
@@ -87,7 +86,7 @@ self.crear = async function (req, res) {
       nombrearchivo: req.body.colaboradorid + '-' + req.body.nombrearchivo 
     });
 
-    req.bitacora(`solicitudes${acciones.CREAR}`, nuevaSolicitud.id)
+    req.bitacora(`solicitudes.crear`, nuevaSolicitud.id)
     return res.status(201).json({
       contenido: nuevaSolicitud.contenido,
       motivo: nuevaSolicitud.motivo,
@@ -118,7 +117,7 @@ self.actualizar = async function (req, res) {
       estado: req.body.estado
     }, { where: { id: id} });
 
-    req.bitacora(`solicitudes${acciones.EDITAR}`, id)
+    req.bitacora(`solicitudes.editar`, id)
     if (data[0] === 0)
       return res.status(404).json('Archivo no encontrado');
 
@@ -141,7 +140,7 @@ self.eliminar = async function (req, res) {
   
     let data = await solicitudEncontrada.destroy({ where: { id: id } });
     if (data === 1) {
-      req.bitacora(`solicitudes${acciones.ELIMINAR}`, id)
+      req.bitacora(`solicitudes.eliminar`, id)
       fs.existsSync("uploads/" + solicitud.nombrearchivo) && fs.unlinkSync("uploads/" + videoEncontrado.nombrearchivo);
       return res.status(204).send()
     }

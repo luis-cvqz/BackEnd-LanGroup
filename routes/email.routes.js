@@ -5,6 +5,6 @@ const emailController = require("../controllers/email.controller"); // Asegúrat
 const Authorize = require("../middlewares/auth.middleware");
 
 // Definir la ruta para enviar correos
-router.post("/enviar-correo", Authorize("Administrador,Instructor,Aprendiz"), emailController.enviarCorreo);
+router.post("/correo", Authorize("Administrador,Instructor,Aprendiz"), emailController.enviarCorreo);
 
 module.exports = router;

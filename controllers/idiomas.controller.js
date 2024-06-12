@@ -2,7 +2,6 @@ const { idioma, Sequelize } = require('../models');
 const crypto = require('crypto');
 const Op = Sequelize.Op;
 const logger = require('../logger/logger'); 
-const acciones = require('../middlewares/bitacora.middleware')
 
 let self = {};
 
@@ -51,7 +50,7 @@ self.crear = async function (req, res) {
       id: crypto.randomUUID(),
       nombre: req.body.nombre
     });
-    req.bitacora(`idiomas${acciones.CREAR}`, nuevoIdioma.id)
+    req.bitacora(`idiomas.crear`, nuevoIdioma.id)
     return res.status(201).send(nuevoIdioma);
   } catch (error) {
     logger.error(`Error al crear un nuevo idioma: ${error.message}`); 
@@ -70,7 +69,7 @@ self.actualizar = async function (req, res) {
     if (data[0] === 0) {
       return res.status(404).send();
     } else {
-      req.bitacora(`idiomas${acciones.EDITAR}`, id)
+      req.bitacora(`idiomas.editar`, id)
       return res.status(204).send();
     }
   } catch (error) {
@@ -90,7 +89,7 @@ self.eliminar = async function (req, res) {
 
     data = await idioma.destroy({ where: { id: id }});
     if (data === 1) {
-      req.bitacora(`idiomas${acciones.ELIMINAR}`,)
+      req.bitacora(`idiomas.eliminar`,)
       res.status(204).send();
     }
     else {
