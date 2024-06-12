@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const jwtSecret = process.env.JWT_SECRET
 const ClaimTypes = require('../config/claimtypes')
-const logger = require('../logger/logger')
+const logger = require('../services/logger.service')
 const { GeneraToken } = require('../services/jwttoken.service')
 
 const Authorize = (rol) => {
@@ -32,8 +32,8 @@ const Authorize = (rol) => {
 
             next()
         } catch (error) {
-            logger.error(`Error en la autorización: ${error.message}`); // Log con el mensaje de error específico
-            return res.status(500).json();
+            logger.error(`Error en la autorización: ${error}`); // Log con el mensaje de error específico
+            return res.status(500).send()
         }
     }
 }

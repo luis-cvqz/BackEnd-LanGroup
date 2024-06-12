@@ -1,6 +1,6 @@
 //const { archivomultimedia, solicitud, Sequelize } = require('../models')
 const fs = require('fs')
-const logger = require('../middlewares/logger.middleware')
+const logger = require('./logger.service')
 
 const UPLOADS_PATH = './uploads/'
 const CHUNK_SIZE = 10240

@@ -1,7 +1,8 @@
 const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
+const Acciones = require('../util/acciones.enum')
 
 let self = {}
 
@@ -67,8 +68,8 @@ self.recuperarTodas = async function (req, res) {
 
     return res.status(200).json(publicaciones)
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
-    return res.status(500).json({ error: error.message })
+    logger.error(`Error interno del servidor: ${error}`); 
+    return res.status(500).json({ error: error })
   }
 }   
 
@@ -111,7 +112,7 @@ self.recuperar = async function (req, res) {
       return res.status(404).json({ message: 'No se encontró la publicación' })
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }
@@ -131,7 +132,7 @@ self.crear = async function (req, res) {
     req.bitacora(`publicaciones.crear`, data.id)
     return res.status(201).json(data)
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }
@@ -153,7 +154,7 @@ self.actualizar = async function (req, res) {
 
 
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`);
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).send()
   }
 }
@@ -178,7 +179,7 @@ self.eliminar = async function (req, res) {
     }
 
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }
