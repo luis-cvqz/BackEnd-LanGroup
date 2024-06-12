@@ -1,6 +1,6 @@
 const { where } = require('sequelize');
 const { rol } = require('../models');
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 let self = {}
 

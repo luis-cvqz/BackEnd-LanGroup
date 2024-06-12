@@ -2,7 +2,7 @@ const { where } = require('sequelize');
 const { colaborador, rol, Sequelize } = require('../models');
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
-const logger = require('../logger/logger'); // Agregar el logger
+const logger = require('../services/logger.service'); // Agregar el logger
 const crypto = require('crypto'); // Se añade la importación de crypto para generar UUID
 
 let self = {};

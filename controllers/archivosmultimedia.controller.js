@@ -2,7 +2,7 @@ const { archivomultimedia, Sequelize } = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const fs = require('fs')
-const logger = require('../middlewares/logger.middleware')
+const logger = require('../services/logger.service')
 
 let self = {}
 

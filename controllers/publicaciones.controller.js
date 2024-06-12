@@ -1,7 +1,7 @@
 const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 let self = {}
 

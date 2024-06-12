@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { colaborador, rol, Sequelize } = require('../models');
 const { GeneraToken, TiempoRestanteToken } = require('../services/jwttoken.service');
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 let self = {};
 

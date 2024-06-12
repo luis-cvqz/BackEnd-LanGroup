@@ -1,7 +1,7 @@
 const { publicacion, interaccion, colaborador } = require('../models')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 let self = {}
 

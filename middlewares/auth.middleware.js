@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const jwtSecret = process.env.JWT_SECRET
 const ClaimTypes = require('../config/claimtypes')
-const logger = require('../logger/logger')
+const logger = require('../services/logger.service')
 const { GeneraToken } = require('../services/jwttoken.service')
 
 const Authorize = (rol) => {
