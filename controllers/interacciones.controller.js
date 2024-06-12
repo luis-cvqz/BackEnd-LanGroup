@@ -2,6 +2,7 @@ const { publicacion, interaccion, colaborador } = require('../models')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const logger = require('../services/logger.service'); 
+const Acciones = require('../util/acciones.enum');
 
 let self = {}
 
@@ -42,7 +43,7 @@ self.crear = async function (req, res) {
             })
     
             if (data) {
-                req.bitacora(`interacciones.crear`, data.id)
+                req.bitacora(`interacciones${Acciones.CREAR}`, data.id)
                 return res.status(201).send()
             }
             else {
@@ -67,7 +68,7 @@ self.actualizar = async function (req, res) {
         let data = await interaccion.update(body, { where: { id: id} });
 
         if (data[0] == 0){
-            req.bitacora(`interacciones.editar`, id)
+            req.bitacora(`interacciones${Acciones.EDITAR}`, id)
             return res.status(404).send()
         }
         else {
@@ -88,7 +89,7 @@ self.eliminar = async function (req, res) {
         data = await interaccion.destroy({ where: { id: id } })
 
         if (data === 1) {
-            req.bitacora(`interacciones.eliminar`, id)
+            req.bitacora(`interacciones${Acciones.ELIMINAR}`, id)
             return res.status(204).send()
         }
         else {

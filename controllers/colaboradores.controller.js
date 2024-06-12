@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
 const logger = require('../services/logger.service'); // Agregar el logger
 const crypto = require('crypto'); // Se añade la importación de crypto para generar UUID
+const Acciones = require('../util/acciones.enum')
 
 let self = {};
 
@@ -95,7 +96,7 @@ self.crear = async function (req, res) {
           rolid: rolusuario.id,
         })
 
-        req.bitacora(`colaboradores.crear`, data.id)
+        req.bitacora(`colaboradores${Acciones.CREAR}`, data.id)
         return res.status(201).send()
       } else {
         return res.status(400).json({ message: "Correo duplicado"})
@@ -119,7 +120,7 @@ self.actualizar = async function (req, res) {
     if (data[0] == 0)
       return res.status(404).send()
     else
-      req.bitacora(`colaboradores.editar`, id)
+      req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
       return res.status(204).send()
   } catch (error) {
     logger.error(`Error interno del servidor: ${error.message}`); 
