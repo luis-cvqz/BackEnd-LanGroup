@@ -48,7 +48,7 @@ const {
     descargarVideoImpl, 
     subirConstanciaImpl, 
     descargarConstanciaImpl 
-} = require('./gRPC/implementacionesGRPC.js')
+} = require('./services/grpc.service.js')
 const grpc = require('@grpc/grpc-js')
 const protoLoader = require('@grpc/proto-loader')
 const PROTO_PATH = './proto/archivos.proto'
