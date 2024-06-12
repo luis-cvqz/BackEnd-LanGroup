@@ -1,7 +1,8 @@
 const { grupo, idioma, Sequelize } = require("../models");
 const crypto = require("crypto");
 const Op = Sequelize.Op;
-const logger = require("../logger/logger");
+const logger = require("../services/logger.service");
+const Acciones = require('../util/acciones.enum');
 
 let self = {};
 
@@ -102,6 +103,7 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
 self.agregarGrupo = async function (req, res) {
   try {
     const nuevoGrupo = {
+      id: crypto.randomUUID(),
       nombre: req.body.nombre,
       descripcion: req.body.descripcion,
       icono: req.body.icono,
@@ -111,13 +113,14 @@ self.agregarGrupo = async function (req, res) {
     const grupoCreado = await grupo.create(nuevoGrupo);
 
     if (grupoCreado) { 
+      req.bitacora(`grupos${Acciones.CREAR}`, nuevoGrupo.id)
       return res.status(201).json(grupoCreado);
     } else {
       logger.error(`No se pudo crear el grupo.`);
       return res.status(405).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -137,9 +140,10 @@ self.actualizarGrupo = async (req, res) => {
 
     grupoExistente = await grupoExistente.update(req.body);
 
+    req.bitacora(`grupos${Acciones.EDITAR}`, id)
     return res.status(200).json(grupoExistente);
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
@@ -151,13 +155,14 @@ self.eliminarGrupo = async function (req, res) {
     let deletedRows = await grupo.destroy({ where: { id: id } });
 
     if (deletedRows > 0) {
+      req.bitacora(`grupos${Acciones.ELIMINAR}`, id)
       return res.status(204).send();
     } else {
       logger.error(`Grupo con id ${id} no encontrado.`); 
       return res.status(404).send({ message: "Grupo no encontrado" });
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 };

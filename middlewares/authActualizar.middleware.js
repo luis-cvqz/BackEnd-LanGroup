@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 const ClaimTypes = require('../config/claimtypes')
-const logger = require('../logger/logger')
+const logger = require('../services/logger.service')
 
 const AuthorizeActualizacion = (req, res, next) => {
     try {
@@ -23,8 +23,8 @@ const AuthorizeActualizacion = (req, res, next) => {
 
         next();
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`);
-        return res.status(500).json({ error: `Error en la autorización: ${error.message}` });
+        logger.error(`Error interno del servidor: ${error}`);
+        return res.status(500).send();
     }
 };
 

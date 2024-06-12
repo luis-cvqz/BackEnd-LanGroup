@@ -2,8 +2,9 @@ const { where } = require('sequelize');
 const { colaborador, rol, Sequelize } = require('../models');
 const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
-const logger = require('../logger/logger'); // Agregar el logger
+const logger = require('../services/logger.service'); // Agregar el logger
 const crypto = require('crypto'); // Se añade la importación de crypto para generar UUID
+const Acciones = require('../util/acciones.enum')
 
 let self = {};
 
@@ -30,7 +31,7 @@ self.recuperar = async function (req, res) {
       return res.status(404).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 };
@@ -65,7 +66,7 @@ self.recuperarTodos = async function (req, res) {
     else
       return res.status(404).send()
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 }
@@ -100,6 +101,7 @@ self.crear = async function (req, res) {
           rolid: rolusuario.id,
         })
 
+        req.bitacora(`colaboradores${Acciones.CREAR}`, data.id)
         return res.status(201).send()
       } else {
         return res.status(400).json({ message: "Correo duplicado"})
@@ -108,8 +110,8 @@ self.crear = async function (req, res) {
       return res.status(400).json({ message: "Información requerida"})
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
-    return res.status(500).json(error);
+    logger.error(`Error interno del servidor: ${error}`); 
+    return res.status(500).send();
   }
 }
 
@@ -146,10 +148,11 @@ self.actualizar = async function (req, res) {
     if (data[0] == 0) {
       return res.status(404).send({ message: 'Colaborador no encontrado para actualizar' });
     } else {
+      req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
       return res.status(204).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).json(error);
   }
 }

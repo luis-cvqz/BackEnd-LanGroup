@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { colaborador, rol, Sequelize } = require('../models');
 const { GeneraToken, TiempoRestanteToken } = require('../services/jwttoken.service');
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 let self = {};
 
@@ -30,6 +30,7 @@ self.login = async function (req, res) {
 
         token = GeneraToken(data.id, data.usuario, data.rol);
 
+        req.bitacora("usuario.login", data.id)
         return res.status(200).json({
             correo: data.correo,
             usuario: data.usuario,
@@ -37,8 +38,9 @@ self.login = async function (req, res) {
             jwt: token
         });
     } catch (error) {
-        logger.error(`Error interno del servidor: ${error.message}`);
-        return res.status(500).json(error);
+        let mensaje = error.message;
+        logger.error(`Error interno del servidor: ${ mensaje }`);
+        return res.status(500).send();
     }
 };
 

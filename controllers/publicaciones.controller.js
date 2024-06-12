@@ -1,7 +1,8 @@
 const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
+const Acciones = require('../util/acciones.enum')
 
 let self = {}
 
@@ -67,8 +68,8 @@ self.recuperarTodas = async function (req, res) {
 
     return res.status(200).json(publicaciones)
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
-    return res.status(500).json({ error: error.message })
+    logger.error(`Error interno del servidor: ${error}`); 
+    return res.status(500).json({ error: error })
   }
 }   
 
@@ -111,7 +112,7 @@ self.recuperar = async function (req, res) {
       return res.status(404).json({ message: 'No se encontró la publicación' })
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }
@@ -127,9 +128,11 @@ self.crear = async function (req, res) {
       colaboradorid: req.body.colaboradorid,
       grupoid: req.body.grupoid,
     })
+
+    req.bitacora(`publicaciones.crear`, data.id)
     return res.status(201).json(data)
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }
@@ -141,14 +144,17 @@ self.actualizar = async function (req, res) {
     let body = req.body
     let data = await publicacion.update(body, { where: { id: id } })
 
-    if (data[0] === 0)
+    if (data[0] === 0){
       return res.status(404).send()
-    else
+    }
+    else {
+      req.bitacora(`publicaciones.editar`, id)
       return res.status(204).json(data)
+    }
 
 
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`);
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).send()
   }
 }
@@ -164,13 +170,16 @@ self.eliminar = async function (req, res) {
 
     data = await publicacion.destroy({ where: { id: id } })
     
-    if (data === 1)
+    if (data === 1){
+      req.bitacora(`publicaciones.eliminar`, id)
       return res.status(204).send()
-    else
+    }
+    else {
       return res.status(404).send()
+    }
 
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error.message}`); 
+    logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send()
   }
 }

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const { obtenerSchemaPorTipo } = require('../services/validaciones.service');
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
 
 const ValidarObjeto = (type) => {
   return async (req, res, next) => {

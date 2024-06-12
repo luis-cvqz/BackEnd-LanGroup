@@ -2,6 +2,8 @@ const { archivomultimedia, Sequelize } = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const fs = require('fs')
+const logger = require('../services/logger.service')
+const Acciones = require('../util/acciones.enum')
 
 let self = {}
 
@@ -35,6 +37,7 @@ self.recuperarTodos = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -56,6 +59,7 @@ self.recuperar = async function (req, res) {
     return res.status(200).contentType(archivoEncontrado.mime).send(imagen)
     
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -82,6 +86,7 @@ self.recuperarDetalle = async function (req, res) {
       return res.status(404).json('No se encontró el archivo')
 
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -104,8 +109,10 @@ self.crearVideo = async function (req, res) {
       archivo: null
     })
 
+    req.bitacora(`archivosmultimedia${Acciones.CREAR}`, nuevoArchivo.id)
     return res.status(201).send(nuevoArchivo)
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 
@@ -130,6 +137,7 @@ self.crear = async function (req, res) {
       archivo: archivoRecibido
     })
     
+    req.bitacora(`archivosmultimedia${Acciones.CREAR}`,nuevoArchivo.id)
     return res.status(201).json({
       id: nuevoArchivo.id,
       publicacionid: nuevoArchivo.pubicacionid,
@@ -137,6 +145,7 @@ self.crear = async function (req, res) {
       mime: nuevoArchivo.mime,
     })
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -152,10 +161,12 @@ self.eliminar = async function (req, res) {
     
     let data = await archivomultimedia.destroy({ where: { id: id } })
     if (data === 1) {
+      req.bitacora(`archivosmultimedia${Acciones.ELIMINAR}`, id)
       return res.status(204).send()
     }
     return res.status(404).json('No se encontró el archivo')
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }
@@ -171,10 +182,12 @@ self.eliminarVideo = async function (req, res) {
 
     let data = await videoEncontrado.destroy({ where: { id: id } })
     if (data === 1) {
+      req.bitacora(`archivosmultimedia${Acciones.ELIMINAR}`, id)
       fs.existsSync("uploads/" + videoEncontrado.nombre) && fs.unlinkSync("uploads/" + videoEncontrado.nombre)
     }
     return res.status(204).send()
   } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`)
     return res.status(500).send()
   }
 }

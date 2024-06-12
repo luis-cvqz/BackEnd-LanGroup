@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const logger = require("../logger/logger"); // Importar el logger
+const logger = require("../services/logger.service"); // Importar el logger
 
 exports.enviarCorreo = async (req, res) => {
   const { to, subject, text } = req.body;
@@ -24,7 +24,7 @@ exports.enviarCorreo = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).send({ message: "Correo electrónico enviado!" });
   } catch (error) {
-    logger.error(`Error al enviar el correo electrónico: ${error.message}`); // Log con el mensaje de error específico
+    logger.error(`Error al enviar el correo electrónico: ${error}`); // Log con el mensaje de error específico
     res.status(500).send({
       message: "Error al enviar el correo electrónico",
       error: error.toString(),

@@ -1,7 +1,8 @@
 const { idioma, Sequelize } = require('../models');
 const crypto = require('crypto');
 const Op = Sequelize.Op;
-const logger = require('../logger/logger'); 
+const logger = require('../services/logger.service'); 
+const Acciones = require('../util/acciones.enum');
 
 let self = {};
 
@@ -18,7 +19,7 @@ self.recuperarTodos = async function (req, res) {
     else
       return res.status(404).send();
   } catch (error) {
-    logger.error(`Error al recuperar todos los idiomas: ${error.message}`);
+    logger.error(`Error al recuperar todos los idiomas: ${error}`);
     return res.status(500).send();
   }
 };
@@ -38,7 +39,7 @@ self.recuperar = async function (req, res) {
     else
       return res.status(404).json({message: 'No se encontró ese idioma'});
   } catch (error) {
-    logger.error(`Error al recuperar el idioma por ID: ${error.message}`); 
+    logger.error(`Error al recuperar el idioma por ID: ${error}`); 
     return res.status(500).send();
   }
 };
@@ -50,9 +51,10 @@ self.crear = async function (req, res) {
       id: crypto.randomUUID(),
       nombre: req.body.nombre
     });
+    req.bitacora(`idiomas${Acciones.CREAR}`, nuevoIdioma.id)
     return res.status(201).send(nuevoIdioma);
   } catch (error) {
-    logger.error(`Error al crear un nuevo idioma: ${error.message}`); 
+    logger.error(`Error al crear un nuevo idioma: ${error}`); 
     return res.status(500).send();
   }
 };
@@ -65,12 +67,14 @@ self.actualizar = async function (req, res) {
 
     let data = await idioma.update(body, { where: { id: id } });
 
-    if (data[0] === 0)
+    if (data[0] === 0) {
       return res.status(404).send();
-    else
+    } else {
+      req.bitacora(`idiomas${Acciones.EDITAR}`, id)
       return res.status(204).send();
+    }
   } catch (error) {
-    logger.error(`Error al actualizar el idioma: ${error.message}`);
+    logger.error(`Error al actualizar el idioma: ${error}`);
     return res.status(500).send();
   }
 };
@@ -85,12 +89,15 @@ self.eliminar = async function (req, res) {
       return res.status(404).json('Idioma no encontrado.');
 
     data = await idioma.destroy({ where: { id: id }});
-    if (data === 1)
+    if (data === 1) {
+      req.bitacora(`idiomas${Acciones.ELIMINAR}`,)
       res.status(204).send();
-    else
+    }
+    else {
       res.status(404).send();
+    }
   } catch (error) {
-    logger.error(`Error al eliminar el idioma: ${error.message}`); 
+    logger.error(`Error al eliminar el idioma: ${error}`); 
     return res.status(500).send();
   }
 };
