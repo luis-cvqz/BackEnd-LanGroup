@@ -49,6 +49,72 @@ const enviarCorreo = Joi.object({
   text: Joi.string().required().min(1).max(255)
 });
 
+const creargrupo = Joi.object({
+  nombre: Joi.string().required().min(1).max(50),
+  descripcion: Joi.string().required().min(1),
+  icono: Joi.string().required().pattern(new RegExp('\\.png$')).min(1).max(50),
+  idiomaid: Joi.string().required().min(1).max(255)
+});
+
+const actualizargrupo = Joi.object({
+  nombre: Joi.string().optional().min(1).max(50),
+  descripcion: Joi.string().optional().min(1),
+  icono: Joi.string().optional().pattern(new RegExp('\\.png$')).min(1).max(50),
+  idiomaid: Joi.string().optional().min(1).max(255)
+});
+
+const idioma = Joi.object({
+  nombre: Joi.string().required().min(1).max(20)
+});
+
+const crearinteraccion = Joi.object({
+  valoracion: Joi.number().integer().required().min(1).max(5),
+  comentario: Joi.string().required().min(1).max(500),
+  fecha: Joi.date().required(),
+  colaboradorid: Joi.string().required().min(1).max(255),
+  publicacionid: Joi.string().required().min(1).max(255)
+})
+
+const actualizarinteraccion = Joi.object({
+  valoracion: Joi.number().integer().optional().min(1).max(5),
+  comentario: Joi.string().optional().min(1).max(500),
+  fecha: Joi.date().optional(),
+  colaboradorid: Joi.string().optional().min(1).max(255),
+  publicacionid: Joi.string().optional().min(1).max(255)
+})
+
+const crearpublicacion = Joi.object({
+  titulo: Joi.string().required().min(1).max(50),
+  descripcion: Joi.string().required().min(1).max(500),
+  fecha: Joi.date().required(),
+  colaboradorid: Joi.string().required().min(1).max(255),
+  grupoid: Joi.string().required().min(1).max(255)
+});
+
+const actualizarpublicacion = Joi.object({
+  titulo: Joi.string().optional().min(1).max(50),
+  descripcion: Joi.string().optional().min(1).max(500),
+  fecha: Joi.date().optional(),
+  colaboradorid: Joi.string().optional().min(1).max(255),
+  grupoid: Joi.string().optional().min(1).max(255)
+});
+
+const crearsolicitud = Joi.object({
+  contenido: Joi.string().required().min(1).max(500),
+  motivo: Joi.string().required().min(1).max(500),
+  constancia: Joi.string().required().min(1).max(500),
+  colaboradorid: Joi.string().required().min(1).max(255),
+  idiomaid: Joi.string().required().min(1).max(255),
+  nombrearchivo: Joi.string().required().min(1).max(255),
+  estado: Joi.string().required().min(1).max(50)
+});
+
+const actualizarsolicitud = Joi.object({
+  contenido: Joi.string().optional().min(1).max(500),
+  motivo: Joi.string().optional().min(1).max(500),
+  estado: Joi.string().optional().min(1).max(25)
+});
+
 const obtenerSchemaPorTipo = (type) => {
   switch (type) {
     case 'crearcolaborador':
@@ -63,6 +129,24 @@ const obtenerSchemaPorTipo = (type) => {
       return iniciarsesion;
     case 'enviarCorreo':
       return enviarCorreo;
+    case 'creargrupo':
+      return creargrupo;
+    case 'actualizargrupo':
+      return actualizargrupo;
+    case 'idioma':
+      return idioma;
+    case 'crearinteraccion':
+      return crearinteraccion;
+    case 'actualizarinteraccion':
+      return actualizarinteraccion;
+    case 'crearpublicacion':
+      return crearpublicacion;
+    case 'actualizarpublicacion':
+      return actualizarpublicacion;
+    case 'crearsolicitud':
+      return crearsolicitud;
+    case 'actualizarsolicitud':
+      return actualizarsolicitud;
     default:
         throw new Error('Objecto desconocido');
   }

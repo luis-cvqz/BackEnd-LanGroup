@@ -156,7 +156,7 @@ self.actualizar = async function (req, res) {
     let data = await colaborador.update(colaboradorActualizado, { where: { id: id } });
 
     if (data[0] == 0) {
-      return res.status(404).send({ message: 'Colaborador no encontrado para actualizar' });
+      return res.status(400).send();
     } else {
       req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
       return res.status(204).send();

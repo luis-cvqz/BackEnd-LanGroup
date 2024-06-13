@@ -69,7 +69,7 @@ self.recuperarTodas = async function (req, res) {
     return res.status(200).json(publicaciones)
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json({ error: error })
+    return res.status(500).send();
   }
 }   
 
@@ -145,7 +145,7 @@ self.actualizar = async function (req, res) {
     let data = await publicacion.update(body, { where: { id: id } })
 
     if (data[0] === 0){
-      return res.status(404).send()
+      return res.status(400).send()
     }
     else {
       req.bitacora(`publicaciones.editar`, id)
