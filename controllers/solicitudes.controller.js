@@ -84,7 +84,8 @@ self.crear = async function (req, res) {
       constancia: req.body.constancia,
       colaboradorid: req.body.colaboradorid,
       idiomaid: req.body.idiomaid,
-      nombrearchivo: req.body.colaboradorid + '-' + req.body.nombrearchivo 
+      nombrearchivo: req.body.colaboradorid + '-' + req.body.nombrearchivo,
+      estado: req.body.estado
     });
 
     req.bitacora(`solicitudes.crear`, nuevaSolicitud.id)
@@ -113,14 +114,12 @@ self.actualizar = async function (req, res) {
       return res.status(404).send();
 
     let data = await solicitud.update({
-      contenido: req.body.contenido,
-      motivo: req.body.motivo,
       estado: req.body.estado
     }, { where: { id: id} });
 
     req.bitacora(`solicitudes.editar`, id)
     if (data[0] === 0)
-      return res.status(404).json('Archivo no encontrado');
+      return res.status(400).send();
 
     return res.status(204).send();
   } catch (error) {

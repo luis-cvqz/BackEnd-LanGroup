@@ -22,7 +22,7 @@ self.recuperarTodos = async function (req, res) {
         }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 
@@ -48,7 +48,7 @@ self.crear = async function (req, res) {
             }
             else {
                 logger.error(`Error al crear la interacción`); 
-                return res.status(400).send()
+                return res.status(500).send()
             }
         } else {
             logger.error(`Colaborador o publicación no encontrados`); 
@@ -56,7 +56,7 @@ self.crear = async function (req, res) {
         }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 
@@ -68,15 +68,15 @@ self.actualizar = async function (req, res) {
         let data = await interaccion.update(body, { where: { id: id} });
 
         if (data[0] == 0){
-            req.bitacora(`interacciones${Acciones.EDITAR}`, id)
-            return res.status(404).send()
+            return res.status(400).send();
         }
         else {
+            req.bitacora(`interacciones${Acciones.EDITAR}`, id)
             return res.status(204).send()
         }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 
@@ -97,7 +97,7 @@ self.eliminar = async function (req, res) {
         }
     } catch (error) {
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 

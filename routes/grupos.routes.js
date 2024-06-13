@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const grupos = require("../controllers/grupos.controller");
 const Authorize = require("../middlewares/auth.middleware");
+const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
 // GET /api/grupos/{id}
@@ -14,12 +15,13 @@ router.get(
 );
 
 // POST /api/grupos
-router.post("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), grupos.agregarGrupo);
+router.post("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('creargrupo'), grupos.agregarGrupo);
 
 // PUT /api/grupos/{id}
 router.put(
   "/:id",
   Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`),
+  ValidarObjeto('actualizargrupo'),
   grupos.actualizarGrupo
 );
 

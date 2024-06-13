@@ -27,7 +27,7 @@ self.recuperarPorId = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`);
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 };
 
@@ -53,7 +53,7 @@ self.recuperarPorIdioma = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`);
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 };
 
@@ -95,7 +95,7 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`);
-    return res.status(500).json({ message: "Error interno del servidor" });
+    return res.status(500).send();
   }
 };
 
@@ -121,7 +121,7 @@ self.agregarGrupo = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json({ message: "Error interno del servidor" });
+    return res.status(500).send();
   }
 };
 
@@ -138,13 +138,17 @@ self.actualizarGrupo = async (req, res) => {
       return res.status(404).json({ message: "Grupo no encontrado" });
     }
 
-    grupoExistente = await grupoExistente.update(req.body);
+    let data = await grupoExistente.update(req.body);
 
-    req.bitacora(`grupos${Acciones.EDITAR}`, id)
-    return res.status(200).json(grupoExistente);
+    if (data[0] == 0)
+      return res.status(400).send();
+    else {
+      req.bitacora(`grupos${Acciones.EDITAR}`, id)
+      return res.status(204).json(grupoExistente);
+    }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json({ message: "Error interno del servidor" });
+    return res.status(500).send();
   }
 };
 
@@ -163,7 +167,7 @@ self.eliminarGrupo = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 };
 

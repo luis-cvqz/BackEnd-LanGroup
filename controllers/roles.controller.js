@@ -22,7 +22,7 @@ self.recuperar = async function (req, res){
         }
     } catch (error){
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 
@@ -43,7 +43,7 @@ self.recuperarTodos = async function (req, res){
 
     }catch(error){
         logger.error(`Error interno del servidor: ${error}`); 
-        return res.status(500).json(error)
+        return res.status(500).send();
     }
 }
 
