@@ -32,7 +32,7 @@ self.recuperar = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 };
 
@@ -67,7 +67,7 @@ self.recuperarTodos = async function (req, res) {
       return res.status(404).send()
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 }
 
@@ -141,7 +141,17 @@ self.actualizar = async function (req, res) {
     if (body.contrasenia) colaboradorActualizado.contrasenia = await bcrypt.hash(body.contrasenia, 10);
     if (body.descripcion) colaboradorActualizado.descripcion = body.descripcion;
     if (body.icono) colaboradorActualizado.icono = body.icono;
-    if (body.rolid) colaboradorActualizado.rolid = body.rolid;
+    if (body.rol)
+    {
+      const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
+      
+      if (!rolusuario) {
+        logger.error(`Rol ${req.body.rol} no encontrado.`);
+        return res.status(404).json({ message: 'Rol no encontrado' });
+      }
+
+      colaboradorActualizado.rolid = rolusuario.id;
+    }
 
     let data = await colaborador.update(colaboradorActualizado, { where: { id: id } });
 
@@ -153,7 +163,7 @@ self.actualizar = async function (req, res) {
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).json(error);
+    return res.status(500).send();
   }
 }
 
