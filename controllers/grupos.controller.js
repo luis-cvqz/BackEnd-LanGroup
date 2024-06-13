@@ -2,7 +2,7 @@ const { grupo, idioma, Sequelize } = require("../models");
 const crypto = require("crypto");
 const Op = Sequelize.Op;
 const logger = require("../services/logger.service");
-const Acciones = require('../util/acciones.enum');
+const Acciones = require('../enums/acciones.enum');
 
 let self = {};
 

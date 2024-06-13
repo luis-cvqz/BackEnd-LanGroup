@@ -2,7 +2,7 @@ const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} =
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const logger = require('../services/logger.service'); 
-const Acciones = require('../util/acciones.enum')
+const Acciones = require('../enums/acciones.enum')
 
 let self = {}
 

@@ -3,7 +3,7 @@ const Op = Sequelize.Op
 const crypto = require('crypto')
 const fs = require('fs')
 const logger = require('../services/logger.service')
-const Acciones = require('../util/acciones.enum')
+const Acciones = require('../enums/acciones.enum')
 
 let self = {}
 
