@@ -1,12 +1,12 @@
 const nodemailer = require("nodemailer");
-const logger = require("../services/logger.service"); // Importar el logger
+const logger = require("../services/logger.service");
 
 exports.enviarCorreo = async (req, res) => {
   const { to, subject, text } = req.body;
 
   // Configuración del transportador de nodemailer
   let transporter = nodemailer.createTransport({
-    service: "gmail", // o el servicio que estés utilizando (e.g., yahoo, outlook)
+    service: "gmail",
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -24,10 +24,7 @@ exports.enviarCorreo = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).send({ message: "Correo electrónico enviado!" });
   } catch (error) {
-    logger.error(`Error al enviar el correo electrónico: ${error}`); // Log con el mensaje de error específico
-    res.status(500).send({
-      message: "Error al enviar el correo electrónico",
-      error: error.toString(),
-    });
+    logger.error(`Error al enviar el correo electrónico: ${error}`);
+    res.status(500).send();
   }
 };

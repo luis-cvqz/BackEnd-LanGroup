@@ -25,7 +25,7 @@ app.use(require("./middlewares/bitacora.middleware"))
 
 // Rutas
 app.use("/api/publicaciones", require("./routes/publicaciones.routes"))
-app.use("/api/archivosmultimedia", require("./routes/archivmosmultimedia.routes"))
+app.use("/api/archivosmultimedia", require("./routes/archivosmultimedia.routes.js"))
 app.use("/api/idiomas", require("./routes/idiomas.routes"))
 app.use("/api/solicitudes", require("./routes/solicitudes.routes"))
 app.use("/api/colaboradores", require('./routes/colaboradores.routes'))

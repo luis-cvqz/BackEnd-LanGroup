@@ -2,6 +2,7 @@ const router = require('express').Router()
 const archivosmultimedia = require('../controllers/archivosmultimedia.controller')
 const upload = require('../middlewares/upload.middleware')
 const Authorize = require("../middlewares/auth.middleware")
+const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum")
 
 // GET api/archivosmultimedia
@@ -14,10 +15,10 @@ router.get('/:id', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles
 router.get('/:id/detalle', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), archivosmultimedia.recuperarDetalle)
 
 // POST api/archivosmultimedia
-router.post('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), upload.single("file"), archivosmultimedia.crear)
+router.post('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), upload.single("file"), ValidarObjeto('creararchivomultimedia'), archivosmultimedia.crear)
 
 // POST api/archivosmultimedia/videos
-router.post('/videos', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`),  archivosmultimedia.crearVideo)
+router.post('/videos', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('creararchivomultimediavideo'), archivosmultimedia.crearVideo)
 
 // DELETE api/archivosmultimedia/:id
 router.delete('/:id', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), archivosmultimedia.eliminar)
