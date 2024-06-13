@@ -141,17 +141,8 @@ self.actualizar = async function (req, res) {
     if (body.contrasenia) colaboradorActualizado.contrasenia = await bcrypt.hash(body.contrasenia, 10);
     if (body.descripcion) colaboradorActualizado.descripcion = body.descripcion;
     if (body.icono) colaboradorActualizado.icono = body.icono;
-    if (body.rol)
-    {
-      const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
-      
-      if (!rolusuario) {
-        logger.error(`Rol ${req.body.rol} no encontrado.`);
-        return res.status(404).json({ message: 'Rol no encontrado' });
-      }
-
-      colaboradorActualizado.rolid = rolusuario.id;
-    }
+    if (body.rolid) colaboradorActualizado.rolid = body.rolid;
+    
 
     let data = await colaborador.update(colaboradorActualizado, { where: { id: id } });
 
