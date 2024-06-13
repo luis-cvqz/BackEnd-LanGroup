@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const Op = Sequelize.Op;
 const logger = require('../services/logger.service'); // Agregar el logger
 const crypto = require('crypto'); // Se añade la importación de crypto para generar UUID
-const Acciones = require('../util/acciones.enum')
+const Acciones = require('../enums/acciones.enum')
 
 let self = {};
 

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const grupos = require("../controllers/grupos.controller");
 const Authorize = require("../middlewares/auth.middleware");
+const Roles = require("../enums/roles.enum");
 
 // GET /api/grupos/{id}
 router.get("/:id", Authorize("Administrador,Instructor,Aprendiz"), grupos.recuperarPorId);
@@ -8,24 +9,24 @@ router.get("/:id", Authorize("Administrador,Instructor,Aprendiz"), grupos.recupe
 // GET /api/grupos/idioma/{idiomaNombre}
 router.get(
   "/idioma/:idiomaNombre",
-  Authorize("Administrador,Aprendiz,Instructor"),
+  Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`),
   grupos.recuperarPorIdiomaNombre
 );
 
 // POST /api/grupos
-router.post("/", Authorize("Administrador,Instructor"), grupos.agregarGrupo);
+router.post("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), grupos.agregarGrupo);
 
 // PUT /api/grupos/{id}
 router.put(
   "/:id",
-  Authorize("Administrador,Instructor"),
+  Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`),
   grupos.actualizarGrupo
 );
 
 // DELETE /api/grupos/:id
 router.delete(
   "/:id",
-  Authorize("Administrador,Instructor"),
+  Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`),
   grupos.eliminarGrupo
 );
 

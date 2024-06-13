@@ -1,7 +1,7 @@
 const { where } = require('sequelize');
 const { rol } = require('../models');
 const logger = require('../services/logger.service'); 
-const Acciones = require('../util/acciones.enum')
+const Acciones = require('../enums/acciones.enum')
 
 let self = {}
 
