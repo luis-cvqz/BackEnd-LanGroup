@@ -1,11 +1,10 @@
-// routes/email.routes.js
 const express = require("express");
 const router = express.Router();
-const emailController = require("../controllers/email.controller"); // Asegúrate de que la ruta es correcta
+const emailController = require("../controllers/email.controller");
 const Authorize = require("../middlewares/auth.middleware");
+const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
-// Definir la ruta para enviar correos
-router.post("/correo", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), emailController.enviarCorreo);
+router.post("/correo", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), ValidarObjeto('enviarCorreo'), emailController.enviarCorreo);
 
 module.exports = router;
