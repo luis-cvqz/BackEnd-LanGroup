@@ -13,7 +13,6 @@ function subirVideoImpl(call, callback) {
   
     call.on('data', async (DescargarArchivoResponse) => {
       if (DescargarArchivoResponse.nombre) {
-        //archivoid = DescargarArchivoResponse.archivoid
         nombreVideo = DescargarArchivoResponse.nombre
         tempFilePath = `./uploads/${nombreVideo}`
         console.debug(`Recibiendo el video ${nombreVideo}`)
@@ -26,13 +25,6 @@ function subirVideoImpl(call, callback) {
     }).on('end', function() {
       callback(null, { nombre: nombreVideo })
       console.log('\nEnvio de datos terminado.')
-  
-      // video = fs.readFileSync(UPLOADS_PATH + nombreVideo)
-      // fs.existsSync(UPLOADS_PATH + nombreVideo) && fs.unlinkSync(UPLOADS_PATH + nombreVideo)
-  
-      // archivomultimedia.update({
-      //   archivo: video
-      // }, { where: { id: archivoid } })
     })
   } catch (error) {
     logger.error(`Error interno del servidor gRPC: ${error}`)

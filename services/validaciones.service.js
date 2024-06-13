@@ -19,7 +19,7 @@ const actualizarcolaboradorSchema = Joi.object({
   contrasenia: Joi.string().pattern(new RegExp('^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\W_])[A-Za-z\\d\\W_]{8,16}$')).optional(),
   descripcion: Joi.string().optional().min(1).max(50),
   icono: Joi.string().optional().pattern(new RegExp('\\.png$')).min(1).max(50),
-  rol: Joi.string().optional().valid('Aprendiz', 'Administrador', 'Instructor').min(1).max(20),
+  rolid: Joi.string().optional().min(1).max(255)
 });
 
 const creararchivomultimedia = Joi.object({
