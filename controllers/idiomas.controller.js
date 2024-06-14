@@ -102,4 +102,22 @@ self.eliminar = async function (req, res) {
   }
 };
 
+self.agregarIdiomaColaborador = async function(req, res){
+  const { colaboradorId,  nombresIdiomas} = req.body;
+  try{
+    const colab = await colaborador.findByPk(colaboradorId);
+    const idiomas = await idioma.findAll({
+      where: {
+        nombre: nombresIdiomas
+      }
+    });
+
+    await colab.addIdiomas(idiomas);
+    return  res.status(204).send();
+  } catch{
+    logger.error(`Error al eliminar el idioma: ${error.message}`); 
+    return res.status(500).send();
+  }
+}
+
 module.exports = self;

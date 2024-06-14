@@ -99,6 +99,78 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
   }
 };
 
+self.recuperarTodos = async function (req, res) {
+  const { colaboradorId } = req.query;
+  try {
+    const queryOptions = {
+      attributes: [
+        ["id", "grupoId"],
+        "nombre",
+        "descripcion",
+        "icono",
+        "idiomaId",
+      ],
+    };
+    
+    if (colaboradorId) {
+      queryOptions.include = [{
+        model: colaborador,
+        where: { id: colaboradorId },
+        attributes: [], 
+        through: { attributes: [] }
+      }];
+    }
+
+    let data = await grupo.findAll(queryOptions);
+
+    if (data && data.length > 0) {
+      return res.status(200).json(data);
+    } else {
+      logger.error(`No se encontraron grupos${colaboradorId ? ` para el colaborador con ID: ${colaboradorId}` : ''}.`);
+      return res.status(404).send({ message: "No se encontraron grupos." });
+    }
+  } catch (error) {
+    logger.error({error});
+    return res.status(500).json({ message: "Error interno del servidor.", error: error.message });
+  }
+};
+
+// GET /api/grupos/colaborador/{colaboradorId}
+self.recuperarPorColaborador = async function (req, res) {
+  try {
+    let colaboradorId = req.params.colaboradorId;
+
+    // Busca en la tabla colaboradorgrupo los registros que coincidan con colaboradorid
+    let data = await colaboradorgrupo.findAll({
+      where: { colaboradorid: colaboradorId },
+      include: [
+        {
+          model: grupo,
+          attributes: [
+            ["id", "grupoId"],
+            "nombre",
+            "descripcion",
+            "icono",
+            "idiomaid"
+          ]
+        }
+      ]
+    });
+
+    // Si se encuentran registros, extraer los datos de los grupos
+    if (data.length > 0) {
+      const grupos = data.map(entry => entry.grupo);
+      return res.status(200).json(grupos);
+    } else {
+      logger.error(`No se encontraron grupos para el colaborador con id ${colaboradorId}.`);
+      return res.status(404).send({ message: "No se encontraron grupos para el colaborador dado" });
+    }
+  } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
+
 // POST /api/grupos
 self.agregarGrupo = async function (req, res) {
   try {
