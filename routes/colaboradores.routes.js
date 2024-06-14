@@ -17,4 +17,7 @@ router.post("/", ValidarObjeto('crearcolaborador'), colaboradores.crear);
 // PUT: api/colaboradores/{id}
 router.put("/:id", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), AuthorizeActualizacion, ValidarObjeto('actualizarcolaborador'), colaboradores.actualizar);
 
+// PUT: api/colaboradores/{id}/rol
+router.put("/:id/rol", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.actualizarrol);
+
 module.exports = router;

@@ -90,7 +90,7 @@ self.eliminar = async function (req, res) {
 
     data = await idioma.destroy({ where: { id: id }});
     if (data === 1) {
-      req.bitacora(`idiomas${Acciones.ELIMINAR}`,)
+      req.bitacora(`idiomas${Acciones.ELIMINAR}`, id)
       res.status(204).send();
     }
     else {
