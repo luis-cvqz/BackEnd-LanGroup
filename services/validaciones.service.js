@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const crearcolaboradorSchema = Joi.object({
+const crearcolaborador = Joi.object({
   nombre: Joi.string().required().min(1).max(50),
   apellido: Joi.string().required().min(1).max(50),
   usuario: Joi.string().required().min(3).max(20),
@@ -11,7 +11,7 @@ const crearcolaboradorSchema = Joi.object({
   rol: Joi.string().required().valid('Aprendiz', 'Administrador', 'Instructor').min(1).max(20),
 });
 
-const actualizarcolaboradorSchema = Joi.object({
+const actualizarcolaborador = Joi.object({
   nombre: Joi.string().optional().min(1).max(50),
   apellido: Joi.string().optional().min(1).max(50),
   usuario: Joi.string().optional().min(1).max(50),
@@ -122,9 +122,9 @@ const actualizarsolicitud = Joi.object({
 const obtenerSchemaPorTipo = (type) => {
   switch (type) {
     case 'crearcolaborador':
-        return crearcolaboradorSchema;
+        return crearcolaborador;
     case 'actualizarcolaborador':
-        return actualizarcolaboradorSchema;
+        return actualizarcolaborador;
     case 'actualizarrolcolaborador':
       return actualizarrolcolaborador;
     case 'creararchivomultimedia':
