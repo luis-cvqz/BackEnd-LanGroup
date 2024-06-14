@@ -183,5 +183,32 @@ self.actualizarrol = async function (req, res) {
   }
 }
 
+self.recuperarContrasenia = async function (req, res) {
+  try {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+      return res.status(400).json({ message: 'Email y nueva contraseña son requeridos' });
+    }
+    
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar la contraseña en la base de datos
+    const [updated] = await colaborador.update(
+      { contrasenia: hashedPassword },
+      { where: { correo: email } }
+    );
+
+    if (updated === 0) {
+      logger.error(`Correo ${email} no encontrado.`);
+      return res.status(404).json({ message: 'Correo no encontrado' });
+    }
+
+    return res.status(200).json({ message: 'Contraseña actualizada con éxito' });
+  } catch (error) {
+    logger.error(`Error interno del servidor: ${error.message}`);
+    return res.status(500).json({ message: 'Error al actualizar la contraseña', error });
+  }
+};
 
 module.exports = self;

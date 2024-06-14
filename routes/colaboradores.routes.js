@@ -11,6 +11,9 @@ router.get("/:correo", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${R
 // GET: api/colaboradores?rol=r
 router.get("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.recuperarTodos);
 
+// GET: api/colaboradores/{id}
+router.get("/recuperarPorId/:id",Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.recuperarPorId);
+
 // POST: api/colaboradores
 router.post("/", ValidarObjeto('crearcolaborador'), colaboradores.crear);
 
@@ -19,5 +22,7 @@ router.put("/:id", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles
 
 // PUT: api/colaboradores/{id}/rol
 router.put("/:id/rol", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), ValidarObjeto('actualizarrolcolaborador'), colaboradores.actualizarrol);
+
+router.post("/recuperarContrasenia", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.recuperarContrasenia);
 
 module.exports = router;

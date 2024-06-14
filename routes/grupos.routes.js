@@ -14,6 +14,8 @@ router.get(
   grupos.recuperarPorIdiomaNombre
 );
 
+router.get('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), grupos.recuperarTodos);
+
 // POST /api/grupos
 router.post("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('creargrupo'), grupos.agregarGrupo);
 

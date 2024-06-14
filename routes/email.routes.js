@@ -5,6 +5,6 @@ const Authorize = require("../middlewares/auth.middleware");
 const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
-router.post("/correo", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), ValidarObjeto('enviarCorreo'), emailController.enviarCorreo);
+router.post("/verificacion", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), ValidarObjeto('enviarCorreo'), emailController.enviarCorreo);
 
 module.exports = router;

@@ -21,4 +21,7 @@ router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'),
 // DELETE
 router.delete('/:id', Authorize(`${Roles.ADMINISTRADOR}`), idiomas.eliminar)
 
+// POST
+router.post('/colaborador', Authorize(`${Roles.ADMINISTRADOR}`), idiomas.agregarIdiomaColaborador)
+
 module.exports = router
