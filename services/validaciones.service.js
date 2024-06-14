@@ -22,6 +22,10 @@ const actualizarcolaboradorSchema = Joi.object({
   rolid: Joi.string().optional().min(1).max(255)
 });
 
+const actualizarrolcolaborador = Joi.object({
+  rolid: Joi.string().required().min(1).max(255),
+})
+
 const creararchivomultimedia = Joi.object({
   publicacionid: Joi.string().required().min(1).max(255),
   file: Joi.object({
@@ -121,6 +125,8 @@ const obtenerSchemaPorTipo = (type) => {
         return crearcolaboradorSchema;
     case 'actualizarcolaborador':
         return actualizarcolaboradorSchema;
+    case 'actualizarrolcolaborador':
+      return actualizarrolcolaborador;
     case 'creararchivomultimedia':
         return creararchivomultimedia;
     case 'creararchivomultimediavideo':

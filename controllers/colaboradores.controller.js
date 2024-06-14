@@ -158,4 +158,30 @@ self.actualizar = async function (req, res) {
   }
 }
 
+// PUT /api/colaboradores/{id}/rol
+self.actualizarrol = async function (req, res) {
+  try {
+    let id = req.params.id;
+    let rol = req.body.rolid;
+
+    let colaboradorExistente = await colaborador.findOne({ where: { id: id } });
+    if (!colaboradorExistente) {
+      return res.status(404).send({ message: 'Colaborador no encontrado' });
+    }
+
+    let data = await colaborador.update({rolid: rol}, { where: { id: id } });
+
+    if (data[0] == 0) {
+      return res.status(400).send();
+    } else {
+      req.bitacora(`colaboradores${Acciones.EDITAR}`, id)
+      return res.status(204).send();
+    }
+  } catch (error) {
+    logger.error(`Error interno del servidor: ${error}`); 
+    return res.status(500).send();
+  }
+}
+
+
 module.exports = self;
