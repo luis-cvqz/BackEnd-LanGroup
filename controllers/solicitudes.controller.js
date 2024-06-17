@@ -54,8 +54,8 @@ self.recuperarTodas = async function (req, res) {
   }
 }
 
-// GET api/solicitudes/:id
-self.recuperar = async function (req, res) {
+// GET api/solicitudes/:id/detalle
+self.recuperarDetalle = async function (req, res) {
   try {
     let id = req.params.id;
     let solicitudEncontrada = await solicitud.findByPk(id, {
@@ -73,6 +73,27 @@ self.recuperar = async function (req, res) {
     return res.status(500).send();
   }
 };
+
+self.recuperarConstancia = async function (req, res) {
+  try {
+    let id = req.params.id;
+
+    let solicitudEncontrada = await solicitud.findByPk(id)
+    if (!solicitudEncontrada)
+      return res.status(404).send('No se encontró la solicitud')
+
+    let archivo = null
+
+    if (archivoEncontrado.mime === 'application/pdf')
+      archivo = archivoEncontrado.archivo
+
+    return res.status(200).contentType(archivoEncontrado.mime).send(archivo)
+
+  } catch (error) {
+    logger.error(`Error al recuperar la solicitud por ID: ${error}`); 
+    return res.status(500).send();
+  }
+}
 
 // POST /api/solicitudes
 self.crear = async function (req, res) {
