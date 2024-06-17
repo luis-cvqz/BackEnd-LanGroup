@@ -2,7 +2,8 @@
 .vscode/
 .idea/
 
-[Rr]est[Cc]lient/
+restclient/
+RestClient/
 
 # Logs
 logs
