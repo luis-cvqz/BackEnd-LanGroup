@@ -27,12 +27,12 @@ const actualizarrolcolaborador = Joi.object({
 })
 
 const creararchivomultimedia = Joi.object({
-  publicacionid: Joi.string().required().min(1).max(255),
-  file: Joi.object({
+  publicacionid: Joi.string().required().min(1).max(255)
+  /*file: Joi.object({
     filename: Joi.string().required().min(1).max(255),
     mimetype: Joi.string().required().min(1).max(50),
     size: Joi.number().required().min(1)
-  }).required()
+  }).required()*/
 });
 
 const creararchivomultimediavideo = Joi.object({
@@ -90,7 +90,6 @@ const actualizarinteraccion = Joi.object({
 const crearpublicacion = Joi.object({
   titulo: Joi.string().required().min(1).max(50),
   descripcion: Joi.string().required().min(1).max(500),
-  fecha: Joi.date().required(),
   colaboradorid: Joi.string().required().min(1).max(255),
   grupoid: Joi.string().required().min(1).max(255)
 });
