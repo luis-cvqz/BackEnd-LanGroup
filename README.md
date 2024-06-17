@@ -39,7 +39,7 @@ Puede utilizar el script `bd.sql` que se encuentra en la carpeta `scripts/` para
 ```sh
 mysql -u <nombre_de_usuario> -p
 ```
-3. Ingrese su contraseña cuando se te solicite.
+3. Ingrese su contraseña cuando se le solicite.
 4. Una vez que haya iniciado sesión en MySQL, ejecute el siguiente comando para crear la base de datos:
 ```sh
 source scripts/bd.sql
