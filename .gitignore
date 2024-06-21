@@ -2,6 +2,8 @@
 .vscode/
 .idea/
 
+*.exe
+
 restclient/
 RestClient/
 
