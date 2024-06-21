@@ -6,6 +6,29 @@ const Acciones = require('../enums/acciones.enum');
 
 let self = {};
 
+// GET /api/grupos
+self.recuperarTodos = async function (req, res) {
+  try {
+    let data = await grupo.findAll({
+      attributes: [['id', 'grupoId'], 
+        "nombre",
+        "descripcion",
+        "icono",
+        "idiomaId"
+      ],
+      subQuery: false
+    });
+
+    if (data)
+      return res.status(200).json(data);
+    else
+      return res.status(404).send();
+  } catch (error) {
+    logger.error(`Error al recuperar todos los grupos: ${error}`);
+    return res.status(500).send();
+  }
+};
+
 // GET /api/grupos/{id}
 self.recuperarPorId = async function (req, res) {
   try {

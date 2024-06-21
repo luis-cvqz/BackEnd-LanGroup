@@ -5,8 +5,11 @@ const Authorize = require("../middlewares/auth.middleware");
 // GET api/solicitudes
 router.get('/', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperarTodas)
 
+// GET api/solicitudes/:id/detalle
+router.get('/:id/detalle', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperarDetalle)
+
 // GET api/solicitudes/:id
-router.get('/:id', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperar)
+router.get('/:id', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.recuperarConstancia)
 
 // POST api/solicitudes
 router.post('/', Authorize("Administrador,Instructor,Aprendiz"), solicitudes.crear)

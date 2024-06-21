@@ -1,6 +1,6 @@
 "use strict";
 const colaboradores = require("./20240517161502-colaboradores");
-const idiomas = require("./20240517164303-idiomas");
+const idiomas = require("./20240517161503-idiomas");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
