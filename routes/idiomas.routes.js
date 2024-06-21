@@ -21,4 +21,7 @@ router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'),
 // DELETE
 router.delete('/:id', Authorize(`${Roles.ADMINISTRADOR}`), idiomas.eliminar)
 
+// POST /api/idiomas/colaboradores
+router.post('/colaboradores', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), idiomas.asignarColaboradorAIdioma);
+
 module.exports = router

@@ -1,4 +1,4 @@
-const { grupo, idioma, Sequelize } = require("../models");
+const { colaborador, grupo, idioma, Sequelize } = require("../models");
 const crypto = require("crypto");
 const Op = Sequelize.Op;
 const logger = require("../services/logger.service");
@@ -28,6 +28,46 @@ self.recuperarTodos = async function (req, res) {
     return res.status(500).send();
   }
 };
+
+// GET/api/grupos/{colaboradorid}/{rolnombre}
+self.recuperarPorColaboradorYRol = async function (req, res) {
+  try {
+    const { colaboradorid, rolnombre } = req.params;
+
+    if (!colaboradorid || !rolnombre) {
+      return res.status(400).json({ error: "colaboradorid y rolnombre son requeridos" });
+    }
+
+    const grupos = await grupo.findAll({
+      include: [{
+        model: colaborador,
+        attributes: [],
+        through: {
+          attributes: [],
+          where: { colaboradorid: colaboradorid, rol: rolnombre }
+        }
+      }],
+      attributes: [
+        ['id', 'grupoId'], 
+        'nombre',
+        'descripcion',
+        'icono',
+        'idiomaId'
+      ]
+    });
+
+    if (grupos && grupos.length > 0) {
+      return res.status(200).json(grupos);
+    } else {
+      return res.status(404).json({ error: "No se encontraron grupos para el colaborador y rol especificados" });
+    }
+  } catch (error) {
+    logger.error(`Error al recuperar los grupos para colaborador y rol: ${error}`);
+    return res.status(500).send();
+  }
+};
+
+
 
 // GET /api/grupos/{id}
 self.recuperarPorId = async function (req, res) {
@@ -194,5 +234,34 @@ self.eliminarGrupo = async function (req, res) {
   }
 };
 
+// POST /api/grupos/colaborador
+self.asignarColaboradorAGrupo = async function (req, res) {
+  try {
+    const { colaboradorid, grupoid, rol } = req.body;
+
+    if (!colaboradorid || !grupoid || !rol) {
+      return res.status(400).json({ error: "colaboradorid, grupoid y rol son requeridos" });
+    }
+
+    const grupoExistente = await grupo.findByPk(grupoid);
+
+    if (!grupoExistente) {
+      return res.status(404).json({ error: "El grupo no existe" });
+    }
+
+    const colaboradorExistente = await colaborador.findByPk(colaboradorid);
+
+    if (!colaboradorExistente) {
+      return res.status(404).json({ error: "El colaborador no existe" });
+    }
+
+    console.log(Object.getOwnPropertyNames(grupoExistente));
+    await grupo.addcolaborador(colaboradorExistente, { through: { rol } });
+    return res.status(201).json({ message: "Colaborador asignado al grupo exitosamente" });
+  } catch (error) {
+    logger.error(`Error al asignar colaborador al grupo: ${error}`);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
 
 module.exports = self;
