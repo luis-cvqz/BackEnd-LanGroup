@@ -71,7 +71,7 @@ self.recuperarTodas = async function (req, res) {
     logger.error(`Error interno del servidor: ${error}`); 
     return res.status(500).send();
   }
-}   
+}
 
 // GET API/publicaciones/:id
 self.recuperar = async function (req, res) {

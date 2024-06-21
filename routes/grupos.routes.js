@@ -4,6 +4,9 @@ const Authorize = require("../middlewares/auth.middleware");
 const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
+// GET /api/grupos
+router.get('/', grupos.recuperarTodos);
+
 // GET /api/grupos/{id}
 router.get("/:id", Authorize("Administrador,Instructor,Aprendiz"), grupos.recuperarPorId);
 
