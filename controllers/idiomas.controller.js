@@ -1,4 +1,4 @@
-const { idioma, Sequelize } = require('../models');
+const { idioma, colaborador, Sequelize } = require('../models');
 const crypto = require('crypto');
 const Op = Sequelize.Op;
 const logger = require('../services/logger.service'); 
@@ -99,6 +99,35 @@ self.eliminar = async function (req, res) {
   } catch (error) {
     logger.error(`Error al eliminar el idioma: ${error}`); 
     return res.status(500).send();
+  }
+};
+
+// POST /api/idiomas/colaboradores
+self.asignarColaboradorAIdioma = async function (req, res) {
+  try {
+    const { colaboradorid, idiomaid } = req.body;
+
+    if (!colaboradorid || !idiomaid) {
+      return res.status(400).json({ error: "colaboradorid e idiomaid son requeridos" });
+    }
+
+    const idiomaExistente = await idioma.findByPk(idiomaid,);
+
+    if (!idiomaExistente) {
+      return res.status(404).json({ error: "El idioma no existe" });
+    }
+
+    const colaboradorExistente = await colaborador.findByPk(colaboradorid);
+
+    if (!colaboradorExistente) {
+      return res.status(404).json({ error: "El colaborador no existe" });
+    }
+
+    await idioma.addColaborador(colaboradorExistente);
+    return res.status(201).json({ message: "Colaborador asignado al idioma exitosamente" });
+  } catch (error) {
+    logger.error(`Error al asignar colaborador al grupo: ${error}`);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 

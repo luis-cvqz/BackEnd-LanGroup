@@ -14,7 +14,7 @@ self.recuperarTodas = async function (req, res) {
 
     if (req.query.grupo != null) {
       let grupopublicacion = await grupo.findOne({
-        where: { nombre: { [Op.like]: `%${req.query.grupo}%` } },
+        where: { id: { [Op.like]: `%${req.query.grupo}%` } },
         attributes: ['id']
       })
 
@@ -46,7 +46,7 @@ self.recuperarTodas = async function (req, res) {
       include: [
         { 
           model: colaborador, 
-          attributes: [['id', 'colaboradorId'], 'nombre'],
+          attributes: [['id', 'colaboradorId'], 'nombre', 'apellido'],
         },
         { 
           model: grupo, 
@@ -83,7 +83,7 @@ self.recuperar = async function (req, res) {
       include: [
         { 
           model: colaborador, 
-          attributes: [['id', 'colaboradorId'], 'nombre'],
+          attributes: [['id', 'colaboradorId'], 'nombre', 'apellido', 'usuario', 'correo'],
         },
         { 
           model: grupo, 

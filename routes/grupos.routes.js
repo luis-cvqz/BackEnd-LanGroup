@@ -7,8 +7,11 @@ const Roles = require("../enums/roles.enum");
 // GET /api/grupos
 router.get('/', grupos.recuperarTodos);
 
+// GET/api/grupos/{colaboradorid}/{rolnombre}
+router.get("/:colaboradorid/:rolnombre", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.recuperarPorColaboradorYRol);
+
 // GET /api/grupos/{id}
-router.get("/:id", Authorize("Administrador,Instructor,Aprendiz"), grupos.recuperarPorId);
+router.get("/:id", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.recuperarPorId);
 
 // GET /api/grupos/idioma/{idiomaNombre}
 router.get(
@@ -34,5 +37,8 @@ router.delete(
   Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`),
   grupos.eliminarGrupo
 );
+
+// POST /api/grupos/colaboradores
+router.post("/colaboradores", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.asignarColaboradorAGrupo);
 
 module.exports = router;
