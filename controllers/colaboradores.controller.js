@@ -74,20 +74,17 @@ self.recuperarTodos = async function (req, res) {
 // POST /api/colaboradores
 self.crear = async function (req, res) {
   try {
-    if (req.body != null) {
-      const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }})
+    if (req.body) {
+      const rolusuario = await rol.findOne({ where: { nombre: req.body.rol }});
       if (!rolusuario) {
         logger.error(`Rol ${req.body.rol} no encontrado.`);
         return res.status(404).json({ message: 'Rol no encontrado' });
       }
 
-      const correoExistente = await colaborador.findOne({ where: { correo: req.body.correo } })
+      const correoExistente = await colaborador.findOne({ where: { correo: req.body.correo }});
 
       if (!correoExistente) {
-        if (req.body.descripcion)
-          descripcion = req.body.descripcion;
-        else
-          descripcion = "";
+        const descripcion = req.body.descripcion || "";
 
         const data = await colaborador.create({
           id: crypto.randomUUID(),
@@ -99,21 +96,21 @@ self.crear = async function (req, res) {
           descripcion: descripcion,
           icono: req.body.icono,
           rolid: rolusuario.id,
-        })
+        });
 
-        req.bitacora(`colaboradores${Acciones.CREAR}`, data.id)
-        return res.status(201).send()
+        req.bitacora(`colaboradores${Acciones.CREAR}`, data.id);
+        return res.status(201).json({ message: 'Cuenta creada exitosamente' });
       } else {
-        return res.status(400).json({ message: "Correo duplicado"})
+        return res.status(400).json({ message: 'Correo duplicado' });
       }            
     } else {
-      return res.status(400).json({ message: "Información requerida"})
+      return res.status(400).json({ message: 'Información requerida' });
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error}`); 
-    return res.status(500).send();
+    logger.error(`Error interno del servidor: ${error}`);
+    return res.status(500).json({ message: 'Error interno del servidor' });
   }
-}
+};
 
 // PUT /api/colaboradores/{id}
 self.actualizar = async function (req, res) {
