@@ -5,7 +5,7 @@ const crypto = require("crypto");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("rol", [
+    await queryInterface.bulkInsert("grupo", [
       {
         id: crypto.randomUUID(),
         nombre: "Grupo Inglés IV",
