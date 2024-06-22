@@ -14,7 +14,7 @@ self.recuperarTodos = async function (req, res) {
         "nombre",
         "descripcion",
         "icono",
-        "idiomaId"
+        "idiomaid"
       ],
       subQuery: false
     });
@@ -52,7 +52,7 @@ self.recuperarPorColaboradorYRol = async function (req, res) {
         'nombre',
         'descripcion',
         'icono',
-        'idiomaId'
+        'idiomaid'
       ]
     });
 
@@ -79,7 +79,7 @@ self.recuperarPorId = async function (req, res) {
         "nombre",
         "descripcion",
         "icono",
-        "idiomaId",
+        "idiomaid",
       ],
     });
     if (data) {
@@ -99,13 +99,13 @@ self.recuperarPorIdioma = async function (req, res) {
   try {
     let id = req.params.idiomaId;
     let data = await grupo.findAll({
-      where: { idiomaId: id },
+      where: { idiomaid: id },
       attributes: [
         ["id", "grupoId"],
         "nombre",
         "descripcion",
         "icono",
-        "idiomaId",
+        "idiomaid",
       ],
     });
     if (data) {
