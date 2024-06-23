@@ -6,20 +6,36 @@ const Acciones = require('../enums/acciones.enum');
 
 let self = {};
 
-// GET /api/idiomas
+// GET /api/idiomas?colaboradorid={colaboradorid}
 self.recuperarTodos = async function (req, res) {
   try {
-    let data = await idioma.findAll({
+    const { colaboradorid } = req.query;
+
+    let options = {
       attributes: [['id', 'idiomaId'], 'nombre'],
       subQuery: false
-    });
+    };
+
+    if (colaboradorid) {
+      options.include = [{
+        model: colaborador,
+        attributes: [],
+        through: {
+          attributes: [],
+          where: { colaboradorid: colaboradorid }
+        },
+        required: true
+      }];
+    }
+
+    let data = await idioma.findAll(options);
 
     if (data)
       return res.status(200).json(data);
     else
       return res.status(404).send();
   } catch (error) {
-    logger.error(`Error al recuperar todos los idiomas: ${error}`);
+    logger.error(`Error al recuperar los idiomas: ${error}`);
     return res.status(500).send();
   }
 };
@@ -103,38 +119,30 @@ self.eliminar = async function (req, res) {
 };
 
 // POST /api/idiomas/colaboradores
-self.asignarColaboradorAIdiomas = async function (req, res) {
+self.asignarColaboradorAIdioma = async function (req, res) {
   try {
-    const { colaboradorId, idiomaIds } = req.body;
+    const { colaboradorid, idiomaid } = req.body;
 
-    if (!colaboradorId || !idiomaIds || !Array.isArray(idiomaIds) || idiomaIds.length === 0) {
-      return res.status(400).json({ error: "colaboradorId e idiomaIds son requeridos" });
+    if (!colaboradorid || !idiomaid) {
+      return res.status(400).json({ error: "colaboradorid e idiomaid son requeridos" });
     }
 
-    const colab = await colaborador.findByPk(colaboradorId);
-    if (!colab) {
-      logger.error(`Colaborador con ID ${colaboradorId} no encontrado.`);
-      return res.status(404).json({ error: "Colaborador no encontrado" });
+    const idiomaExistente = await idioma.findByPk(idiomaid,);
+
+    if (!idiomaExistente) {
+      return res.status(404).json({ error: "El idioma no existe" });
     }
 
-    const idiomas = await idioma.findAll({
-      where: {
-        id: {
-          [Sequelize.Op.in]: idiomaIds
-        }
-      }
-    });
+    const colaboradorExistente = await colaborador.findByPk(colaboradorid);
 
-    if (idiomas.length !== idiomaIds.length) {
-      logger.error(`No todos los idiomas fueron encontrados. Solicitud: ${idiomaIds}, Encontrados: ${idiomas.length}`);
-      return res.status(404).json({ error: "Uno o más idiomas no fueron encontrados" });
+    if (!colaboradorExistente) {
+      return res.status(404).json({ error: "El colaborador no existe" });
     }
 
-    await colab.addIdiomas(idiomas);
-    logger.info(`Idiomas ${idiomaIds} asignados al colaborador ${colaboradorId}.`);
-    return res.status(201).json({ message: "Idiomas asignados al colaborador exitosamente" });
+    await colaboradorExistente.addIdiomas(idiomaExistente);
+    return res.status(201).json({ message: "Colaborador asignado al idioma exitosamente" });
   } catch (error) {
-    logger.error(`Error al asignar idiomas al colaborador: ${error}`);
+    logger.error(`Error al asignar colaborador al idioma: ${error}`);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
