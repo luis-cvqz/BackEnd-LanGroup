@@ -244,19 +244,16 @@ self.asignarColaboradorAGrupo = async function (req, res) {
     }
 
     const grupoExistente = await grupo.findByPk(grupoid);
-
     if (!grupoExistente) {
       return res.status(404).json({ error: "El grupo no existe" });
     }
 
     const colaboradorExistente = await colaborador.findByPk(colaboradorid);
-
     if (!colaboradorExistente) {
       return res.status(404).json({ error: "El colaborador no existe" });
     }
 
-    console.log(Object.getOwnPropertyNames(grupoExistente));
-    await grupo.addcolaborador(colaboradorExistente, { through: { rol } });
+    await grupoExistente.addColaborador(colaboradorExistente, { through: { rol: rol } });
     return res.status(201).json({ message: "Colaborador asignado al grupo exitosamente" });
   } catch (error) {
     logger.error(`Error al asignar colaborador al grupo: ${error}`);
