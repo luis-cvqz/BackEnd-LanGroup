@@ -7,7 +7,7 @@ const Roles = require("../enums/roles.enum")
 // TODO: Rol para ejecutar estos metodos es Administrador, agregar cuando este la autorizacion
 
 // GET /api/idiomas?colaboradorid={colaboradorid}
-router.get('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), idiomas.recuperarTodos)
+router.get('/', idiomas.recuperarTodos)
 
 // GET: api/idiomas/:id
 router.get('/:id', idiomas.recuperar)
@@ -16,7 +16,7 @@ router.get('/:id', idiomas.recuperar)
 router.post('/', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.crear)
 
 // POST /api/idiomas/colaboradores
-router.post('/colaboradores', idiomas.asignarColaboradorAIdiomas)
+router.post('/colaboradores', idiomas.asignarColaboradorAIdioma)
 
 // PUT
 router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.actualizar)
