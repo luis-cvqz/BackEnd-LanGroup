@@ -6,20 +6,36 @@ const Acciones = require('../enums/acciones.enum');
 
 let self = {};
 
-// GET /api/idiomas
+// GET /api/idiomas?colaboradorid={colaboradorid}
 self.recuperarTodos = async function (req, res) {
   try {
-    let data = await idioma.findAll({
+    const { colaboradorid } = req.query;
+
+    let options = {
       attributes: [['id', 'idiomaId'], 'nombre'],
       subQuery: false
-    });
+    };
+
+    if (colaboradorid) {
+      options.include = [{
+        model: colaborador,
+        attributes: [],
+        through: {
+          attributes: [],
+          where: { colaboradorid: colaboradorid }
+        },
+        required: true
+      }];
+    }
+
+    let data = await idioma.findAll(options);
 
     if (data)
       return res.status(200).json(data);
     else
       return res.status(404).send();
   } catch (error) {
-    logger.error(`Error al recuperar todos los idiomas: ${error}`);
+    logger.error(`Error al recuperar los idiomas: ${error}`);
     return res.status(500).send();
   }
 };
@@ -123,10 +139,10 @@ self.asignarColaboradorAIdioma = async function (req, res) {
       return res.status(404).json({ error: "El colaborador no existe" });
     }
 
-    await idioma.addColaborador(colaboradorExistente);
+    await colaboradorExistente.addIdiomas(idiomaExistente);
     return res.status(201).json({ message: "Colaborador asignado al idioma exitosamente" });
   } catch (error) {
-    logger.error(`Error al asignar colaborador al grupo: ${error}`);
+    logger.error(`Error al asignar colaborador al idioma: ${error}`);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };

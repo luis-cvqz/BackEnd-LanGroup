@@ -4,11 +4,8 @@ const Authorize = require("../middlewares/auth.middleware");
 const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
-// GET /api/grupos
+// GET /api/grupos/colaboradorid?={colaboradorid}&rol?=rol
 router.get('/', grupos.recuperarTodos);
-
-// GET/api/grupos/{colaboradorid}/{rolnombre}
-router.get("/:colaboradorid/:rolnombre", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.recuperarPorColaboradorYRol);
 
 // GET /api/grupos/{id}
 router.get("/:id", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.recuperarPorId);
