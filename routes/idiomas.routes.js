@@ -10,10 +10,13 @@ const Roles = require("../enums/roles.enum")
 router.get('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), idiomas.recuperarTodos)
 
 // GET: api/idiomas/:id
-router.get('/:id', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), idiomas.recuperar)
+router.get('/:id', idiomas.recuperar)
 
 // POST
 router.post('/', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.crear)
+
+// POST /api/idiomas/colaboradores
+router.post('/colaboradores', idiomas.asignarColaboradorAIdiomas)
 
 // PUT
 router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.actualizar)
@@ -21,7 +24,5 @@ router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'),
 // DELETE
 router.delete('/:id', Authorize(`${Roles.ADMINISTRADOR}`), idiomas.eliminar)
 
-// POST /api/idiomas/colaboradores
-router.post('/colaboradores', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), idiomas.asignarColaboradorAIdioma);
 
 module.exports = router

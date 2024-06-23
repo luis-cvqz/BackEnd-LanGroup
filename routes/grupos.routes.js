@@ -36,6 +36,6 @@ router.delete(
 );
 
 // POST /api/grupos/colaboradores
-router.post("/colaboradores", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.asignarColaboradorAGrupo);
+router.post("/colaboradores", grupos.asignarColaboradorAGrupo);
 
 module.exports = router;
