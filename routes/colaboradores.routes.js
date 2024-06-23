@@ -6,7 +6,7 @@ const ValidarObjeto = require("../middlewares/validacion.middleware");
 const Roles = require("../enums/roles.enum");
 
 // GET: api/colaboradores/{correo}
-router.get("/:correo", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.recuperar);
+router.get("/:correo", colaboradores.recuperar);
 
 // GET: api/colaboradores?rol=r
 router.get("/", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), colaboradores.recuperarTodos);
