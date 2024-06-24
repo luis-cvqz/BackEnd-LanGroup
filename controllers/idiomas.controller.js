@@ -119,30 +119,38 @@ self.eliminar = async function (req, res) {
 };
 
 // POST /api/idiomas/colaboradores
-self.asignarColaboradorAIdioma = async function (req, res) {
+self.asignarColaboradorAIdiomas = async function (req, res) {
   try {
-    const { colaboradorid, idiomaid } = req.body;
+    const { colaboradorId, idiomaIds } = req.body;
 
-    if (!colaboradorid || !idiomaid) {
-      return res.status(400).json({ error: "colaboradorid e idiomaid son requeridos" });
+    if (!colaboradorId || !idiomaIds || !Array.isArray(idiomaIds) || idiomaIds.length === 0) {
+      return res.status(400).json({ error: "colaboradorId e idiomaIds son requeridos" });
     }
 
-    const idiomaExistente = await idioma.findByPk(idiomaid,);
-
-    if (!idiomaExistente) {
-      return res.status(404).json({ error: "El idioma no existe" });
+    const colab = await colaborador.findByPk(colaboradorId);
+    if (!colab) {
+      logger.error(`Colaborador con ID ${colaboradorId} no encontrado.`);
+      return res.status(404).json({ error: "Colaborador no encontrado" });
     }
 
-    const colaboradorExistente = await colaborador.findByPk(colaboradorid);
+    const idiomas = await idioma.findAll({
+      where: {
+        id: {
+          [Sequelize.Op.in]: idiomaIds
+        }
+      }
+    });
 
-    if (!colaboradorExistente) {
-      return res.status(404).json({ error: "El colaborador no existe" });
+    if (idiomas.length !== idiomaIds.length) {
+      logger.error(`No todos los idiomas fueron encontrados. Solicitud: ${idiomaIds}, Encontrados: ${idiomas.length}`);
+      return res.status(404).json({ error: "Uno o más idiomas no fueron encontrados" });
     }
 
-    await colaboradorExistente.addIdiomas(idiomaExistente);
-    return res.status(201).json({ message: "Colaborador asignado al idioma exitosamente" });
+    await colab.addIdiomas(idiomas);
+    logger.info(`Idiomas ${idiomaIds} asignados al colaborador ${colaboradorId}.`);
+    return res.status(201).json({ message: "Idiomas asignados al colaborador exitosamente" });
   } catch (error) {
-    logger.error(`Error al asignar colaborador al idioma: ${error}`);
+    logger.error(`Error al asignar idiomas al colaborador: ${error}`);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
