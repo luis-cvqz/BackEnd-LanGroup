@@ -10,7 +10,6 @@ let self = {};
 self.recuperarTodos = async function (req, res) {
   try {
     const { colaboradorid, rol } = req.query;
-
     let options = {
       attributes: [
         ['id', 'grupoId'],
@@ -63,6 +62,48 @@ self.recuperarTodos = async function (req, res) {
   } catch (error) {
     logger.error(`Error al recuperar los grupos: ${error}`);
     return res.status(500).send();
+  }
+};
+
+//
+self.recuperarGruposPorColaborador = async function (req, res) {
+  try {
+    const { colaboradorid } = req.params;
+
+    if (!colaboradorid) {
+      return res.status(400).json({ error: "El id del colaborador es requerido" });
+    }
+
+    let data = await grupo.findAll({
+      include: [
+        {
+          model: colaborador,
+          where: { id: colaboradorid },
+          attributes: [], // No necesitamos los atributos del colaborador en el resultado final
+          through: { attributes: [] }
+        },
+        {
+          model: idioma,
+          attributes: ['id', 'nombre']
+        }
+      ],
+      attributes: [
+        ['id', 'grupoId'],
+        'nombre',
+        'descripcion',
+        'icono',
+        'idiomaid'
+      ],
+    });
+
+    if (data.length > 0) {
+      return res.status(200).json(data);
+    } else {
+      return res.status(404).json({ message: "No se encontraron grupos para el colaborador dado" });
+    }
+  } catch (error) {
+    logger.error(`Error al recuperar los grupos por colaborador: ${error}`);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 

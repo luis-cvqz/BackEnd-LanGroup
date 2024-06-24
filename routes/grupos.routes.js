@@ -7,6 +7,8 @@ const Roles = require("../enums/roles.enum");
 // GET /api/grupos/colaboradorid?={colaboradorid}&rol?=rol
 router.get('/', grupos.recuperarTodos);
 
+router.get('/colaborador/:colaboradorid', grupos.recuperarGruposPorColaborador);
+
 // GET /api/grupos/{id}
 router.get("/:id", Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles.APRENDIZ}`), grupos.recuperarPorId);
 
