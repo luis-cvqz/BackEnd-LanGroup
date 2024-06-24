@@ -16,7 +16,7 @@ router.get('/:id', idiomas.recuperar)
 router.post('/', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.crear)
 
 // POST /api/idiomas/colaboradores
-router.post('/colaboradores', idiomas.asignarColaboradorAIdioma)
+router.post('/colaboradores', idiomas.asignarColaboradorAIdiomas)
 
 // PUT
 router.put('/:id', Authorize(`${Roles.ADMINISTRADOR}`), ValidarObjeto('idioma'), idiomas.actualizar)
