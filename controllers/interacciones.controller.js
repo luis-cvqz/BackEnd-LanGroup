@@ -11,7 +11,13 @@ self.recuperarTodos = async function (req, res) {
     try {
         let data = await interaccion.findAll({
             where: { publicacionid: req.params.publicacion },
-            attributes: ['id', 'valoracion', 'comentario', 'fecha', 'colaboradorid']
+            attributes: ['id', 'valoracion', 'comentario', 'fecha', 'colaboradorid'],
+            include: [
+                { 
+                  model: colaborador, 
+                  attributes: [['id', 'colaboradorId'], 'nombre', 'apellido'],
+                }
+            ]
         })
 
         if (data) {
@@ -37,7 +43,7 @@ self.crear = async function (req, res) {
                 id: crypto.randomUUID(),
                 valoracion: req.body.valoracion,
                 comentario: req.body.comentario,
-                fecha: req.body.fecha,
+                fecha: new Date(),
                 colaboradorid: req.body.colaboradorid,
                 publicacionid: req.body.publicacionid
             })

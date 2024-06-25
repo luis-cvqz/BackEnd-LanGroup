@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hc
 
 ###
 
-POST https://1325-2806-10a6-c-8adf-5953-51e8-23fa-2e03.ngrok-free.app/api/auth
+POST http://localhost:3000/api/auth
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ POST http://localhost:3000/api/auth
 Content-Type: application/json
 
 {
-    "correo": "prueba10@uv.mx",
+    "correo": "prueba12@uv.mx",
     "contrasenia": "P4ssw0rd-"
 }
 
@@ -120,3 +120,41 @@ Content-Type: application/json
   "rol": "Participante"
 }
 
+
+###
+POST http://localhost:3000/api/publicaciones
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE5MzA5Mzk1LCJleHAiOjE3MTkzMTA1OTV9.Z0A8C3he5k6GlmmHyVM68KYI3suo7c0zfrd0O1-Jg44
+Content-Type: application/json
+
+{
+    "titulo": "Publicación de ejemplo",
+    "descripcion": "Esta es una prueba",
+    "colaboradorid": "3567481f-2ab9-403c-8c3e-e9fd73109760",
+    "grupoid": "85b31413-fa22-46c3-b88e-6fc422b81230"
+}
+
+
+###
+
+POST http://localhost:3000/api/interacciones
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZDMyMjg4MGItMjc5ZC00OWM0LWFkZTEtYzE4YjdlNmI2NDE5IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoicHJ1ZWJhVXNlciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFwcmVuZGl6IiwiaXNzIjoiU2Vydmlkb3JMYW5Hcm91cEpXVCIsImF1ZCI6IkNsaWVudGVzTGFuR3JvdXBKV1QiLCJpYXQiOjE3MTkyODMxNzYsImV4cCI6MTcxOTI4NDM3Nn0.C2aU3AKBDcoYMUde-OLFnw4waEcZfXP3KXcsYs1J-lo
+Content-Type: application/json
+
+{
+    "valoracion": 4,
+    "comentario": "Es una buena publicación",
+    "colaboradorid": "d322880b-279d-49c4-ade1-c18b7e6b6419",
+    "publicacionid": "5e17c944-95e2-4025-94be-935c6ae9bae5"
+}
+
+
+###
+
+GET http://localhost:3000/api/interacciones/5e17c944-95e2-4025-94be-935c6ae9bae5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE5MjkyMzI5LCJleHAiOjE3MTkyOTM1Mjl9.ERgLOMRg0fb9nR5kfdiVvJgtQ7_3DN3C6V7D_jKzJOY
+
+
+####
+
+GET http://localhost:3000/api/publicaciones
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMzU2NzQ4MWYtMmFiOS00MDNjLThjM2UtZTlmZDczMTA5NzYwIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZ2l2ZW5uYW1lIjoibGFuZ3JvdXB1c3VhcmlvIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYWRvciIsImlzcyI6IlNlcnZpZG9yTGFuR3JvdXBKV1QiLCJhdWQiOiJDbGllbnRlc0xhbkdyb3VwSldUIiwiaWF0IjoxNzE5MjkyMzI5LCJleHAiOjE3MTkyOTM1Mjl9.ERgLOMRg0fb9nR5kfdiVvJgtQ7_3DN3C6V7D_jKzJOY
