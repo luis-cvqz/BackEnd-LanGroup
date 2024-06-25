@@ -203,25 +203,62 @@ self.recuperarPorIdiomaNombre = async function (req, res) {
 // POST /api/grupos
 self.agregarGrupo = async function (req, res) {
   try {
+    const { nombre, descripcion, icono, idiomaid, colaboradorid, rol } = req.body;
+
+    // Validar que los campos requeridos están presentes
+    if (!nombre || !icono || !idiomaid || !colaboradorid || !rol) {
+      return res.status(400).json({ error: "Todos los campos son requeridos" });
+    }
+
+    // Verificar que el idiomaid exista en la tabla idioma
+    const idiomaExistente = await idioma.findByPk(idiomaid);
+    if (!idiomaExistente) {
+      return res.status(404).json({ error: "El idioma no existe" });
+    }
+
     const nuevoGrupo = {
       id: crypto.randomUUID(),
-      nombre: req.body.nombre,
-      descripcion: req.body.descripcion,
-      icono: req.body.icono,
-      idiomaid: req.body.idiomaid,
+      nombre: nombre,
+      descripcion: descripcion,
+      icono: icono,
+      idiomaid: idiomaid,
     };
 
     const grupoCreado = await grupo.create(nuevoGrupo);
 
-    if (grupoCreado) { 
-      req.bitacora(`grupos${Acciones.CREAR}`, nuevoGrupo.id)
+    if (grupoCreado) {
+      req.bitacora(`grupos${Acciones.CREAR}`, nuevoGrupo.id);
+      console.log("Grupo creado con ID:", grupoCreado.id);
+
+      // Asignar colaborador al grupo creado
+      const asignarReq = {
+        body: {
+          colaboradorid: colaboradorid,
+          grupoid: grupoCreado.id,
+          rol: rol,
+        }
+      };
+
+      const asignarRes = {
+        status: (code) => ({
+          json: (data) => ({ code, data })
+        }),
+        json: (data) => data
+      };
+
+      const asignarResult = await self.asignarColaboradorAGrupo(asignarReq, asignarRes);
+
+      if (asignarResult.code !== 201) {
+        return res.status(asignarResult.code).json(asignarResult.data);
+      }
+
       return res.status(201).json(grupoCreado);
     } else {
       logger.error(`No se pudo crear el grupo.`);
       return res.status(405).send();
     }
   } catch (error) {
-    logger.error(`Error interno del servidor: ${error}`); 
+    logger.error(`Error interno del servidor: ${error}`);
     return res.status(500).send();
   }
 };
@@ -295,8 +332,8 @@ self.asignarColaboradorAGrupo = async function (req, res) {
     return res.status(201).json({ message: "Colaborador asignado al grupo exitosamente" });
   } catch (error) {
     logger.error(`Error al asignar colaborador al grupo: ${error}`);
-    return res.status(500).json({ error: "Error interno del servidor" });
-  }
+    return res.status(500).json({ error: "Error interno del servidor"});
+  }
 };
 
 module.exports = self;

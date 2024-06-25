@@ -40,6 +40,28 @@ self.recuperarTodos = async function (req, res) {
   }
 };
 
+// GET /api/idiomas/nombre/:nombre
+self.recuperarPorNombre = async function (req, res) {
+  try {
+    const nombre = req.params.nombre;
+
+    let data = await idioma.findAll({
+      where: Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('nombre')), {
+        [Op.like]: `%${nombre.toLowerCase()}%`
+      }),
+      attributes: ['id']
+    });
+
+    if (data && data.length > 0)
+      return res.status(200).json(data);
+    else
+      return res.status(404).json({ message: 'No se encontraron idiomas con ese nombre' });
+  } catch (error) {
+    logger.error(`Error al recuperar los idiomas por nombre: ${error}`);
+    return res.status(500).send();
+  }
+};
+
 // GET /api/idiomas/:id
 self.recuperar = async function (req, res) {
   try {

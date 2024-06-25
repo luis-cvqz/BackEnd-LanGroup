@@ -57,7 +57,15 @@ const creargrupo = Joi.object({
   nombre: Joi.string().required().min(1).max(50),
   descripcion: Joi.string().required().min(1),
   icono: Joi.string().required().pattern(new RegExp('\\.png$')).min(1).max(50),
-  idiomaid: Joi.string().required().min(1).max(255)
+  idiomaid: Joi.string().required().min(1).max(255),
+  colaboradorid: Joi.string().required().min(1).max(255),
+  rol: Joi.string().required().valid('Aprendiz', 'Administrador').min(1).max(20)
+});
+
+const asignarColaboradorGrupo = Joi.object({
+  colaboradorid: Joi.string().required().min(1).max(255),
+  grupoid: Joi.string().required().min(1).max(255),
+  rol: Joi.string().required().valid('Participante', 'Administrador').min(1).max(20),
 });
 
 const actualizargrupo = Joi.object({
@@ -152,6 +160,8 @@ const obtenerSchemaPorTipo = (type) => {
       return crearsolicitud;
     case 'actualizarsolicitud':
       return actualizarsolicitud;
+    case 'asignarColaboradorGrupo':
+      return asignarColaboradorGrupo;
     default:
         throw new Error('Objecto desconocido');
   }

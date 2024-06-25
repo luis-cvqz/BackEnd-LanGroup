@@ -38,6 +38,6 @@ router.delete(
 );
 
 // POST /api/grupos/colaboradores
-router.post("/colaboradores", grupos.asignarColaboradorAGrupo);
+router.post("/colaboradores", ValidarObjeto('asignarColaboradorGrupo'), grupos.asignarColaboradorAGrupo);
 
 module.exports = router;
