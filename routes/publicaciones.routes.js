@@ -14,6 +14,9 @@ router.get('/:id', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR},${Roles
 // POST api/publicaciones
 router.post('/', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('crearpublicacion'), publicaciones.crear)
 
+// POST api/publicaciones/imagenes
+router.post('/imagenes', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('crearpublicaionimagen'), publicaciones.crearConImagen)
+
 // PUT api/publicaciones/:id
 router.put('/:id', Authorize(`${Roles.ADMINISTRADOR},${Roles.INSTRUCTOR}`), ValidarObjeto('actualizarpublicacion'), AuthorizeActualizacion, publicaciones.actualizar)
 

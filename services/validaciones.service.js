@@ -101,6 +101,14 @@ const crearpublicacion = Joi.object({
   grupoid: Joi.string().required().min(1).max(255)
 });
 
+const crearpublicacionimagen = Joi.object({
+  titulo: Joi.string().required().min(1).max(50),
+  descripcion: Joi.string().required().min(1).max(500),
+  colaboradorid: Joi.string().required().min(1).max(36),
+  grupoid: Joi.string().required().min(1).max(36),
+  publicacionid: Joi.string().required().min(1).max(36)
+})
+
 const actualizarpublicacion = Joi.object({
   titulo: Joi.string().optional().min(1).max(50),
   descripcion: Joi.string().optional().min(1).max(500),
@@ -153,6 +161,8 @@ const obtenerSchemaPorTipo = (type) => {
       return actualizarinteraccion;
     case 'crearpublicacion':
       return crearpublicacion;
+    case 'crearpublicaionimagen':
+      return crearpublicacionimagen;
     case 'actualizarpublicacion':
       return actualizarpublicacion;
     case 'crearsolicitud':

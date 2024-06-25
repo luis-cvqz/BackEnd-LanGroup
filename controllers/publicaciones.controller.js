@@ -1,4 +1,4 @@
-const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize} = require('../models')
+const { publicacion, colaborador, idioma, grupo, archivomultimedia, Sequelize, sequelize} = require('../models')
 const Op = Sequelize.Op
 const crypto = require('crypto')
 const logger = require('../services/logger.service'); 
@@ -133,6 +133,61 @@ self.crear = async function (req, res) {
     return res.status(201).json(data)
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`); 
+    return res.status(500).send()
+  }
+}
+
+// POST api/publicaciones/imagenes
+self.crearConImagen = async function (req, res) {
+  const transaction = await sequelize.transaction()
+
+  const publicacionId = crypto.randomUUID()
+
+  try {
+    
+    let nuevaPublicacion = await publicacion.create({
+      id: publicacionId,
+      titulo: req.body.titulo,
+      descripcion: req.body.descripcion,
+      fecha: new Date(),
+      colaboradorid: req.body.colaboradorid,
+      grupoid: req.body.grupoid,
+    }, { transaction })
+
+    // req.bitacora(`publicaciones${Acciones.CREAR}`,nuevaPublicacion.id)
+
+    if (!req.file)
+      return res.status(400).json('El archivo es obligatorio')
+
+    
+    let archivoRecibido = fs.readFileSync("uploads/" + req.file.filename)
+    fs.existsSync("uploads/" + req.file.filename) && fs.unlinkSync("uploads/" + req.file.filename)
+
+    let nuevoArchivo = await archivomultimedia.create({
+      id: crypto.randomUUID(),
+      publicacionid: publicacionId,
+      nombre: req.file.filename,
+      mime: req.file.mimetype,
+      tamanio: req.file.size,
+      indb: true,
+      archivo: archivoRecibido
+    }, { transaction })
+
+    //req.bitacora(`archivosmultimedia${Acciones.CREAR}`,nuevoArchivo.id)
+
+    await transaction.commit()
+    return res.status(201).json({
+      publicacion: nuevaPublicacion,
+      archivo: {
+        id: nuevoArchivo.id,
+        publicacionid: nuevoArchivo.publicacionid,
+        nombre: nuevoArchivo.nombre,
+        mime: nuevoArchivo.mime,
+      }
+    });
+  } catch (error) {
+    await transaction.rollback()
+    logger.error(`Error interno del serviddor: ${error}`)
     return res.status(500).send()
   }
 }
