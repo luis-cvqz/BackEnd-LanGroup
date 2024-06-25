@@ -104,7 +104,7 @@ self.crear = async function (req, res) {
         return res.status(400).json({ message: 'Correo duplicado' });
       }            
     } else {
-      return res.status(400).json({ message: 'Información requerida' });
+      return res.status(404).json({ message: 'Información requerida' });
     }
   } catch (error) {
     logger.error(`Error interno del servidor: ${error}`);
