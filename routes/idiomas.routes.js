@@ -9,6 +9,9 @@ const Roles = require("../enums/roles.enum")
 // GET /api/idiomas?colaboradorid={colaboradorid}
 router.get('/', idiomas.recuperarTodos)
 
+// GET /api/idiomas/nombre/:nombre
+router.get('/nombre/:nombre', idiomas.recuperarPorNombre);
+
 // GET: api/idiomas/:id
 router.get('/:id', idiomas.recuperar)
 
