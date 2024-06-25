@@ -82,7 +82,6 @@ const idioma = Joi.object({
 const crearinteraccion = Joi.object({
   valoracion: Joi.number().integer().required().min(1).max(5),
   comentario: Joi.string().required().min(1).max(500),
-  fecha: Joi.date().required(),
   colaboradorid: Joi.string().required().min(1).max(255),
   publicacionid: Joi.string().required().min(1).max(255)
 })
